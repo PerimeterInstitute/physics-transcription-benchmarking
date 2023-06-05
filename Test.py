@@ -1,27 +1,20 @@
-from os.path import isfile
+from os import listdir
 import jiwer
 
 class Test():
 
-    def __init__(self, dataset):
+    def __init__(self, model):
 
         # initializing resultsJSON
-        self.resultsJSON = {}
+        self.results = {}
 
-        # load dataset transcription
-        filepath = "./datasets/" + dataset + "/" + dataset + ".txt"
-        
-        if isfile(filepath):
-            self.reference = filepath  
-        else: 
-            raise Exception("ERROR: Dataset '" + dataset + "' does not exist.")
+        for dataset in listdir("./datasets/"):
+           reference = open("./datasets/" + dataset + "/" + dataset + ".txt", "r").read()
+           self.results.update({dataset: self.compare(reference, model.transcription)})
 
-    def createJSON(self, hypothesis):
+    def compare(self, reference, hypothesis):
 
-        # PREPARING INPUT:
-
-        reference = open(self.reference, "r").read()
-        hypothesis = open(hypothesis, "r").read()
+        currentTest = {}
 
         # COMPARING INPUT:
 
@@ -30,11 +23,12 @@ class Test():
 
         # CREATING JSON:
 
-        self.resultsJSON.update({"word_error_rate": word_output.wer})
-        self.resultsJSON.update({"match_error_rate": word_output.mer})
-        self.resultsJSON.update({"word_information_lost": word_output.wil})
-        self.resultsJSON.update({"word_information_preserved": word_output.wip})
-        self.resultsJSON.update({"character_error_rate": char_output.cer})
+        currentTest.update({"word_error_rate": word_output.wer})
+        currentTest.update({"match_error_rate": word_output.mer})
+        currentTest.update({"word_information_lost": word_output.wil})
+        currentTest.update({"word_information_preserved": word_output.wip})
+        currentTest.update({"character_error_rate": char_output.cer})
 
-        return self.resultsJSON
+        return currentTest
+    
     
