@@ -1,70 +1,79 @@
 from os import listdir
-from os.path import basename
+from os.path import join
 import json, jiwer
-
-# DATASETS = "./datasets/"
-DATASETS = "./dev_datasets/"
 
 class Test():
 
-    def __init__(self, model_arr):
+    def __init__(self, model_array, dataset_path="full"):
 
         self.results = {}
 
-        for model in model_arr:
-            currentModel = {}
+        # LOADING SCOPE DATASETS:
 
-            for dataset in listdir(DATASETS):
-                currentTest = {}
+        if dataset_path == "full":
+            dataset_path = "./datasets/full_dataset/"
 
-                json_file = DATASETS + dataset + "/" + dataset + ".json"
-                json_obj = json.load(open(json_file))
+        elif dataset_path == "dev":
+            dataset_path = "./datasets/dev_dataset/"
+
+        # LOADING DATASET'S JSON FILE:
+
+        for file in listdir(dataset_path):
+            if file.endswith(".json"):
+                json_file = join(dataset_path, file)
+                break
+        dataset = json.load(open(json_file))
+
+        # RUNNING TESTS:
+
+        for model in model_array:
+            current_model = {}
+
+            for test_case in dataset:
+                current_test = {}
 
                 # TODO: download these files rather than keeping them in directory
-                audio_name = json_obj["audio_name"]
-                audio_file = DATASETS + dataset + "/" + audio_name
-                transcript_file = DATASETS + dataset + "/" + json_obj["transcript_name"]
+                audio_name = test_case["audio_filename"]
+                transcript_name = test_case["transcript_filename"]
+                audio_file = join(dataset_path, "test_data/", audio_name)
+                transcript_file = join(dataset_path, "test_data/", transcript_name)
                 
                 # creating prompt
-                prompt = self.loadPrompt(json_obj)
+                prompt = self.load_prompt(test_case["audio_info"])
 
                 # transcribing model
                 model.transcribe(audio_file, prompt)
 
-                # adding load time and transcribe time to JSON
+                # adding load time and transcribe time to result dict
                 if model.load_time[audio_name]:
-                    currentTest.update({"load_time": model.load_time[audio_name]})
+                    current_test.update({"load_time": model.load_time[audio_name]})
                 if model.transcribe_time[audio_name]:
-                    currentTest.update({"transcribe_time": model.transcribe_time[audio_name]})
+                    current_test.update({"transcribe_time": model.transcribe_time[audio_name]})
 
                 # evaluating transcription
                 reference = open(transcript_file, "r").read()
-                currentTest.update({"test_results": self.compare(reference, model.transcription[audio_name])})
+                current_test.update({"test_results": self.compare(reference, model.transcription[audio_name])})
 
-                currentModel.update({dataset: currentTest})
+                current_model.update({test_case["test_name"]: current_test})
 
-            self.results.update({model.name: currentModel})
+            self.results.update({model.name: current_model})
 
-    def loadPrompt(self, json_obj):
+    def load_prompt(self, json_obj):
 
         prompt = ""
 
         # CREATING PROMPT:
 
         for key in json_obj:
-
-            if key == "title":
-                prompt += " " + json_obj[key].strip()
-
-            elif key == "description":
+            if key == "title" or key == "description":
                 prompt += " " + json_obj[key].strip()
 
             elif key == "keywords":
-                # TODO: decide on way to add keywords to prompt (figure out keyword formatting in JSON first)
+                # TODO: determine keyword formatting in JSON before implementing this
                 pass
 
             elif key == "speakers":
-                for speaker in json_obj[key].values():                   # TODO: check for duplicate speakers/institutions
+                for speaker in json_obj[key]:                   # TODO: check for duplicate speakers/institutions
                     prompt += " " + speaker["name"].strip()
                     prompt += " " + speaker["institution"].strip()
 
@@ -72,7 +81,7 @@ class Test():
 
     def compare(self, reference, hypothesis):
 
-        currentDataset = {}
+        current_dataset = {}
 
         # COMPARING INPUT:
 
@@ -81,11 +90,11 @@ class Test():
 
         # CREATING JSON:
 
-        currentDataset.update({"word_error_rate": word_output.wer})
-        currentDataset.update({"match_error_rate": word_output.mer})
-        currentDataset.update({"word_information_lost": word_output.wil})
-        currentDataset.update({"word_information_preserved": word_output.wip})
-        currentDataset.update({"character_error_rate": char_output.cer})
+        current_dataset.update({"word_error_rate": word_output.wer})
+        current_dataset.update({"match_error_rate": word_output.mer})
+        current_dataset.update({"word_information_lost": word_output.wil})
+        current_dataset.update({"word_information_preserved": word_output.wip})
+        current_dataset.update({"character_error_rate": char_output.cer})
 
-        return currentDataset
+        return current_dataset
     
