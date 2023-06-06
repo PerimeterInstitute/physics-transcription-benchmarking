@@ -9,7 +9,7 @@ class WhisperOpenAI:
         self.name = name
         self.model_type = options.pop("model_type", "large")
         self.options = options
-        self.resultObj = {}
+        self.result_object = {}
         self.transcription = {}
         self.load_time = {}
         self.transcribe_time = {}
@@ -31,7 +31,7 @@ class WhisperOpenAI:
         # save load and transcribe times
         self.load_time.update({audio_name: str(timedelta(seconds=load_end - load_start))})
         self.transcribe_time.update({audio_name: str(timedelta(seconds=transcribe_end - transcribe_start))})
-        self.resultObj.update({audio_name: result})
+        self.result_object.update({audio_name: result})
 
         # save transcription
         transcription = ""
