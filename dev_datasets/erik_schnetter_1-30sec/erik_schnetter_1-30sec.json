@@ -1,0 +1,21 @@
+{
+    "title": "Numerical Methods Lecture - 230207",
+    "description": "",
+    "keywords": "",
+    "speakers": {
+        "s1": {
+            "name": "Erik Schnetter",
+            "institution":"Perimeter Institute for Theoretical Physics"
+        }
+    },
+    "date_posted": "February 7, 2023",
+    "audio_name": "erik_schnetter_1-30sec.mp4",
+    "audio_source": {
+        "link":"https://pirsa.org/23020001",
+        "start":"00:30:28",
+        "end":"00:30:58"
+    },
+    "transcript_name": "erik_schnetter_1-30sec.txt",
+    "transcript_source": "",
+    "notes": "good audio quality, speaker has accent, involves simple spoken mathematics, involves mathematical and computational terminology"
+}

@@ -1,0 +1,21 @@
+{
+    "title": "Fitting models to data using Markov Chain Monte Carlo",
+    "description": "",
+    "keywords": "",
+    "speakers": {
+        "s1": {
+            "name": "Dustin Lang",
+            "institution":"Perimeter Institute for Theoretical Physics"
+        }
+    },
+    "date_posted": "January 23, 2023",
+    "audio_name": "dustin_lang_2-30sec.mp4",
+    "audio_source": {
+        "link":"https://pirsa.org/23010076",
+        "start":"00:26:58",
+        "end":"00:27:28"
+    },
+    "transcript_name": "dustin_lang_2-30sec.txt",
+    "transcript_source": "",
+    "notes": "good audio quality, involves simple spoken mathematics, involves mathematical and astrophysical terminology"
+}

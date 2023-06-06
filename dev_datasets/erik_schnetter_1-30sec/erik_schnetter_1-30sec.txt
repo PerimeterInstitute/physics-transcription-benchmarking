@@ -1,0 +1,5 @@
+It does, okay. So, every object in Julia has a particular type.
+For example, the type of A is a double position matrix.
+It's not just the matrix, it's a double position matrix. If you look to probably the second lecture,
+I spoke about types and generic programming. Let's just actually look at the result here.
+The compiler knows that A is a type matrix of float64.
