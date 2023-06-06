@@ -1,21 +1,29 @@
-{
-    "title": "Quantum Foundations Lecture - 230206",
-    "description": "",
-    "keywords": "",
-    "speakers": {
-        "s1": {
-            "name": "Lucien Hardy",
-            "institution":"Perimeter Institute for Theoretical Physics"
+[
+    {
+        "test_name": "quantum_lec",
+        "audio_filename": "quantum_lec.mp4",
+        "audio_info": {
+            "title": "Quantum Foundations Lecture - 230206",
+            "description": "",
+            "keywords": "",
+            "speakers": [
+                {
+                    "name": "Lucien Hardy",
+                    "institution":"Perimeter Institute for Theoretical Physics"
+                }
+            ],
+            "date_posted": "February 6, 2023",
+            "audio_source": {
+                "link":"https://pirsa.org/23020017",
+                "start":"00:28:12",
+                "end":"00:38:22"
+            },
+            "notes": "good audio quality, speaker has accent, involves simple spoken mathematics, involves mathematical and quantum computing terminology"
+        },
+        "transcript_filename": "quantum_lec.txt",
+        "transcript_info": {
+            "transcript_source": "",
+            "notes": "human edited/reviewed WhisperPI model transcription"
         }
-    },
-    "date_posted": "February 6, 2023",
-    "audio_name": "quantum_lec.mp4",
-    "audio_source": {
-        "link":"https://pirsa.org/23020017",
-        "start":"00:28:12",
-        "end":"00:38:22"
-    },
-    "transcript_name": "quantum_lec.txt",
-    "transcript_source": "",
-    "notes": "good audio quality, speaker has accent, involves simple spoken mathematics, involves mathematical and quantum computing terminology"
-}
+    }
+]
