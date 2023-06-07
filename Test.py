@@ -60,24 +60,35 @@ class Test():
 
     def load_prompt(self, json_obj):
 
-        prompt = ""
+        prompt = []
 
-        # CREATING PROMPT:
+        # CREATING PROMPT ARRAY:
 
         for key in json_obj:
             if key == "title" or key == "description":
-                prompt += " " + json_obj[key].strip()
+                prompt.append(json_obj[key])
 
             elif key == "keywords":
-                # TODO: determine keyword formatting in JSON before implementing this
-                pass
+                for keyword in json_obj[key]:
+                    prompt.append(keyword)
 
             elif key == "speakers":
-                for speaker in json_obj[key]:                   # TODO: check for duplicate speakers/institutions
-                    prompt += " " + speaker["name"].strip()
-                    prompt += " " + speaker["institution"].strip()
+                for speaker in json_obj[key]:
+                    name = speaker["name"]
+                    institution = speaker["institution"]
 
-        return None if prompt == "" else prompt.strip()
+                    prompt.append(name)
+                    
+                    if institution not in prompt:
+                        prompt.append(institution)
+
+        # CREATING PROMPT STRING:
+
+        prompt = list(map(str.strip, prompt))
+        while "" in prompt:
+            prompt.remove("")
+
+        return None if len(prompt) == 0 else " ".join(prompt)
 
     def compare(self, reference, hypothesis):
 

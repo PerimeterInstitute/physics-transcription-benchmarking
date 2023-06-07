@@ -5,7 +5,7 @@
         "audio_info": {
             "title": "Fitting models to data using Markov Chain Monte Carlo",
             "description": "",
-            "keywords": "",
+            "keywords": [],
             "speakers": [
                 {
                     "name": "Dustin Lang",
@@ -32,7 +32,7 @@
         "audio_info": {
             "title": "Numerical Methods Lecture - 230207",
             "description": "",
-            "keywords": "",
+            "keywords": [],
             "speakers": [
                 {
                     "name": "Erik Schnetter",
@@ -59,7 +59,7 @@
         "audio_info": {
             "title": "Quantum Foundations Lecture - 230206",
             "description": "",
-            "keywords": "",
+            "keywords": [],
             "speakers": [
                 {
                     "name": "Lucien Hardy",
