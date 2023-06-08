@@ -23,5 +23,5 @@ class ModelFormat(ABC):
         pass
 
     @abstractmethod
-    def transcribe(self):
+    def transcribe(self, audio, prompt=None):
         pass
