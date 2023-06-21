@@ -1,2 +1,12 @@
+# pycache:
 __pycache__/*
 models/__pycache__/*
+
+# Testing:
+results.json
+
+# WhisperCPP testing:
+whisper.cpp/
+test-whispercpp.py
+test-whispercpp.ipynb
+models/WhisperCPP.py
