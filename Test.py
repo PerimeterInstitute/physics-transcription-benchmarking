@@ -4,9 +4,9 @@ import json, jiwer
 
 class Test():
 
-    def __init__(self, model_array, dataset_path="full"):
+    results = {}
 
-        self.results = {}
+    def __init__(self, model_array, dataset_path="full"):
 
         # LOADING SCOPE DATASETS:
 
@@ -39,7 +39,7 @@ class Test():
                 transcript_file = join(dataset_path, "test_data/", transcript_name)
                 
                 # creating prompt
-                prompt = self.load_prompt(test_case["audio_info"])
+                prompt = self.__load_prompt(test_case["audio_info"])
 
                 # transcribing model
                 model.transcribe(audio_file, prompt)
@@ -52,13 +52,13 @@ class Test():
 
                 # evaluating transcription
                 reference = open(transcript_file, "r").read()
-                current_test.update({"test_results": self.compare(reference, model.transcription[audio_name])})
+                current_test.update({"test_results": self.__compare(reference, model.transcription[audio_name])})
 
                 current_model.update({test_case["test_name"]: current_test})
 
             self.results.update({model.name: current_model})
 
-    def load_prompt(self, json_obj):
+    def __load_prompt(self, json_obj):
 
         prompt = []
 
@@ -90,7 +90,7 @@ class Test():
 
         return None if len(prompt) == 0 else " ".join(prompt)
 
-    def compare(self, reference, hypothesis):
+    def __compare(self, reference, hypothesis):
 
         current_dataset = {}
 
