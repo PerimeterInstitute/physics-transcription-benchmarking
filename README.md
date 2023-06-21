@@ -2,35 +2,39 @@
 
 Test suite created for benchmarking transcription models.
 
+
+
 ## How To Run
 
-See [example.ipynb](example.ipynb) for an example these steps put together.
+See [example.ipynb](example.ipynb) for an example of these steps put together.
 
 ### 1. Import Test Class
 `from Test import Test`
 
 ### 2. Import Transcription Model(s)
 
-#### Pre-Built Models
-- [WhisperPI](#whisperpi-class) --> `from models.WhisperPI import WhisperPI`
-- [WhisperOpenAI](#whisperopenai-class) --> `from models.WhisperOpenAI import WhisperOpenAI`
+#### Provided Model Wrappers
+- [WhisperPI](#whisperpi) --> `from models.WhisperPI import WhisperPI`
+- [WhisperOpenAI](#whisperopenai) --> `from models.WhisperOpenAI import WhisperOpenAI`
 
-#### Other Models
-See [How to Implement Your Own Model](#how-to-implement-your-own-model)
+#### Other Model Wrappers
+See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper)
 
 ### 3. Create Model Instance(s)
 
-#### Pre-Built Models
-See documentation for [pre-built model](#pre-built-models-2).
+#### Provided Model Wrappers
+- [WhisperPI](#whisperpi) --> See WhisperPI [constructor](#constructor-1)
+- [WhisperOpenAI](#whisperopenai) --> See WhisperOpenAI [constructor](#constructor-2)
 
-#### Other Models
-See [How to Implement Your Own Model](#how-to-implement-your-own-model)
+#### Other Models Wrappers
+See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper)
 
 ### 4. Create Test Instance
-See Test class contructor.
+See Test class [constructor](#constructor).
 
 ### 5. Access Resulting Data
-See Test class attributes, see Model class attributes.
+Access test data (load time, transcription time, accuracy data, etc.) through Test class [attributes](#attributes).
+Access transcription data through Model Wrapper class [attributes](#attributes-1).
 
 
 
