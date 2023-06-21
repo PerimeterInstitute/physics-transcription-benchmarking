@@ -1,10 +1,10 @@
 from os.path import basename
 from time import time
 from datetime import timedelta
-from ModelFormat import ModelFormat
+from ModelWrapper import ModelWrapper
 import whisper
 
-class WhisperOpenAI(ModelFormat):
+class WhisperOpenAI(ModelWrapper):
 
     __model = None
 

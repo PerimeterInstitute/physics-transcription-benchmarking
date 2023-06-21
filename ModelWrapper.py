@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class ModelFormat(ABC):
+class ModelWrapper(ABC):
 
     @property
     @abstractmethod
