@@ -6,10 +6,11 @@ import whisper
 
 class WhisperPI(ModelFormat):
 
+    __model = None
+
     name = ""
     model_type = ""
     options = {}
-    model = None
 
     full_result = {}
     transcription = {}
@@ -23,7 +24,7 @@ class WhisperPI(ModelFormat):
 
         # load model
         load_start = time()
-        self.model = whisper.load_model(self.model_type)
+        self.__model = whisper.load_model(self.model_type)
         load_end = time()
 
         self.__load_time__ = load_end - load_start
@@ -34,7 +35,7 @@ class WhisperPI(ModelFormat):
 
         # transcribe audio
         transcribe_start = time()
-        result = self.model.transcribe(audio, initial_prompt=prompt, **self.options)
+        result = self.__model.transcribe(audio, initial_prompt=prompt, **self.options)
         transcribe_end = time()
         
         # save load time, and transcribe time, and full result
