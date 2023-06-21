@@ -26,7 +26,7 @@ See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper)
 - [WhisperPI](#whisperpi) --> See WhisperPI [constructor](#constructor-1)
 - [WhisperOpenAI](#whisperopenai) --> See WhisperOpenAI [constructor](#constructor-2)
 
-#### Other Models Wrappers
+#### Other Model Wrappers
 See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper)
 
 ### 4. Create Test Instance
@@ -34,6 +34,7 @@ See Test class [constructor](#constructor).
 
 ### 5. Access Resulting Data
 Access test data (load time, transcription time, accuracy data, etc.) through Test class [attributes](#attributes).
+
 Access transcription data through Model Wrapper class [attributes](#attributes-1).
 
 
@@ -41,7 +42,7 @@ Access transcription data through Model Wrapper class [attributes](#attributes-1
 ## Test Class
 
 #### Constructor
-`Test(Model[] model_array, String dataset_path)="full"` : Creates Test instance.
+`Test(model_array, dataset_path="full")` : Creates Test instance.
 - `Model[] model_array` : Array of models to be tested
 - `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
 
@@ -107,15 +108,18 @@ Example `results` dictionary:
 ## Model Wrappers
 
 ### WhisperPI
-Wrapper for Whisper transcription model altered for the purpose of effectively transcribing PIRSA lectures.
+Wrapper for the WhisperPI transcription model. WhisperPI is an altered version of [OpenAI's Whisper](https://github.com/openai/whisper) speech recognition model, used to transcribe videos on the Perimeter Institute Recorded Seminar Archive (PIRSA).
 
 #### Required Packages
-- pi-whisper: `$ pip install git+https://github.com/rmohl/whisper.git`
+- pi-whisper --> `$ pip install git+https://github.com/rmohl/whisper.git`
 
 #### Constructor
 `WhisperPI(name, options)` : Creates WhisperPI instance.
 - `String name` : Name of model
-- `Dict options` : Model options (`model_type`, `language`, see other og Whisper options)
+- `Dict options` : Model options
+    - `String model_type` : 
+    - `String language` : 
+    - other options
 
 #### Attributes
 - `String name` : Name of model
@@ -127,21 +131,24 @@ Wrapper for Whisper transcription model altered for the purpose of effectively t
 - `Dict transcribe_time` : Dictionary containing all transcribe times.
 
 #### Methods
-- `transcribe(String audio, String prompt=None):` : Transcribes given audio file, updates result-related attributes.
+- `transcribe(audio, prompt=None)` : Transcribes given audio file, updates result-related attributes.
     - `String audio` : File path to audio file
     - `String prompt` : Transcription prompt
 
 
 ### WhisperOpenAI
-Wrapper for original Whisper transcription model (from --link to git--).
+Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recognition model.
 
 #### Required Packages
-- openai-whisper: `$ pip install -U openai-whisper`
+- openai-whisper --> `$ pip install -U openai-whisper`
 
 #### Constructor
 `WhisperOpenAI(name, options)` : Creates WhisperOpenAI instance.
 - `String name` : Name of model
-- `Dict options` : Model options (`model_type`, `language`, see other og Whisper options)
+- `Dict options` : Model options
+    - `String model_type` : 
+    - `String language` : 
+    - other options
 
 #### Attributes
 - `String name` : Name of model
@@ -153,7 +160,7 @@ Wrapper for original Whisper transcription model (from --link to git--).
 - `Dict transcribe_time` : Dictionary containing all transcribe times.
 
 #### Methods
-- `transcribe(String audio_file, String prompt=None)` : Transcribes given audio file, updates result-related attributes.
+- `transcribe(audio, prompt=None)` : Transcribes given audio file, updates result-related attributes.
     - `String audio` : File path to audio file
     - `String prompt` : Transcription prompt, defaults to None
 
