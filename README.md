@@ -6,29 +6,30 @@ Test suite created for benchmarking transcription models.
 
 See [example.ipynb](example.ipynb) for an example these steps put together.
 
-1. Import Test Class
+### 1. Import Test Class
 `from Test import Test`
 
-2. Import Transcription Model(s)
+### 2. Import Transcription Model(s)
 
-### Pre-Built Models
+#### Pre-Built Models
 - [WhisperPI](#whisperpi-class) --> `from models.WhisperPI import WhisperPI`
 - [WhisperOpenAI](#whisperopenai-class) --> `from models.WhisperOpenAI import WhisperOpenAI`
 
-### Other Models
+#### Other Models
 See [How to Implement Your Own Model](#how-to-implement-your-own-model)
 
-3. Create Model Instance(s)
-### Pre-Built Models
+### 3. Create Model Instance(s)
+
+#### Pre-Built Models
 See documentation for [pre-built model](#pre-built-models-2).
 
-### Other Models
+#### Other Models
 See [How to Implement Your Own Model](#how-to-implement-your-own-model)
 
-4. Create Test Instance
+### 4. Create Test Instance
 See Test class contructor.
 
-5. Access Resulting Data
+### 5. Access Resulting Data
 See Test class attributes, see Model class attributes.
 
 
@@ -36,15 +37,16 @@ See Test class attributes, see Model class attributes.
 ## Test Class
 
 #### Constructor
-`Test(Model[] model_array, String dataset_path)="full"`:
-- `Model[] model_array`: Name of model
-- `String dataset_path`: Model options (`model_type`, `language`, see other og Whisper options)
+`Test(Model[] model_array, String dataset_path)="full"` : Creates Test instance.
+- `Model[] model_array` : Array of models to be tested
+- `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
 
 #### Attributes
 - `Dict results`: Dictionary containing load time, transcription time, and accuracy data (word error rate, character error rate, etc.) for each model that was provided in the constructor
-Ex: 
+
+Example `results` dictionary: 
 ```
-{
+"results": {
     "model_1": {
         "test_audio_1": {
             "load_time": "0:05:43.108026",
@@ -103,53 +105,53 @@ Ex:
 ### WhisperPI
 Wrapper for Whisper transcription model altered for the purpose of effectively transcribing PIRSA lectures.
 
-### Required Packages
+#### Required Packages
 - pi-whisper: `$ pip install git+https://github.com/rmohl/whisper.git`
 
 #### Constructor
-`WhisperPI(name, options)`: Creates WhisperPI instance.
-- `String name`: Name of model
-- `Dict options`: Model options (`model_type`, `language`, see other og Whisper options)
+`WhisperPI(name, options)` : Creates WhisperPI instance.
+- `String name` : Name of model
+- `Dict options` : Model options (`model_type`, `language`, see other og Whisper options)
 
 #### Attributes
-- `String name`: Name of model
-- `String model_type`: Model type ("tiny", "base", "medium", "large", etc.)
-- `Dict options`: Model options (see og Whisper options)
-- `Dict full_result`: Dictionary containing all result objects.
-- `Dict transcription`: Dictionary containing the text from all resulting transcriptions.
-- `Dict load_time`: Dictionary containing all load times.
-- `Dict transcribe_time`: Dictionary containing all transcribe times.
+- `String name` : Name of model
+- `String model_type` : Model type ("tiny", "base", "medium", "large", etc.)
+- `Dict options` : Model options (see og Whisper options)
+- `Dict full_result` : Dictionary containing all result objects.
+- `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
+- `Dict load_time` : Dictionary containing all load times.
+- `Dict transcribe_time` : Dictionary containing all transcribe times.
 
 #### Methods
-- `transcribe(String audio, String prompt=None):`: Transcribes given audio file, updates result-related attributes.
-    - `String audio`: File path to audio file
-    - `String prompt`: Transcription prompt
+- `transcribe(String audio, String prompt=None):` : Transcribes given audio file, updates result-related attributes.
+    - `String audio` : File path to audio file
+    - `String prompt` : Transcription prompt
 
 
 ### WhisperOpenAI
 Wrapper for original Whisper transcription model (from --link to git--).
 
-### Required Packages
+#### Required Packages
 - openai-whisper: `$ pip install -U openai-whisper`
 
 #### Constructor
-`WhisperOpenAI(name, options)`: Creates WhisperOpenAI instance.
-- `String name`: Name of model
-- `Dict options`: Model options (`model_type`, `language`, see other og Whisper options)
+`WhisperOpenAI(name, options)` : Creates WhisperOpenAI instance.
+- `String name` : Name of model
+- `Dict options` : Model options (`model_type`, `language`, see other og Whisper options)
 
 #### Attributes
-- `String name`: Name of model
-- `String model_type`: Model type ("tiny", "base", "medium", "large", etc.)
-- `Dict options`: Model options (see og Whisper options)
-- `Dict full_result`: Dictionary containing all result objects.
-- `Dict transcription`: Dictionary containing the text from all resulting transcriptions.
-- `Dict load_time`: Dictionary containing all load times.
-- `Dict transcribe_time`: Dictionary containing all transcribe times.
+- `String name` : Name of model
+- `String model_type` : Model type ("tiny", "base", "medium", "large", etc.)
+- `Dict options` : Model options (see og Whisper options)
+- `Dict full_result` : Dictionary containing all result objects.
+- `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
+- `Dict load_time` : Dictionary containing all load times.
+- `Dict transcribe_time` : Dictionary containing all transcribe times.
 
 #### Methods
-- `transcribe(String audio_file, String prompt=None):`: Transcribes given audio file, updates result-related attributes.
-    - `String audio`: File path to audio file
-    - `String prompt`: Transcription prompt, defaults to None
+- `transcribe(String audio_file, String prompt=None)` : Transcribes given audio file, updates result-related attributes.
+    - `String audio` : File path to audio file
+    - `String prompt` : Transcription prompt, defaults to None
 
 
 
