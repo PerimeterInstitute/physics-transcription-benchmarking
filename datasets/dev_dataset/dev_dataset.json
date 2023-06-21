@@ -13,7 +13,7 @@
                 }
             ],
             "date_posted": "January 23, 2023",
-            "audio_source": {
+            "source": {
                 "link":"https://pirsa.org/23010076",
                 "start":"00:26:58",
                 "end":"00:27:28"
@@ -22,7 +22,7 @@
         },
         "transcript_filename": "dustin_lang_2-30sec.txt",
         "transcript_info": {
-            "transcript_source": "",
+            "source": "",
             "notes": "human edited/reviewed WhisperPI model transcription"
         }
     },
@@ -40,7 +40,7 @@
                 }
             ],
             "date_posted": "February 7, 2023",
-            "audio_source": {
+            "source": {
                 "link":"https://pirsa.org/23020001",
                 "start":"00:30:28",
                 "end":"00:30:58"
@@ -49,7 +49,7 @@
         },
         "transcript_filename": "erik_schnetter_1-30sec.txt",
         "transcript_info": {
-            "transcript_source": "",
+            "source": "",
             "notes": "human edited/reviewed WhisperPI model transcription"
         }
     },
@@ -67,7 +67,7 @@
                 }
             ],
             "date_posted": "February 6, 2023",
-            "audio_source": {
+            "source": {
                 "link":"https://pirsa.org/23020017",
                 "start":"00:28:12",
                 "end":"00:30:12"
@@ -76,7 +76,7 @@
         },
         "transcript_filename": "lucien_hardy_1-2min.txt",
         "transcript_info": {
-            "transcript_source": "",
+            "source": "",
             "notes": "human edited/reviewed WhisperPI model transcription"
         }
     }
