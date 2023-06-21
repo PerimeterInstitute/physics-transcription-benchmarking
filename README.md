@@ -183,14 +183,14 @@ Put the Model Wrapper class file in [models/](models/) folder. Import the Wrappe
 ### Other Datasets
 Datasets must have the following structure in order to be used with the Test class:
 ```
-dataset_name
-    - dataset_name.json
-    - test_data
-        - data_1.mp4
-        - data_1.txt
-        - data_2.wav
-        - data_2.txt
-            ...
+dataset_name/
+    --> dataset_name.json
+    --> test_data/
+        --> data_1.mp4
+        --> data_1.txt
+        --> data_2.wav
+        --> data_2.txt
+               ...
 ```
 Please reference [full_dataset.json](datasets/full_dataset/full_dataset.json) for formatting of the dataset JSON file. 
 
