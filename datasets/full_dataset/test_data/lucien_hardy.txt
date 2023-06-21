@@ -1,0 +1,84 @@
+Any pure state can be written like that in some basis.
+And this provides you with, these are complex numbers, so you have 2n complex numbers.
+Okay, that's 2n, but then you need to subtract 1 because of the overall phase, and another
+1 because we want to impose normalization.
+Okay, so a lot of our intuition comes from the special case n equal to 2, you know, a qubit.
+And there's something bad about this special case, we're trying to get an intuition for
+the shape of state space.
+So let's see, so if n equals 2, k minus 2, which is the, well let me just do all of it.
+So that means k equals 4, k minus 1, which is the, I can just do this here actually, let's do it here.
+So this one, k minus 1 equals 3, you can check my arithmetic, k minus 2 equals 2.
+So this is all consistent because we know that we have the block ball, and the boundary
+of the block ball has two dimensions in it.
+And then also, if you look at this here, you get a pure dimension that's 2n minus 2 is
+also 2.
+Okay, so in the case of a qubit, these two things are the same.
+Okay, so that isn't true usually.
+Let's take n equal to 3, then we have k equal to 9, that's the dimension of the state space.
+k minus 1, the dimension of the normalized states is 8, equals, the dimension of the
+boundary is 7, but the dimension of the pure ones equals, well, 2 times 3 minus 2, so 4.
+Okay, so in this case, these two things are different,
+and what that's telling us is that in the boundary, on the boundary of the state space, there's
+a lot of states which are not pure.
+So unlike the block wall, in the general case, most of the, a generic state in the boundary, that is not pure.
+And, you know, it's hard to get a very good intuition about this, but I'll say a few things.
+So, first of all, you might think, well, okay, we've got fewer, so here's an example of a
+state space that has a part of the boundary that's mixed and a part which is pure.
+Okay, but this is the wrong kind of picture for us, because we know there's a continuous
+reversible transformation between pure states, so it means you cannot have these kinds of
+edges here, you can't have a place where the pure states just stop. Okay.
+So this is wrong.
+It also doesn't quite fit anyway because this has the same dimension for the boundary for
+the pure states as for the boundary states, whereas generically a
+state in here is going to be mixed.
+Here's an example, and this is not, so here's just to try and get an idea of what kind of
+spaces have this property.
+So here's an example of a state space, I'll go on to the next board.
+Here's an example of a convex space which has some of the right properties we want.
+Okay, I can't draw anything on the blackboard that's in 8 or 9 dimensions, but at least I can draw
+an example in 3 dimensions that has some of the right properties.
+And in a previous version of this course, one of the students coined this as the Pringle
+State Space.
+A Pringle Space.
+So the idea is you take a, actually just to give you a picture because it's hard to draw
+even so, take a wire in the shape of a circle, okay?
+Okay. And then take that circle and gently bend it, okay, so that the rim of that wire now
+is like the rim of a Pringle.
+You know what a Pringle is?
+It's hard to stop eating them.
+So, okay, so I'm going to try and draw that.
+Okay, it's not a very good effort, but that's my best attempt to draw the Pringle, the
+entropy Pringle.
+Okay, now I want the states, the states on here are the pure ones, and then what you do
+is there's something called taking the convex whole.
+That's just where you take a set of pure states, a set of extremal states in geometry, and
+you now find every state you can by mixing.
+What that does is it fills out the space into a solid.
+I'm going to try and draw that.
+Every single, every single, this is a terrible drawing, every combination you can.
+Okay, I'm going to stop there because it gets messy, I think you have the image. 
+So you fill that out into a kind of solid here.
+So, and that's a space, and this space has the right kind of properties because
+now the dimension of the space, it lives in three dimensions, the dimension of the boundary
+is 2, and the dimension of the extremal states is 1.
+It's not the right space, of course, but it at least gives you an idea of the kind of
+thing we're looking for.
+Okay, one more thing we can say about this situation is, we can just see why if you have n greater or equal to 3,
+you have this effect of having states on the boundary that are mixed.
+So consider a density matrix, and I'm going to write it in general, this is a general density matrix,
+And any general density matrix you can write it in diagonal form, okay, and in some basis,
+in the basis of the eigenstates, and then I'll write it down like this.
+So all I've done there is I've picked one of the eigenstates, one of the projectors,
+and I pulled it out, and then everything else is still here.
+Okay.
+Now, these lambdas, this lambda is positive.
+And if you imagine you're inside the state space, okay, and you start varying lambda, okay, then
+that will move you in a straight line until you hit the place where lambda is equal to
+zero.
+And then you can't keep going if you want to stay in the space, so you hit a boundary.
+And when you hit that boundary, when lambda is equal to 0, then the state you have is
+this one here.
+And this is, in general, this will be a mixed state.
+If this is not equal to 0, or at least 2, the entries, then this is a mixed state.
+If it's a qubit, then you only have one term here, then it would be a pure state.
+So in that case, the boundary states are pure, but in general it's going to be a mixed state.

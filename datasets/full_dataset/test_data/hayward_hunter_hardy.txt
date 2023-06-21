@@ -1,0 +1,380 @@
+- The next question is
+from another student
+here at Perimeter Institute.
+It was sent in anonymously,
+so I'm gonna read it.
+The question is,
+"You've famously axiomatized
+quantum mechanics.
+Do you think that a part of 
+trouble with quantum mechanics
+is similar to the one we have
+in the foundations of mathematics,
+where we know that there
+are a lot of true statements
+that are not provable from the axioms?
+Similarly, in quantum mechanics,
+even though we have a set of axioms,
+there will always be
+statements in quantum mechanics
+that are true, but we can't derive them,
+or understand them starting
+from first principles
+of quantum mechanics, such as axioms."
+- So people have thought about this kind of question.
+I'm not among them.
+There's this very interesting work
+the question alludes to on
+the logic of mathematics,
+and whether that work has
+some corresponding element
+in physics, and people have
+definitely thought about that.
+I think it's a difficult question,
+and it makes my mind go blank every time
+I try to think about it.
+I don't know how to begin
+to answer that question,
+but perhaps somebody who
+doesn't have my blind spots can.
+I really have no good things to say about,
+no good answers to provide to
+what is a very good question.
+- It maybe requires a new way
+of thinking like you said-
+- Yeah, I, maybe I'm too old now to think
+like that, yeah-
+- Great, we have one more question,
+and it's from someone
+that you know quite well.
+- I'm Nitica Sakharwade,
+a PhD student of Lucien's
+at Perimeter Institute.
+I'm graduating soon.
+I had a question for Lucien about,
+like a broad question about the
+field of quantum foundations
+as it has evolved the
+last couple of decades.
+So I was just wondering,
+I was, since I have been,
+I had been writing my thesis recently,
+I was also going through your thesis,
+and I was just wondering
+what it was like, right,
+talking about nonlocality of
+a single photon at that time,
+when quantum foundations wasn't recognized
+as a field in itself quite,
+and how you think it has evolved?
+In the decades since, like there
+definitely has been a boom,
+and I was wondering,
+so with the rise of quantum information,
+and then now more recently
+quantum computing,
+quantum hardware, quantum software,
+all of these things that are coming up,
+I was wondering what
+quantum foundations has to offer to them, and what are the things
+that quantum computing can bring?
+What questions it can bring
+back to quantum foundations?
+- Good questions, Nitica.
+So yeah, definitely,
+it was a very different
+situation back then.
+You know, you didn't go
+into quantum foundations
+if you wanted a job, you know?
+It was sort of, you know,
+a temporary state of affairs
+before you had to find
+employment elsewhere,
+at least that was the idea,
+and nobody was taking it seriously.
+It started to be taken more seriously,
+I think, with experiments,
+so experiments in quantum
+optics in particular. 
+So already, even before I started, 
+Alain Aspect did this sort
+of test of Bell's theorem,
+and even earlier
+experiments have been done
+by John Clauser and Freedman.
+But in the 1990s, these experiments became
+more and more serious.
+Leonard Mandel in Rochester,
+not so far away from here,
+did all these beautiful
+quantum optical experiments.
+You know, when people do experiments,
+the rest of the physics world starts
+to take you more seriously,
+and these experimentalists
+were hungry for ideas,
+things that they could test.
+So that was a very good
+collaboration between
+the field of quantum foundations
+and experimentalists.
+And then as quantum
+information came along,
+and also quantum computing,
+in the early days, the
+fields of quantum information
+and quantum computing were really,
+it was really just a joining of the fields
+of quantum foundations
+and computer science.
+So if you went to conferences
+in the subject of quantum information,
+then half the participants would be
+from a background in quantum
+foundations, people I knew,
+and half would be people
+from computer science,
+and it was just these two
+subjects talking to each other,
+trying to get a common language, you know,
+like for example, Ben Schumacher,
+who was the quantum foundations person,
+came up with the term qubit, you know,
+qubit sort of borrowing on the term bit,
+which is basic in computer science,
+bits at one, or zero.
+Well, qubit is the
+quantum version of that.
+And then once you start
+thinking in that way,
+all sorts of questions come up
+that weren't there previously,
+and you know, I worked in the
+field of quantum information
+a little bit myself for a while.
+I have papers on quantum
+cryptography, for example.
+So this is a very exciting
+new way of thinking,
+and people in quantum foundations were
+in a really great position
+to contribute to that,
+to the development, and just even the idea
+of what that field was.
+And more than that, what was happening
+in quantum information
+and quantum computing was
+that you were finding a way
+to use quantum weirdness.
+So previously, quantum weirdness was
+sort of an embarrassment.
+It was something that
+people hoped would go away,
+you know, trying to find an
+interpretation to get rid of it.
+Suddenly, now quantum
+weirdness was a resource.
+It was something that you could use.
+This is a point that Charlie
+Bennett makes frequently
+that rather than people in
+quantum foundations being,
+well, an embarrassment to
+physics, suddenly, we were useful.
+We could contribute.
+That was a great-
+- 'Cause you knew
+all about the weird stuff?
+- We knew all about the weird stuff.
+Yeah, that's right, yeah.
+Just for that reason.
+So, and it was a wonderful period,
+and when it really wasn't.
+It was just an idea that
+came from, you know,
+marrying these two fields together,
+and it was a very, very
+fruitful way of thinking,
+and so much was possible, you know?
+But in those days, you didn't
+have to think very hard
+to write a paper that was
+relatively significant
+in the field.
+The field of quantum
+information has since become
+much more technical, and people will build
+their whole career in the
+field of quantum information,
+you know, without having worked separately
+in quantum foundations, or in quantum,
+or in computer science.
+- So the conferences nowadays are
+all quantum computing experts
+instead of computer scientists
+and quantum foundations?
+- I mean, that's the impression I have.
+I mean, not all, but they-
+- Right.
+- That's definitely-
+- Primarily
+- The predominant makeup
+of those conferences,
+I think, which is, you know, is great,
+because there's a lot of
+very technical questions,
+but I think it's important
+still to keep looking
+to people in those two
+more basic subjects,
+because there's new ideas.
+One question I think is really important,
+and I still think this is something
+that we need to understand is what is it
+that gives quantum computers their power?
+Why are quantum computers more powerful
+than classical computers?
+And this is a question I remember
+when the field of quantum computing
+first started to be worked on
+that people in quantum foundations
+were very interested in.
+I went to conferences with
+people in quantum foundations,
+and philosophers who were very
+interested in this question.
+What is it that makes a
+quantum computer so powerful?
+And there's many possible answers.
+You might say, well, it's
+because of quantum parallelism.
+You have, you know,
+different, in quantum theory,
+you can have different things
+happening at the same time,
+this indefiniteness I mentioned.
+- Mmm-hmm.
+- David Deutsch believed
+that it was, that quantum
+computing was proof
+of the many worlds interpretation,
+'cause in the many worlds interpretation,
+you have all these different realities
+being true simultaneously.
+And other people thought,
+well, maybe, you know,
+maybe it's quantum nonlocality.
+Maybe the fact that you have entanglement,
+and entanglement enables a
+kind of nonlocal influence
+between different distant systems,
+and maybe that's what
+powers quantum computing,
+and people have working
+on this to some extent.
+You know, recent work
+showing that actually
+the advantage of quantum computers,
+it does relate back to Bell's theorem,
+does relate back to this
+- Foundational?
+- Yeah, that relate back
+to these foundational ideas
+of John Bell proving nonlocality.
+Another thing that
+people have shown is that
+it relates to something called
+quantum noncontextuality.
+I'm not gonna explain what that is,
+but it's a very, a basic
+idea in quantum foundations,
+and there seems to be a connection to,
+it seems that you can prove
+that quantum computing
+is related to that, too.
+So Joe Emerson at the at
+University of Waterloo nearby
+has worked on that, and there was a paper
+on the archive today talking about that.
+So people are thinking about that,
+but I think there's still a lot more scope
+for that kind of interaction
+between quantum foundations
+and quantum information.
+- We're running out of time,
+but I have to ask, 'cause I've
+interviewed a lot of people,
+but I've never interviewed anybody
+with a paradox named after them.
+What is Hardy's paradox,
+and what's it like to have a paradox?
+- My wife asked me this
+question, you know,
+"How can you have a paradox?"
+And I said, "Well, you can't.
+There isn't really any
+such thing as a paradox.
+So you can't really have a paradox
+in physics, or mathematics.
+It's always the case
+of you're not thinking
+about the situation right.
+So it looks like a paradox,
+but it's not really a paradox."
+And she said, "Okay, so I'm gonna call,
+invent Hardy's paradox,
+which is that there's no
+such thing as a paradox."
+And in that case, the
+Hardy is her, you know?
+So she called that Hardy's first paradox.
+- Right-
+- Zivy Hardy's paradox.
+And so, then my paradox
+became Hardy's second paradox,
+and my paradox, which has
+to do with quantum theory-
+- I had a feeling it would.
+- Yeah, it has to do with quantum theory.
+So it goes back to work
+I did during my PhD,
+and it's really a situation
+where you have quantum entanglement,
+and you have two systems,
+and you can make
+measurements on each of them.
+I don't want to explain all the details,
+but one way of thinking of it,
+it's not the way I
+originally thought of it,
+but other various people
+did, is that you can see it
+as a breakdown of logical transitivity.
+So if you have A implies
+B, that's a true statement,
+and then if B implies C, and C implies D,
+so if all those things are true,
+then you would expect
+from normal logic to have
+that A implies D,
+and there's a situation
+where that's not the case.
+So you can have A implies
+B, B implies C, C implies D,
+but A does not imply D.
+- Sounds like a paradox.
+- So it seems like a paradox.
+Now, it's only an apparent paradox
+because what's happening is as you go
+from each of those
+statements one to the next
+you're changing other things,
+not the things that the
+statement is concerned with,
+but other stuff is being changed,
+and so, we can't actually
+make those logical inferences.
+It's only an apparent paradox.
+I mean, I didn't call it a paradox myself,
+but I was quite happy to have a paradox.

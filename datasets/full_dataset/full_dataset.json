@@ -1,7 +1,96 @@
 [
     {
-        "test_name": "quantum_lec",
-        "audio_filename": "quantum_lec.mp4",
+        "test_name": "dustin_lang",
+        "audio_filename": "dustin_lang.mp4",
+        "audio_info": {
+            "title": "Fitting models to data using Markov Chain Monte Carlo",
+            "description": "",
+            "keywords": [],
+            "speakers": [
+                {
+                    "name": "Dustin Lang",
+                    "institution":"Perimeter Institute for Theoretical Physics"
+                }
+            ],
+            "date_posted": "January 23, 2023",
+            "source": {
+                "link":"https://pirsa.org/23010076",
+                "start":"00:26:58",
+                "end":"00:37:00"
+            },
+            "notes": "good audio quality, involves simple spoken mathematics, involves mathematical and cosmological terminology"
+        },
+        "transcript_filename": "dustin_lang.txt",
+        "transcript_info": {
+            "source": "",
+            "notes": "human edited/reviewed WhisperPI model transcription"
+        }
+    },
+    {
+        "test_name": "erik_schnetter",
+        "audio_filename": "erik_schnetter.mp4",
+        "audio_info": {
+            "title": "Numerical Methods Lecture - 230207",
+            "description": "",
+            "keywords": [],
+            "speakers": [
+                {
+                    "name": "Erik Schnetter",
+                    "institution":"Perimeter Institute for Theoretical Physics"
+                }
+            ],
+            "date_posted": "February 7, 2023",
+            "source": {
+                "link":"https://pirsa.org/23020001",
+                "start":"00:30:28",
+                "end":"00:40:32"
+            },
+            "notes": "good audio quality, speaker has accent, speaker is wearing mask, involves simple spoken mathematics, involves mathematical and computing terminology"
+        },
+        "transcript_filename": "erik_schnetter.txt",
+        "transcript_info": {
+            "source": "",
+            "notes": "human edited/reviewed WhisperPI model transcription"
+        }
+    },
+    {
+        "test_name": "hayward_hunter_hardy",
+        "audio_filename": "hayward_hunter_hardy.mp3",
+        "audio_info": {
+            "title": "Lucien Hardy on quantum gravity and (apparent) paradoxes",
+            "description": "Lucien Hardy is a theoretical physicist working at the intersection of the two pillars of modern physics – general relativity and quantum mechanics – in the quest for a single unifying theory: quantum gravity. Hardy joins co-hosts Lauren and Colin for a conversation about the puzzles that have driven him throughout his career, including the past 20 as a Perimeter faculty member. Hardy recalls the radio program that first sparked his childhood curiosity about the universe, describes his operational approach to big quantum puzzles, and explains the paradox that bears his name (as well as a second, somewhat-tongue-in-cheek paradox devised by his wife).",
+            "keywords": [],
+            "speakers": [
+                {
+                    "name": "Lauren Hayward",
+                    "institution":"Perimeter Institute for Theoretical Physics"
+                },
+                {
+                    "name": "Colin Hunter",
+                    "institution":"Perimeter Institute for Theoretical Physics"
+                },
+                {
+                    "name": "Lucien Hardy",
+                    "institution":"Perimeter Institute for Theoretical Physics"
+                }
+            ],
+            "date_posted": "May 19, 2022",
+            "source": {
+                "link":"https://conversationsattheperimeter.podbean.com/e/lucien-hardy-on-quantum-gravity-and-apparent-paradoxes/",
+                "start":"00:39:32",
+                "end":"00:49:33"
+            },
+            "notes": "good audio quality, mulitple speakers, involves mathematical and quantum computing terminology"
+        },
+        "transcript_filename": "hayward_hunter_hardy.txt",
+        "transcript_info": {
+            "source": "https://perimeterinstitute.ca/sites/default/files/PI-Podcast_S01E06_Lucien-Hardy_transcript.pdf",
+            "notes": "Human-created transcription, slightly edited for testing purposes (timestamp information was removed)."
+        }
+    },
+    {
+        "test_name": "lucien_hardy",
+        "audio_filename": "lucien_hardy.mp4",
         "audio_info": {
             "title": "Quantum Foundations Lecture - 230206",
             "description": "",
@@ -13,16 +102,70 @@
                 }
             ],
             "date_posted": "February 6, 2023",
-            "audio_source": {
+            "source": {
                 "link":"https://pirsa.org/23020017",
                 "start":"00:28:12",
                 "end":"00:38:22"
             },
             "notes": "good audio quality, speaker has accent, involves simple spoken mathematics, involves mathematical and quantum computing terminology"
         },
-        "transcript_filename": "quantum_lec.txt",
+        "transcript_filename": "lucien_hardy.txt",
         "transcript_info": {
-            "transcript_source": "",
+            "source": "",
+            "notes": "human edited/reviewed WhisperPI model transcription"
+        }
+    },
+    {
+        "test_name": "maite_dupuis",
+        "audio_filename": "maite_dupuis.mp4",
+        "audio_info": {
+            "title": "PSI 2019/2020 - Quantum Theory (Dupuis) - Lecture 8",
+            "description": "",
+            "keywords": [],
+            "speakers": [
+                {
+                    "name": "Maïté Dupuis",
+                    "institution":"Perimeter Institute for Theoretical Physics"
+                }
+            ],
+            "date_posted": "September 12, 2019",
+            "source": {
+                "link":"https://pirsa.org/19090050",
+                "start":"00:44:34",
+                "end":"00:54:42"
+            },
+            "notes": "good audio quality, speaker has accent, involves simple spoken mathematics, involves mathematical and quantum computing terminology"
+        },
+        "transcript_filename": "maite_dupuis.txt",
+        "transcript_info": {
+            "source": "",
+            "notes": "human edited/reviewed WhisperPI model transcription"
+        }
+    },
+    {
+        "test_name": "sabrina_pasterski",
+        "audio_filename": "sabrina_pasterski.mp4",
+        "audio_info": {
+            "title": "Prospects in Celestial Holography",
+            "description": "black holes quantum information universe scattering holographic cosmological S-matrix correlators conformal field theory infinite dimensional factorization collinear limits CFT UV IR perturbation stringy bootstrap celestial CFTs Loop Quantum Gravity String",
+            "keywords": [],
+            "speakers": [
+                {
+                    "name": "Sabrina Pasterski",
+                    "institution":"Perimeter Institute for Theoretical Physics"
+                }
+            ],
+            "date_posted": "February 10, 2021",
+            "source": {
+                "link":"https://pirsa.org/21020004",
+                "start":"00:08:00",
+                "end":"00:18:06"
+            },
+            "notes": "mediocre audio quality, involves simple spoken mathematics, involves mathematical and cosmological terminology"
+        },
+        "transcript_filename": "sabrina_pasterski.txt",
+        "transcript_info": {
+            "source": "",
             "notes": "human edited/reviewed WhisperPI model transcription"
         }
     }
