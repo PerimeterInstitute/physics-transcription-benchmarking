@@ -47,7 +47,7 @@ Access transcription data through Model Wrapper class [attributes](#attributes-1
 - `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
 
 #### Attributes
-- `Dict results`: Dictionary containing load time, transcription time, and accuracy data (word error rate, character error rate, etc.) for each model that was provided in the constructor
+- `Dict results` : Dictionary containing load time, transcription time, and accuracy data (word error rate, character error rate, etc.) for each model that was provided in the constructor
 
 Example `results` dictionary: 
 ```
@@ -116,10 +116,8 @@ Wrapper for the WhisperPI transcription model. WhisperPI is an altered version o
 #### Constructor
 `WhisperPI(name, options)` : Creates WhisperPI instance.
 - `String name` : Name of model
-- `Dict options` : Model options
-    - `String model_type` : 
-    - `String language` : 
-    - other options
+- `Dict options` : Model options (includes `model_type`, `language`, `temperature`, and other options offered by [OpenAI's Whisper](https://github.com/openai/whisper))
+
 
 #### Attributes
 - `String name` : Name of model
@@ -145,10 +143,7 @@ Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recogni
 #### Constructor
 `WhisperOpenAI(name, options)` : Creates WhisperOpenAI instance.
 - `String name` : Name of model
-- `Dict options` : Model options
-    - `String model_type` : 
-    - `String language` : 
-    - other options
+- `Dict options` : Model options (includes `model_type`, `language`, `temperature`, and other options offered by [OpenAI's Whisper](https://github.com/openai/whisper))
 
 #### Attributes
 - `String name` : Name of model
@@ -167,13 +162,38 @@ Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recogni
 
 
 ## How to Implement a Model Wrapper
-Use ModelFormat.py
+
+### ModelWrapper Interface
+`from ModelWrapper import ModelWrapper`
+
+In order to be compatible with the Test class, a Model Wrapper class must have `name`, `transcription`, `load_time`, and `transcribe_time` attributes, as well as a `transcribe()` method. Using the [ModelWrapper.py](ModelWrapper.py) interface ensures that all required attributes and methods are implemented in a Model Wrapper class. 
+
+### Using Model Wrapper
+
+Put the Model Wrapper class file in [models/](models/) folder. Import the Wrapper using `from models.YOUR_WRAPPER_NAME import YOUR_WRAPPER_NAME`
 
 
 
 ## Datasets
 
 ### Provided Datasets
+- [Full Dataset](datasets/full_dataset/) --> use dataset path "full" in Test [constructor](#constructor)
+- [Development Dataset](datasets/dev_dataset/) --> use dataset path "dev" in Test [constructor](#constructor)
 
-### Folder Structure
-If you would like to use your own dataset, please use this file structure.
+### Other Datasets
+Datasets must have the following structure in order to be used with the Test class:
+```
+dataset_name
+    - dataset_name.json
+    - test_data
+        - data_1.mp4
+        - data_1.txt
+        - data_2.wav
+        - data_2.txt
+            ...
+```
+Please reference [full_dataset.json](datasets/full_dataset/full_dataset.json) for formatting of the dataset JSON file. 
+
+For each audio/transcript pair that will be tested, there should be an audio or video file (.mp4, .mp3, .wav, etc.) and a text file of the same name that contains a reference transcription. All of these files should go in the 'test_data' folder.
+
+Test using this dataset by passing it's local path into the Test class [constructor](#constructor).
