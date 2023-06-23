@@ -2,7 +2,7 @@ from os.path import basename
 from time import time
 from datetime import timedelta
 from ModelWrapper import ModelWrapper
-import whisper
+import pi_whisper as whisper
 
 class WhisperPI(ModelWrapper):
 
