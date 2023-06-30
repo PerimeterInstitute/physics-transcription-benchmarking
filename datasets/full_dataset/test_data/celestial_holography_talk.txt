@@ -1,0 +1,214 @@
+is naturally starting with initial data on past null infinity.
+And then there's some final data for my outstate
+future null infinity.
+And so I can think about how to expand my metric
+or look at the data of the metric near those boundaries.
+And so what matters for me right now for the rest of this talk
+is essentially I'll be holding U fixed and taking large R
+in some of my expressions.
+So, if you were just thinking about your Newtonian gravity,
+you already expect the metric isn't going to be flat anymore
+once you add some matter.
+So for asymptotically flat space times,
+I'm going to be using the boundaries I mentioned before
+and performing a larger expansion near null infinity.
+I do that.
+I follow Bondi, Van de burg, Metzner and Sachs
+and I pick a nice gauge.
+So I tried to do my gauge fixing near this boundary
+and organize it in a radial expansion.
+I have fluctuations in the metric that are subleading
+compared to the round sphere metric,
+which capture radiative data.
+And I have other integration constants that appear,
+which the Einstein's equations will relate.
+So there's some constraint equations that say how the U evolution of say,
+the bonding mass aspect or the angular momentum aspect
+are constrained based on matter fluxing through
+or the fact that this zero modes of the radiative data.
+So basically when I pick a nice gauge choice,
+I have some way to organize the components of my metric
+and have some sort of physical interpretation of them
+like within this gauge fixing.
+And I can then have my gauge fixing gives me this one over R
+fall offs for these different guys.
+And I want to see what is the set of symmetries,
+like diffeomorphisms I can do that act non-trivially at the boundary.
+So I write down, say, a class of diffeomorphisms
+that preserve the one over R expansion of my metric
+in my gauge fixing.
+And when I do that, I find that there
+are these non-trivial guys in the sense of the following.
+So I can always do diffeomorphisms of my space time.
+But if I think of my future null infinity
+as my Cauchy slice for my outstate,
+then if I have something that's acting non-trivially on the data
+that I'm using to define the state,
+I need to be careful because they're basically
+a non-zero canonical charge.
+They're transforming my outstate.
+So these guys that I happen to write down here,
+which just as a test, yes, they preserve the fall offs that
+are in this gauge are going to be part of this asymptotic symmetry group,
+which is yes, it's a diffeomorphism.
+It preserves a fall off, but it doesn't fall off fast enough
+to act trivially on the data that I'm using to define my outstate.
+So these guys are going to be interesting to us.
+Basically what's happening is that you have,
+what one could try to do is one could say,
+okay, Minkowski space, I have my flat metric.
+I can do isometries of the metric.
+Once I've added matter in, especially,
+I say I start adding a point mass,
+or I add like other configurations,
+I'm going to lose isometries.
+But at some point I have this enriched class
+of asymptotic symmetries.
+And that's what we're basically pointing out.
+So in this vector field,
+the Y's have an arbitrary dependence on Z.
+The F's have an arbitrary dependence on Z and Z bar.
+So this is much larger than Poincare.
+So we can give them names.
+We see that if we consider our symmetries to be this asymptotic symmetry group,
+so it acts non-trivially at the data that I'm using to define my outstate,
+similarly with the instate.
+I can't reduce myself to Poincare.
+And I end up with the symmetry enhancement of Poincare.
+So for the super translations, essentially for each direction on the night sky,
+like a night sky you're looking at, you're looking at the past null infinity,
+you can translate the generators of null infinity.
+So you can do it independent U transformation,
+like U translation for each point Z and Z bar.
+And similarly, I can do local conformal transformations,
+which are promoting my global runs transformations to ones
+where if I pick different patches of the night sky,
+it can basically boost and rotate them independently.
+So what's going to be fun about this
+is that the aerodynamics of gravity
+are basically governed by the spontaneous breaking
+of these asymptotic symmetries because only some subset,
+like the Poincare group that you used to,
+will actually preserve, say, the vacuum configuration
+if you said I'm in Minkowski space.
+But now you have a whole class of vacua
+labeled by the super translated versions of these guys.
+So there are now two IR modes to be wary of.
+And in some sense, this is, like there's a nice connection
+between maybe what you might take for granted
+is something you'd want to remove from your theory
+versus adding them back in.
+So we have on the one hand, the fact that I
+said that we have these symmetries.
+We have these goldstone modes.
+I can do a super translation of my vacuum.
+And that's a gauge transformation in some sense.
+But what's fun about it and part of the reason why I can't eliminate it
+is that if I look at, say, early U versus late U,
+they will differ by basically a vacuum to vacuum transition
+in some sense.
+So along null infinity, when you have anything passing through,
+So you have a gravitational, say, in spiraling binary system.
+And it's losing energy.
+And it's losing in your own momentum.
+And it's spewing off these gravitational waves.
+You're going to see when those waves hit your detector,
+there's some amount of energy flux.
+And that energy flux is going to induce a shift of the metric
+in the same way as you would just have if you had done
+a symmetry transformation.
+So what happens is basically if you have the same f of z and z bar,
+but now that's the difference between the early and late guys.
+So you have this dynamical shift, which is another zero mode
+in some sense because it's literally like a step function.
+It's a very low energy change.
+And its symplectic partner is the Goldstone mode,
+which is the symmetry mode.
+So what I want to point out from this is not only do you
+have this interesting phase where there's symplectically paired
+and you can't really remove the symmetry without removing
+the memory, which is something you can go out and observe.
+Memory effects also become a way for you
+to experimentally test your proposed asymptotic symmetry group.
+So you could play the devil's ad- or I guess it's not that it was obvious.
+So the one where you say like, I guess being a Debbie Downer or something like that,
+you'd be like, oh, well, you're not really in asymptotically flat space times.
+We know there's a cosmological constant.
+Why are you doing this?
+OK, well, if I say in this region of space time, which includes me
+as my like LIGO detector or Lisa and this inspiring binary system,
+for some approximation, I would like to think
+that I can do physics as if it were like lambda equals zero.
+So I can go out and I can say, well, can I see this
+or somehow infer this memory mode?
+If yes, then I would say that the asymptotic symmetry
+associated to its impacted partner
+is a physical asymptotic symmetry
+that you want to deal with for that description.
+So it's, and the thing is, is this becomes relevant
+when it comes to other proposals.
+So the leading super translations and their memory effect
+was something studied a while back,
+But I'm going to present for the rest of this talk,
+focus on an example, which is a bit newer.
+It's going to be important.
+So on the one hand, I propose that there
+is this way to experimentally test your asymptotic symmetry
+group proposal.
+But I also want to say that you can go out and see,
+does my quantum S-matrix actually obey the symmetry?
+And the way that one would do that would
+be to translate all of these questions into momentum space.
+So I hand you an S-matrix.
+And I say, go and tell me, is a word identity
+for the symmetry obeyed?
+It turns out, and this was a wonderful insight by Strominger,
+that you can show that the Ward identity being obeyed
+is the same thing as a soft theorem in quantum field theory.
+And those were known independently.
+So what happens now is you have this triangle of relations.
+You have these asymptotic symmetries you want to study.
+You have their symplectic partners, which are memories
+you can go out and measure.
+And you have the way to show that there's a symmetry via the S-matrix
+and certain low energy behavior, which is the soft theorem.
+And this pattern of connections is very universal.
+So as much as I've, when I've been vague,
+I've also been appreciating the fact that you could tell me,
+do I care about super translations?
+Do I care about super rotations?
+Do I care about large U1H transformations, et cetera.
+I can basically repeat the story for each of the different cases.
+And so the paradigm here is that you have some sort of fall offs for your fields.
+You see what transformations, whether it's a gauge transformation
+or a diffeomorphism, you might want to allow.
+And if that is a symmetry, there should be a soft theorem telling you
+that it's obeyed by the S-matrix.
+And there should be a conjugate memory mode
+that can go out and measure and test if it's relevant.
+So that paradigm is interesting.
+And the point is that it's a template to look for new physics.
+So now I'm going to focus on an example where
+each of the iterations were very much new in the sense
+that the work of Bondi Van de Burg, Metzner, and Sachs is from the 60s.
+Weinberg was studying leading soft theorems also in the 60s.
+There's a lot of old physics that was recently connected,
+which is lovely.
+But then you can use this framework to find new things.
+So let's see.
+First thing to point out is the soft theorem.
+And this was something that Freddie at PI and Andy noticed,
+which is that the subletting soft theorem
+that Weinberg had found for gravity,
+If I add an extra very low energy graviton,
+actually sends the subleading order.
+So you don't only have, say, q's here, scale like energy omega.
+I not only have a Weinberg pole for the leading guy,
+I also have an order one piece, which is universal.
+So the statement of the soft theorem
+is just that if I have my amplitude,
+and I have an extra very low energy graviton,
+So that will change my outstate by adding an extra graviton.
+This guy is going to be proportional to,
+where proportional means like some linear operator here acting
+on an amplitude without this extra guy.
