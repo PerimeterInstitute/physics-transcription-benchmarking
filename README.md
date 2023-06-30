@@ -18,7 +18,7 @@ See [example.ipynb](example.ipynb) for an example of the following steps put tog
 - [WhisperOpenAI](#whisperopenai) --> `from models.WhisperOpenAI import WhisperOpenAI`
 
 #### Other Model Wrappers
-See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper)
+See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper).
 
 ### 3. Create Model Instance(s)
 
@@ -27,7 +27,7 @@ See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper)
 - [WhisperOpenAI](#whisperopenai) --> See WhisperOpenAI [constructor](#constructor-2)
 
 #### Other Model Wrappers
-See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper)
+See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper).
 
 ### 4. Create Test Instance
 See Test class [constructor](#constructor).
@@ -164,9 +164,23 @@ Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recogni
 ## How to Implement a Model Wrapper
 
 ### ModelWrapper Interface
-`from ModelWrapper import ModelWrapper`
 
 In order to be compatible with the Test class, a Model Wrapper class must have `name`, `transcription`, `load_time`, and `transcribe_time` attributes, as well as a `transcribe()` method. Using the [ModelWrapper.py](ModelWrapper.py) interface ensures that all required attributes and methods are implemented in a Model Wrapper class. 
+
+```
+from ModelWrapper import ModelWrapper
+
+class NewModelWrapper(ModelWrapper):
+    name = ""
+    transcription = {}
+    load_time = {}
+    transcribe_time = {}
+
+    def transcribe():
+        pass
+        
+    ...
+```
 
 ### Using Model Wrapper
 
