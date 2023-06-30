@@ -1,4 +1,4 @@
-# transcription-benchmarking
+# Physics Transcription Benchmarking
 
 Test suite created for benchmarking transcription models.
 
