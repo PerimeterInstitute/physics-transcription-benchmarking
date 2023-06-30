@@ -53,52 +53,77 @@ Example `results` dictionary:
 ```
 "results": {
     "model_1": {
-        "test_audio_1": {
-            "load_time": "0:05:43.108026",
-            "transcribe_time": "0:00:54.956891",
-            "test_results": {
-                "word_error_rate": 0.2191780821917808,
-                "match_error_rate": 0.1951219512195122,
-                "word_information_lost": 0.272302038088874,
-                "word_information_preserved": 0.727697961911126,
-                "character_error_rate": 0.05084745762711865
+        "test_details": {
+            "model_info": {
+                "class_name": "WhisperOpenAI",
+                "model_name": "model_1",
+                "model_type": "medium",
+                "options": {
+                    "language": "en"
+                }
+            },
+            "system_info": {
+                "system": "Linux",
+                "release": "5.15.0-1040-azure",
+                "version": "#47-Ubuntu SMP Thu Jun 1 19:38:24 UTC 2023",
+                "machine": "x86_64",
+                "processor": "x86_64"
+            },
+            "cpu_info": {
+                "physical_cores": 2,
+                "total_cores": 4
+            },
+            "memory_info": {
+                "total_memory": 16767574016,
+                "available_memory": 7527411712,
+                "used_memory": 8884101120
             }
         },
-        "test_audio_2": {
-            "load_time": "0:05:43.108026",
-            "transcribe_time": "0:00:49.013099",
-            "test_results": {
-                "word_error_rate": 0.19047619047619047,
-                "match_error_rate": 0.17647058823529413,
-                "word_information_lost": 0.2679738562091504,
-                "word_information_preserved": 0.7320261437908496,
-                "character_error_rate": 0.019178082191780823
+        "test_results": {
+            "test_audio_1": {
+                "start_datetime": "06/30/2023 15:01:37",
+                "load_time": "0:00:16.374215",
+                "transcribe_time": "0:00:55.688600",
+                "accuracy_data": {
+                    "word_error_rate": 0.1917808219178082,
+                    "match_error_rate": 0.17721518987341772,
+                    "word_information_lost": 0.25799086757990863,
+                    "word_information_preserved": 0.7420091324200914,
+                    "character_error_rate": 0.023305084745762712
+                }
+            },
+            "test_audio_2": {
+                "start_datetime": "06/30/2023 15:02:26",
+                "load_time": "0:00:16.374215",
+                "transcribe_time": "0:00:48.690690",
+                "accuracy_data": {
+                    "word_error_rate": 0.19047619047619047,
+                    "match_error_rate": 0.17647058823529413,
+                    "word_information_lost": 0.2679738562091504,
+                    "word_information_preserved": 0.7320261437908496,
+                    "character_error_rate": 0.019178082191780823
+                }
+            },
+            "test_audio_3": {
+                "start_datetime": "06/30/2023 15:05:03",
+                "load_time": "0:00:16.374215",
+                "transcribe_time": "0:02:37.643353",
+                "accuracy_data": {
+                    "word_error_rate": 0.3380952380952381,
+                    "match_error_rate": 0.3141592920353982,
+                    "word_information_lost": 0.4846632346632347,
+                    "word_information_preserved": 0.5153367653367653,
+                    "character_error_rate": 0.12126696832579185
+                }
             }
+        },
+        "test_summary": {
+            "word_error_rate": 0.2401174168297456,
+            "match_error_rate": 0.22261502338137004,
+            "word_information_lost": 0.3368759861507646,
+            "word_information_preserved": 0.6631240138492355,
+            "character_error_rate": 0.05458337842111179
         }
-    },
-    "model_2": {
-        "test_audio_1": {
-            "load_time": "0:00:32.582526",
-            "transcribe_time": "0:01:35.986448",
-            "test_results": {
-                "word_error_rate": 0.2191780821917808,
-                "match_error_rate": 0.1951219512195122,
-                "word_information_lost": 0.272302038088874,
-                "word_information_preserved": 0.727697961911126,
-                "character_error_rate": 0.05084745762711865
-            }
-        },
-        "test_audio_2": {
-            "load_time": "0:00:32.582526",
-            "transcribe_time": "0:01:27.272061",
-            "test_results": {
-                "word_error_rate": 0.12698412698412698,
-                "match_error_rate": 0.11940298507462686,
-                "word_information_lost": 0.17531390665719027,
-                "word_information_preserved": 0.8246860933428097,
-                "character_error_rate": 0.010958904109589041
-            }
-        },
     }
 }
 ```
@@ -178,7 +203,7 @@ class NewModelWrapper(ModelWrapper):
 
     def transcribe():
         pass
-        
+
     ...
 ```
 
