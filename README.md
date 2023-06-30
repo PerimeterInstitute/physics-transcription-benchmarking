@@ -6,7 +6,7 @@ Test suite created for benchmarking transcription models.
 
 ## How To Run
 
-See [example.ipynb](example.ipynb) for an example of these steps put together.
+See [example.ipynb](example.ipynb) for an example of the following steps put together.
 
 ### 1. Import Test Class
 `from Test import Test`
