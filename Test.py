@@ -1,5 +1,7 @@
-from os import listdir
-from os.path import join
+from os import listdir, mkdir
+from os.path import join, isdir
+from datetime import datetime
+import platform, psutil
 import json, jiwer
 
 class Test():
@@ -26,13 +28,42 @@ class Test():
 
         # RUNNING TESTS:
 
+        if not isdir("./results/"):         # make 'results' folder if it doesn't already exist
+            mkdir("./results/")
+
         for model in model_array:
+
             current_model = {}
 
-            for test_case in dataset:
-                current_test = {}
+            # set variables needed to create test_details dictionary
+            uname = platform.uname()
+            mem = psutil.virtual_memory()
+            model_attributes = {}
+            for key, value in model.__dict__.items():
+                if key[0] != '_' and key != "name":
+                    model_attributes.update({key: value})
 
-                # TODO: download these files rather than keeping them in directory
+            # create test_details dictionary, add to current model
+            test_details = {"model_info": {"class_name": model.__class__.__name__,
+                                           "model_name": model.name,
+                                           **model_attributes},
+                            "system_info": {"system": uname.system,
+                                            "release": uname.release,
+                                            "version": uname.version,
+                                            "machine": uname.machine,
+                                            "processor": uname.processor},
+                            "cpu_info": {"physical_cores": psutil.cpu_count(logical=False),
+                                         "total_cores": psutil.cpu_count(logical=True)},
+                            "memory_info": {"total_memory": mem.total,
+                                            "available_memory": mem.available,
+                                            "used_memory": mem.used}}
+            current_model.update({"test_details": test_details})
+
+            test_results = {}
+            test_summary = {}
+            for test_case in dataset:
+
+                current_test_results = {}
                 audio_name = test_case["audio_filename"]
                 transcript_name = test_case["transcript_filename"]
                 audio_file = join(dataset_path, "test_data/", audio_name)
@@ -43,19 +74,33 @@ class Test():
 
                 # transcribing model
                 model.transcribe(audio_file, prompt)
-
+   
                 # adding load time and transcribe time to result dict
+                current_test_results.update({"start_datetime": datetime.now().strftime("%m/%d/%Y %H:%M:%S")})
                 if model.load_time[audio_name]:
-                    current_test.update({"load_time": model.load_time[audio_name]})
+                    current_test_results.update({"load_time": model.load_time[audio_name]})
                 if model.transcribe_time[audio_name]:
-                    current_test.update({"transcribe_time": model.transcribe_time[audio_name]})
+                    current_test_results.update({"transcribe_time": model.transcribe_time[audio_name]})
 
                 # evaluating transcription
                 reference = open(transcript_file, "r").read()
-                current_test.update({"test_results": self.__compare(reference, model.transcription[audio_name])})
+                accuracy_data = self.__compare(reference, model.transcription[audio_name])
 
-                current_model.update({test_case["test_name"]: current_test})
+                # update dictionaries
+                test_summary = self.__merge_dicts(test_summary, accuracy_data)
+                current_test_results.update({"accuracy_data": accuracy_data})
+                test_results.update({test_case["test_name"]: current_test_results})
 
+            # add test_results and test_summary to current_model dictionary 
+            current_model.update({"test_results": test_results, "test_summary": self.__summarize(test_summary)})
+
+            # create json file for model
+            json_obj = json.dumps(current_model, indent=4)
+            with open("./results/" + model.name + "_results.json", "w") as f:
+                f.write(json_obj)
+            f.close()
+
+            # add model results to 'results' dictionary
             self.results.update({model.name: current_model})
 
     def __load_prompt(self, json_obj):
@@ -109,3 +154,43 @@ class Test():
 
         return current_dataset
     
+    def __merge_dicts(self, dict1, dict2):
+
+        merged_dict = {**dict2, **dict1}        # this order ensures values in dict1 take priority (should be the array of values)
+        for key, value in merged_dict.items():
+            if key in dict1 and key in dict2:
+                if isinstance(value, list):
+                    value.append(dict2[key])
+                    merged_dict[key] = value
+                else:
+                    merged_dict[key] = [value, dict2[key]]
+        return merged_dict
+    
+    def __summarize(self, accuracy_data):
+        summarized_data = {}
+        for key, value in accuracy_data.items():
+            if isinstance(value, list):
+                summarized_data.update({key: sum(value)/len(value)})
+        return summarized_data
+    
+def create_summary_table(results_folder):
+
+    # define title row in summery table
+    summary_table = [["Model Name", "Average Word Error Rate", "Average Match Error Rate", "Average Word Information Lost", "Average Word Information Preseved", "Average Character Error Rate"]]
+    
+    for file in listdir(results_folder):
+        model_summary = []
+
+        # load model json
+        json_file = join(results_folder, file)
+        model_test = json.load(open(json_file))
+
+        # create model row
+        model_summary.append(model_test["test_details"]["model_info"]["model_name"])
+        for data in model_test["test_summary"].values():
+            model_summary.append(data)
+
+        # add model row to summary table
+        summary_table.append(model_summary)
+
+    return summary_table
