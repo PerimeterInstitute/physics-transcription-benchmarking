@@ -76,7 +76,7 @@ class Test():
                 model.transcribe(audio_file, prompt)
    
                 # adding load time and transcribe time to result dict
-                current_test_results.update({"start_datetime": datetime.now().strftime("%m/%d/%Y %H:%M:%S")})
+                current_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
                 if model.load_time[audio_name]:
                     current_test_results.update({"load_time": model.load_time[audio_name]})
                 if model.transcribe_time[audio_name]:
