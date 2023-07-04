@@ -1,25 +1,42 @@
 from os import listdir
 from os.path import join
+from datetime import datetime
+from string import Template
 import json
+from SummaryTableTemplate import table_template
 
 def create_summary_table(results_folder):
 
-    # define title row in summery table
-    summary_table = [["Model Name", "Average Word Error Rate", "Average Match Error Rate", "Average Word Information Lost", "Average Word Information Preseved", "Average Character Error Rate"]]
-    
+    # define row template
+    table_row_template = Template('\
+    <tr> \n\
+        <td>$model_class</td> \n\
+        <td>$model_type</td> \n\
+        <td>$wer</td> \n\
+        <td>$mer</td> \n\
+        <td>$wil</td> \n\
+        <td>$wip</td> \n\
+        <td>$cer</td> \n\
+    </tr> \n')
+
+    table_data = ""
     for file in listdir(results_folder):
-        model_summary = []
 
-        # load model json
+        # load all model test info
         json_file = join(results_folder, file)
-        model_test = json.load(open(json_file))
+        model_test_info = json.load(open(json_file))
 
-        # create model row
-        model_summary.append(model_test["test_details"]["model_info"]["model_name"])
-        for data in model_test["test_summary"].values():
-            model_summary.append(data)
+        # get model info needed for summary table
+        model_info = model_test_info["test_details"]["model_info"]
+        summary_info = model_test_info["test_summary"]
 
-        # add model row to summary table
-        summary_table.append(model_summary)
+        # add row template to table data
+        table_data = table_data + table_row_template.substitute({'model_class': model_info["class_name"],
+                                                                 'model_type': model_info["model_type"],
+                                                                 'wer': summary_info["word_error_rate"],
+                                                                 'mer': summary_info["match_error_rate"],
+                                                                 'wil': summary_info["word_information_lost"],
+                                                                 'wip': summary_info["word_information_preserved"],
+                                                                 'cer': summary_info["character_error_rate"]})
 
-    return summary_table
+    return table_template.substitute({'table_data': table_data, 'date': datetime.now().strftime("%B %d, %Y - %H:%M:%S")})
