@@ -1,10 +1,14 @@
 # pycache:
 __pycache__/*
-models/__pycache__/*
+*/__pycache__/*
 
 # Testing:
 *results.json
 results/*
+
+# Summary table testing:
+summary_table/summary_table.html
+summary_table/main.css
 
 # WhisperCPP testing:
 whisper.cpp/
