@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+<!-- TABLE CODE -->
+    <div class="flex flex-col">
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                <div class="overflow-hidden">
+                    <table class="min-w-full text-center text-sm font-light">
+                        <thead class="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
+                            <tr>
+                                <th scope="col" class=" px-6 py-4">Model Class</th>
+                                <th scope="col" class=" px-6 py-4">Model Type</th>
+                                <th scope="col" class=" px-6 py-4">Average Word Error Rate</th>
+                                <th scope="col" class=" px-6 py-4">Average Match Error Rate</th>
+                                <th scope="col" class=" px-6 py-4">Average Word Information Lost</th>
+                                <th scope="col" class=" px-6 py-4">Average Word Information Preserved</th>
+                                <th scope="col" class=" px-6 py-4">Average Character Error Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+$table_data
+                        </tbody>
+                    </table>
+                    <div class="whitespace-nowrap px-6 py-4"><canvas id="myChart"></canvas></div>
+                    <p class="whitespace-nowrap px-6 py-4 font-normal">Last updated: $date</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!-- BAR CHART CODE -->
+<script>
+    const ctx = document.getElementById('myChart');
+  
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Word Error Rate', 'Match Error Rate', 'Word Information Lost', 'Word Information Preserved', 'Character Error Rate'],
+            datasets: [
+$graph_data
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
