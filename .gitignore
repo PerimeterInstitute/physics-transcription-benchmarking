@@ -8,6 +8,7 @@ results/*
 
 # Summary testing:
 create_test_summary/test_summary.html
+create_test_summary/test_summary_example.py
 
 # WhisperCPP testing:
 whisper.cpp/
