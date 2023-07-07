@@ -147,7 +147,7 @@ Wrapper for the WhisperPI transcription model. WhisperPI is an altered version o
 #### Attributes
 - `String name` : Name of model
 - `String model_type` : Model type ("tiny", "base", "medium", "large", etc.)
-- `Dict options` : Model options (see og Whisper options)
+- `Dict options` : Model options
 - `Dict full_result` : Dictionary containing all result objects.
 - `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
 - `Dict load_time` : Dictionary containing all load times.
@@ -173,7 +173,7 @@ Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recogni
 #### Attributes
 - `String name` : Name of model
 - `String model_type` : Model type ("tiny", "base", "medium", "large", etc.)
-- `Dict options` : Model options (see og Whisper options)
+- `Dict options` : Model options
 - `Dict full_result` : Dictionary containing all result objects.
 - `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
 - `Dict load_time` : Dictionary containing all load times.
@@ -182,7 +182,33 @@ Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recogni
 #### Methods
 - `transcribe(audio, prompt=None)` : Transcribes given audio file, updates result-related attributes.
     - `String audio` : File path to audio file
-    - `String prompt` : Transcription prompt, defaults to None
+    - `String prompt` : Transcription prompt, defaults to `None`
+
+
+### AzureSpeechToText
+Wrapper for Azure's speech recognition model.
+
+#### Required Packages
+- Azure Cognitive Services Speech SDK --> `$ pip install azure-cognitiveservices-speech`
+
+#### Constructor
+`AzureSpeechToText(name, key, region, options)` : Creates AzureSpeechToText instance.
+- `String name` : Name of model
+- `String key` : Azure subscription key
+- `String region` : Region name (see [regions](https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/regions))
+- `Dict options` : Model options (includes `speech_recognition_language`, `endpoint`, `host`, and other options offered by [Azure's Cognitive Services Speech SDK](https://learn.microsoft.com/en-us/python/api/azure-cognitiveservices-speech/azure.cognitiveservices.speech.speechconfig?view=azure-python#constructor))
+
+#### Attributes
+- `String name` : Name of model
+- `Dict options` : Model options
+- `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
+- `Dict load_time` : Dictionary containing all load times.
+- `Dict transcribe_time` : Dictionary containing all transcribe times.
+
+#### Methods
+- `transcribe(audio, prompt=None)` : Transcribes given audio file, updates result-related attributes.
+    - `String audio` : File path to audio file
+    - `String prompt` : Transcription prompt, defaults to `None`
 
 
 
@@ -236,3 +262,14 @@ Please reference [full_dataset.json](datasets/full_dataset/full_dataset.json) fo
 For each audio/transcript pair that will be tested, there should be an audio or video file (.mp4, .mp3, .wav, etc.) and a text file of the same name that contains a reference transcription. All of these files should go in the 'test_data' folder.
 
 Test using this dataset by passing it's local path into the Test class [constructor](#constructor).
+
+
+
+## Creating Test Summary HTML
+
+### TestSummary.py
+
+#### Methods
+- `create_test_summary_html(results_folder, filename="test_summary.html")` : Creates HTML file that displays test summary information with a table and bar chart.
+    - `String results_folder` : File path to results folder containing result test model JSON files
+    - `String filename` : Output name for HTML file, defaults to `test_summary.html`
