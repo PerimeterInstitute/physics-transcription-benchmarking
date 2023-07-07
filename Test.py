@@ -31,9 +31,13 @@ class Test():
         if not isdir("./results/"):         # make 'results' folder if it doesn't already exist
             mkdir("./results/")
 
+        # for get_prompt in prompt_funcs:
         for model in model_array:
 
             current_model = {}
+
+            # load model
+            model.load()
 
             # set variables needed to create test_details dictionary
             uname = platform.uname()
@@ -102,6 +106,9 @@ class Test():
 
             # add model results to 'results' dictionary
             self.results.update({model.name: current_model})
+
+            # unload model
+            model.unload()
 
     def __load_prompt(self, json_obj):
 
