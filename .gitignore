@@ -5,7 +5,7 @@ __pycache__/*
 # Testing:
 *results.json
 results/*
-datasets/full_dataset_TEST/*
+datasets/*_TEST
 
 # Summary testing:
 create_test_summary/test_summary.html
