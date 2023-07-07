@@ -21,9 +21,9 @@
                                 <th scope="col" class=" px-6 py-4">Model Type</th>
                                 <th scope="col" class=" px-6 py-4">Average Word Error Rate</th>
                                 <th scope="col" class=" px-6 py-4">Average Match Error Rate</th>
+                                <th scope="col" class=" px-6 py-4">Average Character Error Rate</th>
                                 <th scope="col" class=" px-6 py-4">Average Word Information Lost</th>
                                 <th scope="col" class=" px-6 py-4">Average Word Information Preserved</th>
-                                <th scope="col" class=" px-6 py-4">Average Character Error Rate</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,6 +31,7 @@ $table_data
                         </tbody>
                     </table>
                     <div class="whitespace-nowrap px-6 py-4"><canvas id="myChart"></canvas></div>
+                    <p class="whitespace-nowrap px-6 py-4 font-normal text-center text-sm">An ideal model will have low <i>Word Error Rate</i>, <i>Match Error Rate</i>, <i>Character Error Rate</i>, and <i>Word Information Lost</i> scores, along with a high <i>Word Information Preserved</i> score.</p>
                     <p class="whitespace-nowrap px-6 py-4 font-normal">Last updated: $date</p>
                 </div>
             </div>
@@ -46,7 +47,7 @@ $table_data
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Word Error Rate', 'Match Error Rate', 'Word Information Lost', 'Word Information Preserved', 'Character Error Rate'],
+            labels: ['Word Error Rate', 'Match Error Rate', 'Character Error Rate', 'Word Information Lost', 'Word Information Preserved'],
             datasets: [
 $graph_data
             ]

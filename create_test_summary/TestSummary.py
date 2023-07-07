@@ -20,15 +20,15 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
                                 <td class="whitespace-nowrap px-6 py-4">$model_type</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$wer</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$mer</td> \n\
+                                <td class="whitespace-nowrap px-6 py-4">$cer</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$wil</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$wip</td> \n\
-                                <td class="whitespace-nowrap px-6 py-4">$cer</td> \n\
                             </tr> \n')
     
     graph_data_template = Template('\
                 { \n\
                     label: "$model_class", \n\
-                    data: [$wer, $mer, $wil, $wip, $cer] \n\
+                    data: [$wer, $mer, $cer, $wil, $wip] \n\
                 },\n')
 
     table_data = ""
@@ -48,16 +48,16 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
                                                                  'model_type': model_info["model_type"],
                                                                  'wer': summary_info["word_error_rate"],
                                                                  'mer': summary_info["match_error_rate"],
+                                                                 'cer': summary_info["character_error_rate"],
                                                                  'wil': summary_info["word_information_lost"],
-                                                                 'wip': summary_info["word_information_preserved"],
-                                                                 'cer': summary_info["character_error_rate"]})
+                                                                 'wip': summary_info["word_information_preserved"]})
         
         graph_data = graph_data + graph_data_template.substitute({'model_class': model_info["class_name"],
                                                                  'wer': summary_info["word_error_rate"],
                                                                  'mer': summary_info["match_error_rate"],
+                                                                 'cer': summary_info["character_error_rate"],
                                                                  'wil': summary_info["word_information_lost"],
-                                                                 'wip': summary_info["word_information_preserved"],
-                                                                 'cer': summary_info["character_error_rate"]})
+                                                                 'wip': summary_info["word_information_preserved"]})
 
     summary_table = table_template.substitute({'table_data': table_data, 'graph_data': graph_data, 'date': datetime.now().strftime("%B %d, %Y - %H:%M:%S")})
 
