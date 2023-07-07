@@ -23,5 +23,13 @@ class ModelWrapper(ABC):
         pass
 
     @abstractmethod
+    def load(self):
+        pass
+
+    @abstractmethod
+    def unload(self):
+        pass
+
+    @abstractmethod
     def transcribe(self, audio, prompt=None):
         pass

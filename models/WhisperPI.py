@@ -3,6 +3,7 @@ from time import time
 from datetime import timedelta
 from ModelWrapper import ModelWrapper
 import pi_whisper as whisper
+import gc
 
 class WhisperPI(ModelWrapper):
 
@@ -22,12 +23,18 @@ class WhisperPI(ModelWrapper):
         self.model_type = options.pop("model_type", "large")
         self.options = options
 
+    def load(self):
+
         # load model
         load_start = time()
         self.__model = whisper.load_model(self.model_type)
         load_end = time()
 
         self.__load_time__ = load_end - load_start
+
+    def unload(self):
+        del self.__model
+        gc.collect()
 
     def transcribe(self, audio, prompt=None):
 
