@@ -41,6 +41,9 @@ Access transcription data through Model Wrapper class [attributes](#attributes-1
 
 ## Test Class
 
+#### Required Packages
+- JiWER --> `$ pip install jiwer`
+
 #### Constructor
 `Test(model_array, dataset_path="full")` : Creates Test instance.
 - `Model[] model_array` : Array of models to be tested
