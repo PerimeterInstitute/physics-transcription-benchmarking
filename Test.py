@@ -18,7 +18,7 @@ class Test():
         elif dataset_path == "dev":
             dataset_path = "./datasets/dev_dataset/"
 
-        # LOADING DATASET'S JSON FILE:
+        # LOADING DATASET'S ASSOCIATED JSON FILE:
 
         for file in listdir(dataset_path):
             if file.endswith(".json"):
@@ -148,15 +148,15 @@ class Test():
 
         current_dataset.update({"word_error_rate": word_output.wer})
         current_dataset.update({"match_error_rate": word_output.mer})
+        current_dataset.update({"character_error_rate": char_output.cer})
         current_dataset.update({"word_information_lost": word_output.wil})
         current_dataset.update({"word_information_preserved": word_output.wip})
-        current_dataset.update({"character_error_rate": char_output.cer})
 
         return current_dataset
     
     def __merge_dicts(self, dict1, dict2):
 
-        merged_dict = {**dict2, **dict1}        # this order ensures values in dict1 take priority (should be the array of values)
+        merged_dict = {**dict2, **dict1}        # this order ensures values in dict1 take priority
         for key, value in merged_dict.items():
             if key in dict1 and key in dict2:
                 if isinstance(value, list):
@@ -164,6 +164,7 @@ class Test():
                     merged_dict[key] = value
                 else:
                     merged_dict[key] = [value, dict2[key]]
+
         return merged_dict
     
     def __summarize(self, accuracy_data):
@@ -171,5 +172,7 @@ class Test():
         for key, value in accuracy_data.items():
             if isinstance(value, list):
                 summarized_data.update({key: sum(value)/len(value)})
+            else:
+                summarized_data.update({key: value})
         return summarized_data
     
