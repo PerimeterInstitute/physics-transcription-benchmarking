@@ -1,14 +1,51 @@
 from os import listdir, mkdir
 from os.path import join, isdir
 from datetime import datetime
-import platform, psutil
-import json, jiwer
+import gc, inspect, jiwer, json, platform, psutil
+
+# ================================= #
+# ==== Prompt Loading Function ==== #
+# ================================= #
+
+def load_prompt_default(json_obj):
+
+    prompt = []
+
+    # CREATING PROMPT ARRAY:
+
+    for key in json_obj:
+        if key == "title" or key == "description":
+            prompt.append(json_obj[key])
+
+        elif key == "keywords":
+            for keyword in json_obj[key]:
+                prompt.append(keyword)
+
+        elif key == "speakers":
+            for speaker in json_obj[key]:
+                name = speaker["name"]
+                institution = speaker["institution"]
+
+                prompt.append(name)
+                
+                if institution not in prompt:
+                    prompt.append(institution)
+
+    # CREATING PROMPT STRING:
+
+    prompt = list(map(str.strip, prompt))
+    while "" in prompt:
+        prompt.remove("")
+
+    return None if len(prompt) == 0 else " ".join(prompt)
+
+# ==================== #
+# ==== Test Class ==== #
+# ==================== #
 
 class Test():
 
-    results = {}
-
-    def __init__(self, model_array, dataset_path="full"):
+    def __init__(self, model_array, prompt_function_array=[load_prompt_default], dataset_path="full"):
 
         # LOADING SCOPE DATASETS:
 
@@ -26,121 +63,121 @@ class Test():
                 break
         dataset = json.load(open(json_file))
 
+        # GETTING SYSTEM INFORMATION:
+
+        uname = platform.uname()
+
         # RUNNING TESTS:
 
         if not isdir("./results/"):         # make 'results' folder if it doesn't already exist
             mkdir("./results/")
 
-        # for get_prompt in prompt_funcs:
         for model in model_array:
 
             current_model = {}
+            test_results = {}
+            test_summary = {}
 
             # load model
             model.load()
 
-            # set variables needed to create test_details dictionary
-            uname = platform.uname()
-            mem = psutil.virtual_memory()
+            # get model attributes
             model_attributes = {}
             for key, value in model.__dict__.items():
                 if key[0] != '_' and key != "name":
                     model_attributes.update({key: value})
+            
+            # get memory information
+            mem = psutil.virtual_memory()
 
-            # create test_details dictionary, add to current model
-            test_details = {"model_info": {"class_name": model.__class__.__name__,
-                                           "model_name": model.name,
-                                           **model_attributes},
-                            "system_info": {"system": uname.system,
-                                            "release": uname.release,
-                                            "version": uname.version,
-                                            "machine": uname.machine,
-                                            "processor": uname.processor},
-                            "cpu_info": {"physical_cores": psutil.cpu_count(logical=False),
-                                         "total_cores": psutil.cpu_count(logical=True)},
-                            "memory_info": {"total_memory": mem.total,
-                                            "available_memory": mem.available,
-                                            "used_memory": mem.used}}
-            current_model.update({"test_details": test_details})
+            for prompt_function in prompt_function_array:
 
-            test_results = {}
-            test_summary = {}
-            for test_case in dataset:
+                # create test_details dictionary, add to current model
+                test_details = {"model_info": {"class_name": model.__class__.__name__,
+                                            "model_name": model.name,
+                                            **model_attributes},
+                                "prompt_info": {"prompt_function_name": prompt_function.__name__,
+                                                "prompt_function_code": inspect.getsource(prompt_function)},
+                                "system_info": {"system": uname.system,
+                                                "release": uname.release,
+                                                "version": uname.version,
+                                                "machine": uname.machine,
+                                                "processor": uname.processor},
+                                "cpu_info": {"physical_cores": psutil.cpu_count(logical=False),
+                                            "total_cores": psutil.cpu_count(logical=True)},
+                                "memory_info": {"total_memory": mem.total,
+                                                "available_memory": mem.available,
+                                                "used_memory": mem.used}}
+                current_model.update({"test_details": test_details})
 
-                current_test_results = {}
-                audio_name = test_case["audio_filename"]
-                transcript_name = test_case["transcript_filename"]
-                audio_file = join(dataset_path, "test_data/", audio_name)
-                transcript_file = join(dataset_path, "test_data/", transcript_name)
-                
-                # creating prompt
-                prompt = self.__load_prompt(test_case["audio_info"])
+                for test_case in dataset:
 
-                # transcribing model
-                model.transcribe(audio_file, prompt)
-   
-                # adding load time and transcribe time to result dict
-                current_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
-                if model.load_time[audio_name]:
-                    current_test_results.update({"load_time": model.load_time[audio_name]})
-                if model.transcribe_time[audio_name]:
-                    current_test_results.update({"transcribe_time": model.transcribe_time[audio_name]})
-
-                # evaluating transcription
-                reference = open(transcript_file, "r").read()
-                accuracy_data = self.__compare(reference, model.transcription[audio_name])
-
-                # update dictionaries
-                test_summary = self.__merge_dicts(test_summary, accuracy_data)
-                current_test_results.update({"accuracy_data": accuracy_data})
-                test_results.update({test_case["test_name"]: current_test_results})
-
-            # add test_results and test_summary to current_model dictionary 
-            current_model.update({"test_results": test_results, "test_summary": self.__summarize(test_summary)})
-
-            # create json file for model
-            json_obj = json.dumps(current_model, indent=4)
-            with open("./results/" + model.name + "_results.json", "w") as f:
-                f.write(json_obj)
-            f.close()
-
-            # add model results to 'results' dictionary
-            self.results.update({model.name: current_model})
-
-            # unload model
-            model.unload()
-
-    def __load_prompt(self, json_obj):
-
-        prompt = []
-
-        # CREATING PROMPT ARRAY:
-
-        for key in json_obj:
-            if key == "title" or key == "description":
-                prompt.append(json_obj[key])
-
-            elif key == "keywords":
-                for keyword in json_obj[key]:
-                    prompt.append(keyword)
-
-            elif key == "speakers":
-                for speaker in json_obj[key]:
-                    name = speaker["name"]
-                    institution = speaker["institution"]
-
-                    prompt.append(name)
+                    current_test_results = {}
+                    audio_name = test_case["audio_filename"]
+                    transcript_name = test_case["transcript_filename"]
+                    audio_file = join(dataset_path, "test_data/", audio_name)
+                    transcript_file = join(dataset_path, "test_data/", transcript_name)
                     
-                    if institution not in prompt:
-                        prompt.append(institution)
+                    # creating prompt
+                    prompt = prompt_function(test_case["audio_info"])
 
-        # CREATING PROMPT STRING:
+                    # transcribing model
+                    model.transcribe(audio_file, prompt)
+    
+                    # adding load time and transcribe time to result dict
+                    current_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
+                    if model.load_time[audio_name]:
+                        current_test_results.update({"load_time": model.load_time[audio_name]})
+                    if model.transcribe_time[audio_name]:
+                        current_test_results.update({"transcribe_time": model.transcribe_time[audio_name]})
 
-        prompt = list(map(str.strip, prompt))
-        while "" in prompt:
-            prompt.remove("")
+                    # evaluating transcription
+                    with open(transcript_file, "r") as f:
+                        reference = f.read()
+                    accuracy_data = self.__compare(reference, model.transcription[audio_name])
 
-        return None if len(prompt) == 0 else " ".join(prompt)
+                    # updating dictionaries
+                    test_summary = self.__merge_dicts(test_summary, accuracy_data)
+                    current_test_results.update({"accuracy_data": accuracy_data})
+                    test_results.update({test_case["test_name"]: current_test_results})
+
+                    # freeing memory
+                    del current_test_results
+                    del audio_name
+                    del transcript_name
+                    del audio_file
+                    del transcript_file
+                    del prompt
+                    del reference
+                    del accuracy_data
+                    gc.collect()
+
+                # adding test_results and test_summary to current_model dictionary 
+                current_model.update({"test_results": test_results, "test_summary": self.__summarize(test_summary)})
+
+                # creating json file for model
+                json_obj = json.dumps(current_model, indent=4)
+                with open("./results/" + model.name + "_" + prompt_function.__name__ + "_results.json", "w") as f:
+                    f.write(json_obj)
+
+                # freeing memory
+                del test_details
+                del json_obj
+                gc.collect()
+
+            # freeing memory
+            model.unload()
+            del current_model
+            del model_attributes
+            del mem
+            del test_results
+            del test_summary
+            gc.collect()
+
+        # freeing memory
+        del dataset
+        del uname
+        gc.collect()
 
     def __compare(self, reference, hypothesis):
 
