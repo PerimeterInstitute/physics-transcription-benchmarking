@@ -28,7 +28,7 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
     
     graph_data_template = Template('\
                 { \n\
-                    label: "$model_class", \n\
+                    label: "$model_title", \n\
                     data: [$wer, $mer, $cer, $wil, $wip] \n\
                 },\n')
 
@@ -47,7 +47,7 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
 
         # add row template to table data
         table_data = table_data + table_row_template.substitute({'model_class': model_info["class_name"],
-                                                                 'prompt_function': prompt_info["prompt_function_name"],
+                                                                 'prompt_function': prompt_info["prompt_function_name"] + "()",
                                                                  'model_type': model_info["model_type"],
                                                                  'wer': summary_info["word_error_rate"],
                                                                  'mer': summary_info["match_error_rate"],
@@ -55,7 +55,7 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
                                                                  'wil': summary_info["word_information_lost"],
                                                                  'wip': summary_info["word_information_preserved"]})
         
-        graph_data = graph_data + graph_data_template.substitute({'model_class': model_info["class_name"],
+        graph_data = graph_data + graph_data_template.substitute({'model_title': model_info["class_name"] + " - " + prompt_info["prompt_function_name"] + "()",
                                                                  'wer': summary_info["word_error_rate"],
                                                                  'mer': summary_info["match_error_rate"],
                                                                  'cer': summary_info["character_error_rate"],
