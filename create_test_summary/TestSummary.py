@@ -18,7 +18,6 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
                             <tr class="border-b dark:border-neutral-500"> \n\
                                 <td class="whitespace-nowrap px-6 py-4 font-medium">$model_class</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4 font-medium">$prompt_function</td> \n\
-                                <td class="whitespace-nowrap px-6 py-4">$model_type</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$wer</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$mer</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$cer</td> \n\
@@ -48,7 +47,6 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
         # add row template to table data
         table_data = table_data + table_row_template.substitute({'model_class': model_info["class_name"],
                                                                  'prompt_function': prompt_info["prompt_function_name"] + "()",
-                                                                 'model_type': model_info["model_type"],
                                                                  'wer': summary_info["word_error_rate"],
                                                                  'mer': summary_info["match_error_rate"],
                                                                  'cer': summary_info["character_error_rate"],
