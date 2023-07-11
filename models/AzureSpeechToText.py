@@ -28,7 +28,7 @@ class AzureSpeechToText(ModelWrapper):
 
         # create speech configuration
         load_start = time()
-        self.__speech_config = speechsdk.SpeechConfig(subscription=self.key, region=self.region, speech_recognition_language=self.options.pop("language", None))
+        self.__speech_config = speechsdk.SpeechConfig(subscription=self.key, region=self.region, **self.options)
         load_end = time()
 
         self.__load_time__ = load_end - load_start
@@ -39,7 +39,6 @@ class AzureSpeechToText(ModelWrapper):
         del self.key
         del self.region
         del self.options
-        del self.takes_prompt
 
     def transcribe(self, audio, prompt=None):
 

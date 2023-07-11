@@ -36,7 +36,6 @@ class WhisperOpenAI(ModelWrapper):
         del self.name
         del self.model_type
         del self.options
-        del self.takes_prompt
 
     def transcribe(self, audio, prompt=None):
 
