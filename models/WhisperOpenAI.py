@@ -10,8 +10,8 @@ class WhisperOpenAI(ModelWrapper):
 
     name = ""
     model_type = ""
+    takes_prompt = False
     options = {}
-    takes_prompt = True
 
     transcription = {}
     load_time = {}

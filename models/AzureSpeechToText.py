@@ -11,8 +11,8 @@ class AzureSpeechToText(ModelWrapper):
     name = ""
     key = ""
     region = ""
-    options = {}
     takes_prompt = False
+    options = {}
 
     transcription = {}
     load_time = {}
