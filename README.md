@@ -16,6 +16,7 @@ See [example.ipynb](example.ipynb) for an example of the following steps put tog
 #### Provided Model Wrappers
 - [WhisperPI](#whisperpi) --> `from models.WhisperPI import WhisperPI`
 - [WhisperOpenAI](#whisperopenai) --> `from models.WhisperOpenAI import WhisperOpenAI`
+- [AzureSpeechToText](#azurespeechtotext) --> `from models.AzureSpeechToText import AzureSpeechToText`
 
 #### Other Model Wrappers
 See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper).
@@ -25,6 +26,7 @@ See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper).
 #### Provided Model Wrappers
 - [WhisperPI](#whisperpi) --> See WhisperPI [constructor](#constructor-1)
 - [WhisperOpenAI](#whisperopenai) --> See WhisperOpenAI [constructor](#constructor-2)
+- [AzureSpeechToText](#azurespeechtotext) --> See AzureSpeechToText [constructor](#constructor-3)
 
 #### Other Model Wrappers
 See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper).
@@ -39,14 +41,22 @@ Access transcription data through Model Wrapper class [attributes](#attributes-1
 
 
 
-## Test Class
+## Test.py 
+
+### Prompt Loading Function
+
+`load_prompt_default(json_obj)` : Loads prompt string given audio information.
+- `Dict json_obj` : JSON object containing audio information (it's suggested that this is loaded from a [dataset](#datasets) JSON file).
+
+### Test Class
 
 #### Required Packages
 - JiWER --> `$ pip install jiwer`
 
 #### Constructor
-`Test(model_array, dataset_path="full")` : Creates Test instance.
+`Test(model_array, prompt_function_array=[load_prompt_default], dataset_path="full")` : Creates Test instance.
 - `Model[] model_array` : Array of models to be tested
+- `Method[] prompt_function_array` : Array of prompt loading functions to be tested (defaults to contain provided prompt loading function, [load_prompt_default()](#prompt-loading-function))
 - `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
 
 #### Attributes
@@ -65,6 +75,10 @@ Example `results` dictionary:
                     "language": "en"
                 }
             },
+        "prompt_info": {
+            "prompt_function_name": "load_prompt_default",
+            "prompt_function_code": "def load_prompt_default(json_obj): ..."
+        },
             "system_info": {
                 "system": "Linux",
                 "release": "5.15.0-1040-azure",
@@ -150,6 +164,7 @@ Wrapper for the WhisperPI transcription model. WhisperPI is an altered version o
 #### Attributes
 - `String name` : Name of model
 - `String model_type` : Model type ("tiny", "base", "medium", "large", etc.)
+- `Bool takes_prompt` : Indicates whether the model takes a prompt or not
 - `Dict options` : Model options
 - `Dict full_result` : Dictionary containing all result objects.
 - `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
@@ -157,6 +172,8 @@ Wrapper for the WhisperPI transcription model. WhisperPI is an altered version o
 - `Dict transcribe_time` : Dictionary containing all transcribe times.
 
 #### Methods
+- `load()` : Loads model.
+- `unload()` : "Unloads" model (i.e. removes select model attributes from memory).
 - `transcribe(audio, prompt=None)` : Transcribes given audio file, updates result-related attributes.
     - `String audio` : File path to audio file
     - `String prompt` : Transcription prompt
@@ -176,6 +193,7 @@ Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recogni
 #### Attributes
 - `String name` : Name of model
 - `String model_type` : Model type ("tiny", "base", "medium", "large", etc.)
+- `Bool takes_prompt` : Indicates whether the model takes a prompt or not
 - `Dict options` : Model options
 - `Dict full_result` : Dictionary containing all result objects.
 - `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
@@ -183,6 +201,8 @@ Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recogni
 - `Dict transcribe_time` : Dictionary containing all transcribe times.
 
 #### Methods
+- `load()` : Loads model.
+- `unload()` : "Unloads" model (i.e. removes select model attributes from memory).
 - `transcribe(audio, prompt=None)` : Transcribes given audio file, updates result-related attributes.
     - `String audio` : File path to audio file
     - `String prompt` : Transcription prompt, defaults to `None`
@@ -203,12 +223,17 @@ Wrapper for Azure's speech recognition model.
 
 #### Attributes
 - `String name` : Name of model
+- `String key` : Azure subscription key
+- `String region` : Region name
+- `Bool takes_prompt` : Indicates whether the model takes a prompt or not
 - `Dict options` : Model options
 - `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
 - `Dict load_time` : Dictionary containing all load times.
 - `Dict transcribe_time` : Dictionary containing all transcribe times.
 
 #### Methods
+- `load()` : Loads model.
+- `unload()` : "Unloads" model (i.e. removes select model attributes from memory).
 - `transcribe(audio, prompt=None)` : Transcribes given audio file, updates result-related attributes.
     - `String audio` : File path to audio file
     - `String prompt` : Transcription prompt, defaults to `None`
@@ -226,9 +251,16 @@ from ModelWrapper import ModelWrapper
 
 class NewModelWrapper(ModelWrapper):
     name = ""
+    takes_prompt = True
     transcription = {}
     load_time = {}
     transcribe_time = {}
+
+    def load():
+        pass
+
+    def unload():
+        pass
 
     def transcribe():
         pass
