@@ -11,6 +11,7 @@ class WhisperPI(ModelWrapper):
     name = ""
     model_type = ""
     options = {}
+    takes_prompt = True
 
     transcription = {}
     load_time = {}
@@ -35,6 +36,7 @@ class WhisperPI(ModelWrapper):
         del self.name
         del self.model_type
         del self.options
+        del self.takes_prompt
 
     def transcribe(self, audio, prompt=None):
 

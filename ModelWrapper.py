@@ -22,6 +22,11 @@ class ModelWrapper(ABC):
     def transcribe_time(self):
         pass
 
+    @property
+    @abstractmethod
+    def takes_prompt(self):
+        pass
+
     @abstractmethod
     def load(self):
         pass

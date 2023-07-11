@@ -90,7 +90,13 @@ class Test():
             # get memory information
             mem = psutil.virtual_memory()
 
-            for prompt_function in prompt_function_array:
+            # determine model's prompt func array
+            if model.takes_prompt:
+                curr_prompt_function_array = prompt_function_array
+            else:
+                curr_prompt_function_array = [load_prompt_default]
+
+            for prompt_function in curr_prompt_function_array:
 
                 # create test_details dictionary, add to current model
                 test_details = {"model_info": {"class_name": model.__class__.__name__,
