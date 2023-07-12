@@ -10,7 +10,7 @@ class WhisperPI(ModelWrapper):
 
     name = ""
     model_type = ""
-    takes_prompt = False
+    takes_prompt = True
     options = {}
 
     transcription = {}
