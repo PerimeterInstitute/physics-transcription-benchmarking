@@ -6,6 +6,7 @@ __pycache__/*
 *results.json
 results/*
 datasets/*_TEST
+datasets/*/*/*.wav
 
 # Summary testing:
 create_test_summary/test_summary.html
