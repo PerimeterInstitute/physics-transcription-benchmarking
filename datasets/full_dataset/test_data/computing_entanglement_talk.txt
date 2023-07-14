@@ -1,0 +1,151 @@
+So quantum Monte Carlo or similar scaling methods, of course DMRG is the one that we
+have in one dimension, right?
+And so the idea, you know, the idea that we can calculate von Neumann entanglement
+entropy in DMRG is well known.
+We have direct access to the reduced density matrix there.
+So in quantum Monte Carlo, maybe this isn't so obvious.
+And so like I say, Max did all the hard work.
+And the reason I'm talking about this in the context of condensed matter, I guess, is that
+anything we can simulate with quantum Monte Carlo, any condensed matter type system, we
+hope to be able to access really subleading corrections to the area law, if you will,
+you know, as a resource for identifying new phases, you know, universality at phase transitions.
+You know a lot of this came out of, a lot of the motivation behind this came out of the desire to sort
+of quantify spin liquids with this topological entanglement entropy.
+I guess not all the subleading corrections, okay, not all the scaling of the entropy is
+the area law.
+As Max mentioned, free fermions, I think these spin Bose metals that Matthew will hopefully
+talk about will have a multiplicative log correction.
+Okay, so there you can imagine that if we could find a spin Bose metal, you know, in
+a Hamiltonian that we can simulate with quantum Monte Carlo, which isn't trivial in any sense,
+then we can look for essentially the scaling of the entanglement entropy to identify these
+types of phases.
+So quantum Monte Carlo, so one of our tools of choice here, really the advantage in quantum
+Monte Carlo is that it's scalable in system size.
+So modern methods scale as N, the number of lattice sites, okay, and some methods that
+we use also scale as N squared.
+We consider this poor scaling for quantum Monte Carlo.
+N squared simulations can typically be improved upon with clever tricks.
+You know, you might be familiar with this, the determinantal quantum Monte Carlo, if
+you're used to looking at fermionic Hubbard models, for example, in two dimensions.
+These things scale as N cubed, as far as I understand.
+And if you look at some of these papers that use determinantal quantum Monte Carlo, you'll
+see the system sizes that they can access are quite restricted by that scaling.
+So the ones I'm going to talk about are scaling N or N squared.
+Okay, so we have different flavors of quantum Monte Carlo.
+Most importantly, I think, is to differentiate between quantum Monte Carlo that operate by
+projecting out the ground state energy at zero temperature, so zero temperature projector
+methods, I guess you would call them, and finite temperature quantum Monte Carlo that's
+based on the partition function.
+Okay, so both of these are two flavors of quantum Monte Carlo that I'll talk about.
+And really the punchline is that we believe we can calculate Rényi entropy in both of
+these flavors of quantum Monte Carlo.
+Okay, so what's the problem with quantum Monte Carlo?
+Obviously, it's got the sine problem.
+Okay, and it inhibits the simulation of frustrated spins and fermions.
+So it's sort of the bane of a lot of this work.
+You know, but we should all be happy for the sine problem, because I think it gives most
+of us jobs really in the end, right?
+So I'm not going to talk about the sine problem explicitly.
+I'm going to assume somehow that I can simulate whatever Hamiltonian I'm interested in.
+What I am going to talk about is the quote-unquote problem that simulations, quantum Monte Carlo
+simulations really don't have access directly to the wave function or the reduced density
+matrix.
+Really what you're doing is sampling the wave function projected in some basis, if you will.
+And so measuring a von Neumann entropy, we have a functional dependence on the reduced
+density matrix, you know, it's inside this ln.
+This is something that we don't know how to do directly in quantum Monte Carlo, okay,
+with this sampling type procedure.
+So the trick to get around that is something Max mentioned, and it's the idea that we can
+calculate these Rényi entropies, okay?
+So here's a generalized Rényi entropy characterized by this replica parameter n, again, so it's
+1 over n ln, trace of rho to the n.
+So if you take the limit, you get this von Neumann entropy, which is the one that is
+most interesting to us.
+But I hope Max also motivated the idea that the Rényi entropies are also interesting.
+In particular, I'm really just going to talk about S2, okay, which is taken by putting
+n equals 2 there.
+So we can calculate some quantum Monte Carlo, as I'm going to show.
+The idea of analytically continuing our data to S equals 1, also I'm not so clear on that,
+if that's going to be something that's possible or not.
+Okay, so the Rényi entropies, in addition to these nice features Max talked about, you
+know, S2 really gives a lower bound, rigorously on S1.
+So, you know, they're useful to say something in that sense about what's going on with the
+von Neumann entropy.
+And as mentioned, you know, the sublating corrections at critical points are universal,
+are believed to be universal, and with the condition that they depend on n, right?
+This topological correction, I believe, is n independent.
+So the, you know, the hotshots that did this are in the audience, so they can tell me if
+this is true.
+But I believe that's right, it's still minus ln of the quantum dimension, right?
+So this topological entanglement entropy, you know, if we could find a topological spin
+liquid that we could simulate with quantum Monte Carlo, in principle we can measure this,
+right?
+Okay, so the first flavor, I guess, of quantum Monte Carlo I'm going to talk about is in
+the valence bond basis.
+So it's a zero temperature projector method in the valence bond basis.
+And this is the first one that we realized, actually quite recently, that we can calculate
+the Rényi entropy basically using a variation of this replica trick.
+Okay, so in the next few slides I just want to give you a flavor for how this quantum
+Monte Carlo goes, okay?
+So this is not a complete, you know, technical description of what we do in the computers
+by any stretch of the imagination, but I just want to give you an idea.
+You know, the valence bond basis quantum Monte Carlo is really one of the simplest ones to
+implement, okay?
+Anyone in this room could do it in a couple of weeks.
+But it's somehow not really used that widely, I think in part because it's rather recently
+been developed, maybe in the last five years or so we've been looking at this.
+So the valence bond basis is really just the idea that we take your singlet or whatever,
+your valence bond, and, you know, we look at a basis, which I'll call V of r, you know,
+so here's one state, where the valence bonds are stretched out between different sites
+on the lattice, okay?
+And so we can label this, you know, this particular tiling, if you will, by an r, and I have i
+and j are all my paired lattice sites, okay?
+So this is, you know, ij for one, this is ij for two, and so on.
+So in general we're looking at some, you know, in this basis we're looking at valence bonds,
+which aren't just restricted to the nearest neighbor, they can be as long range or as
+short range as is needed by the problem.
+And this is a massively overcomplete non-orthogonal basis.
+So one thing we do is we restrict the valence bonds to go between A and B sublattices,
+okay?
+So this restriction for technical reasons is needed.
+In part it gets rid of the sign problem in certain Hamiltonians, okay?
+And in part it reduces, you know, it reduces the number of possible states in any finite
+size lattice to N over 2 factorial, factorial not N over 2 exclamation point.
+So you know, this valence bond basis has been talked about and used for a long time, and
+Sandvik really popularized it with the idea that we can develop a zero temperature projector
+method using a valence bond basis.
+So these projector methods are quite familiar to the community that uses them.
+I don't know what that statement means, but what I mean is by us, okay?
+So they're the basis of Lanczos really.
+Like the idea that you operate on the Hamiltonian, or sorry you operate with a large power of the
+Hamiltonian on a wave function, and you project out the ground state, right?
+So you choose a constant in some clever way that for very large m, you know, this thing's
+exact and the limit of m equals infinity.
+But practically for very large m, you know, the second and following terms of this expansion
+really go to zero.
+So you're expanding out of the ground state.
+So any projector method, you know, diffusion type, quantum Monte Carlo, this stuff, Lanczos,
+it's all based on this idea of projecting out the ground state.
+For concreteness, okay, I'm going to consider the Heisenberg model.
+It's for concreteness and also because it's the simplest one for us to implement.
+And then this, you know, the Heisenberg model is a Hamiltonian, and that state there is
+this valence bond state that I mentioned in the previous slide.
+So in order to implement a, you know, projector quantum Monte Carlo in a valence bond basis,
+really all you have to do is know how the Hamiltonian terms, which I'm writing as bond
+terms, you know, affect basis states.
+So here very locally is a bond term, H, a, and b, which if operating between sites that
+already have a valence bond, okay, here's my valence bond here, it returns the same
+state back to you.
+Okay, locally again, this is in a neighborhood of this bond.
+And if a Hamiltonian term operates between b and c, which aren't connected by a valence
+bond, it reconnects all the valence bonds with some weight factor, okay, so you can
+write this out and convince yourself of these relationships.
+So this is very important in some sense in the development of the quantum Monte Carlo
+procedure because what we're doing in quantum Monte Carlo is we're sampling, and we have
+to sample the basis, so we have to sample a bunch of valence bond configurations, and
+we also have to sample Hamiltonian terms, okay, so bond terms, Hamiltonian bond terms
+as you're propagating these basis states.
+So it's really nice to have, you know, an off-diagonal operation which affects the basis
+by rearranging the bonds.
+So by essentially, you know, sampling a large string of Hamiltonian operators of order n,
+you know, we sample, we get for free sampling of the
