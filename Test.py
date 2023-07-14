@@ -1,43 +1,8 @@
 from os import listdir, mkdir
 from os.path import join, isdir
 from datetime import datetime
+from prompt_functions import load_prompt_default
 import gc, inspect, jiwer, json, platform, psutil
-
-# ================================= #
-# ==== Prompt Loading Function ==== #
-# ================================= #
-
-def load_prompt_default(json_obj):
-
-    prompt = []
-
-    # CREATING PROMPT ARRAY:
-
-    for key in json_obj:
-        if key == "title" or key == "description":
-            prompt.append(json_obj[key])
-
-        elif key == "keywords":
-            for keyword in json_obj[key]:
-                prompt.append(keyword)
-
-        elif key == "speakers":
-            for speaker in json_obj[key]:
-                name = speaker["name"]
-                institution = speaker["institution"]
-
-                prompt.append(name)
-                
-                if institution not in prompt:
-                    prompt.append(institution)
-
-    # CREATING PROMPT STRING:
-
-    prompt = list(map(str.strip, prompt))
-    while "" in prompt:
-        prompt.remove("")
-
-    return None if len(prompt) == 0 else " ".join(prompt)
 
 # ==================== #
 # ==== Test Class ==== #
@@ -74,21 +39,14 @@ class Test():
 
         for model in model_array:
 
-            current_model = {}
-            test_results = {}
-            test_summary = {}
-
             # load model
             model.load()
 
-            # get model attributes
+            # get extra model attributes
             model_attributes = {}
             for key, value in model.__dict__.items():
                 if key[0] != '_' and key != "name":
                     model_attributes.update({key: value})
-            
-            # get memory information
-            mem = psutil.virtual_memory()
 
             # determine model's prompt func array
             if model.takes_prompt:
@@ -97,6 +55,13 @@ class Test():
                 curr_prompt_function_array = [load_prompt_default]
 
             for prompt_function in curr_prompt_function_array:
+
+                current_model = {}
+                test_results = {}
+                test_summary = {}
+
+                # get memory information
+                mem = psutil.virtual_memory()
 
                 # create test_details dictionary, add to current model
                 test_details = {"model_info": {"class_name": model.__class__.__name__,
@@ -167,17 +132,17 @@ class Test():
                     f.write(json_obj)
 
                 # freeing memory
+                del current_model
+                del test_results
+                del test_summary
                 del test_details
                 del json_obj
+                del mem
                 gc.collect()
 
             # freeing memory
             model.unload()
-            del current_model
             del model_attributes
-            del mem
-            del test_results
-            del test_summary
             gc.collect()
 
         # freeing memory
