@@ -2,15 +2,30 @@
 __pycache__/*
 */__pycache__/*
 
-# Testing:
+# General testing:
 *results.json
 results/*
+past_results/*
 datasets/*_TEST
+datasets/2023*
 datasets/*/*/*.wav
+test_transcribe.py
+
+# Symmetry testing:
+*.out
+*.sh
+example.py
 
 # Summary testing:
 create_test_summary/test_summary.html
 create_test_summary/test_summary_example.py
+create_test_summary/glossary_format.html
+create_test_summary/sentence_format.html
+create_test_summary/unformatted_prompts.html
+create_test_summary/full_test.html
+
+# Create dataset testing:
+create_dataset/datasets/*
 
 # WhisperCPP testing:
 whisper.cpp/
