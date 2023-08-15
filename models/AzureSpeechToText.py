@@ -1,4 +1,3 @@
-from os.path import basename
 from time import time
 from datetime import timedelta
 from ModelWrapper import ModelWrapper
