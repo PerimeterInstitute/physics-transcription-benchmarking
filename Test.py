@@ -1,7 +1,7 @@
 from os import listdir, mkdir
 from os.path import join, isdir
 from datetime import datetime
-from prompt_functions import load_prompt_default
+from prompt_functions.prompt_functions import get_description
 import gc, inspect, jiwer, json, platform, psutil
 
 # ==================== #
@@ -10,7 +10,7 @@ import gc, inspect, jiwer, json, platform, psutil
 
 class Test():
 
-    def __init__(self, model_array, prompt_function_array=[load_prompt_default], dataset_path="full"):
+    def __init__(self, model_array, prompt_function_array=[get_description], dataset_path="full"):
 
         # LOADING SCOPE DATASETS:
 
@@ -52,7 +52,7 @@ class Test():
             if model.takes_prompt:
                 curr_prompt_function_array = prompt_function_array
             else:
-                curr_prompt_function_array = [load_prompt_default]
+                curr_prompt_function_array = [get_description]
 
             for prompt_function in curr_prompt_function_array:
 
@@ -84,16 +84,15 @@ class Test():
                 for test_case in dataset:
 
                     current_test_results = {}
-                    audio_name = test_case["audio_filename"]
-                    transcript_name = test_case["transcript_filename"]
-                    audio_file = join(dataset_path, "test_data/", audio_name)
-                    transcript_file = join(dataset_path, "test_data/", transcript_name)
+                    audio_name = test_case["audio_name"]
+                    audio_file = test_case["audio_file"]
+                    transcript_file = test_case["transcript_file"]
                     
                     # creating prompt
                     prompt = prompt_function(test_case["audio_info"])
 
                     # transcribing model
-                    model.transcribe(audio_file, prompt)
+                    model.transcribe(audio_name, audio_file, prompt)
     
                     # adding load time and transcribe time to result dict
                     current_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
@@ -110,12 +109,11 @@ class Test():
                     # updating dictionaries
                     test_summary = self.__merge_dicts(test_summary, accuracy_data)
                     current_test_results.update({"accuracy_data": accuracy_data})
-                    test_results.update({test_case["test_name"]: current_test_results})
+                    test_results.update({test_case["audio_name"]: current_test_results})
 
                     # freeing memory
                     del current_test_results
                     del audio_name
-                    del transcript_name
                     del audio_file
                     del transcript_file
                     del prompt
