@@ -1,4 +1,3 @@
-from os.path import basename
 from time import time
 from datetime import timedelta
 from ModelWrapper import ModelWrapper
@@ -16,6 +15,7 @@ class WhisperPI(ModelWrapper):
     transcription = {}
     load_time = {}
     transcribe_time = {}
+    result_object = {}
 
     def __init__(self, name, options):
         self.name = name
@@ -37,21 +37,23 @@ class WhisperPI(ModelWrapper):
         del self.model_type
         del self.options
 
-    def transcribe(self, audio, prompt=None):
-
-        audio_name = basename(audio)
+    def transcribe(self, audio_name, audio_file, prompt=None):
 
         # transcribe audio
         transcribe_start = time()
-        result = self.__model.transcribe(audio, initial_prompt=prompt, **self.options)
+        result = self.__model.transcribe(audio_file, initial_prompt=prompt, **self.options)
         transcribe_end = time()
         
-        # save load time and transcribe time
+        # save load time, transcribe time, and result object
         self.load_time.update({audio_name: str(timedelta(seconds=self.__load_time__))})
         self.transcribe_time.update({audio_name: str(timedelta(seconds=transcribe_end - transcribe_start))})
+        self.result_object.update({audio_name: result})
 
-        # save transcription
+        # save transcription text
         transcription = ""
         for segment in result["segments"]:
             transcription += segment["text"]
         self.transcription.update({audio_name: transcription})
+
+    def get_model(self):
+        return self.__model

@@ -36,5 +36,5 @@ class ModelWrapper(ABC):
         pass
 
     @abstractmethod
-    def transcribe(self, audio, prompt=None):
+    def transcribe(self, audio_name, audio_file, prompt=None):
         pass

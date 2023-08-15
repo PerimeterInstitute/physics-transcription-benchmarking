@@ -40,14 +40,12 @@ class AzureSpeechToText(ModelWrapper):
         del self.region
         del self.options
 
-    def transcribe(self, audio, prompt=None):
-
-        audio_name = basename(audio)
+    def transcribe(self, audio_name, audio_file, prompt=None):
 
         # transcribe audio
         transcribe_start = time()
 
-        audio_config = speechsdk.audio.AudioConfig(filename=audio)
+        audio_config = speechsdk.audio.AudioConfig(filename=audio_file)
         speech_recognizer = speechsdk.SpeechRecognizer(speech_config=self.__speech_config, audio_config=audio_config)
         
         result = ""
@@ -78,3 +76,6 @@ class AzureSpeechToText(ModelWrapper):
         self.load_time.update({audio_name: str(timedelta(seconds=self.__load_time__))})
         self.transcribe_time.update({audio_name: str(timedelta(seconds=transcribe_end - transcribe_start))})
         self.transcription.update({audio_name: result})
+
+    def get_speech_config(self):
+        return self.__speech_config
