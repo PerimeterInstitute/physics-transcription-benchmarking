@@ -1,0 +1,126 @@
+{
+    "test_details": {
+        "model_info": {
+            "class_name": "AzureSpeechToText",
+            "model_name": "azure_large",
+            "key": "8984162b382e455cabe5e19ab2605d65",
+            "region": "canadacentral",
+            "options": {
+                "speech_recognition_language": "en-US"
+            }
+        },
+        "prompt_info": {
+            "prompt_function_name": "get_description",
+            "prompt_function_code": "def get_description(json_obj):\n\n    # FORMATTING PROMPT:\n\n    prompt = json_obj[\"title\"].strip() + \", \" \n\n    for speaker in json_obj[\"speakers\"]:\n        name = speaker[\"name\"].strip()\n        institution = speaker[\"institution\"].strip()\n\n        prompt = prompt + name + \", \"\n        if institution not in prompt:\n            prompt = prompt + institution + \", \"\n\n    prompt = prompt + json_obj[\"description\"].strip()\n\n    return prompt\n"
+        },
+        "system_info": {
+            "system": "Linux",
+            "release": "4.15.0-147-generic",
+            "version": "#151-Ubuntu SMP Fri Jun 18 19:21:19 UTC 2021",
+            "machine": "x86_64",
+            "processor": "x86_64"
+        },
+        "cpu_info": {
+            "physical_cores": 8,
+            "total_cores": 16
+        },
+        "memory_info": {
+            "total_memory": 99952320512,
+            "available_memory": 87345512448,
+            "used_memory": 10731044864
+        }
+    },
+    "test_results": {
+        "celestial_holography_talk": {
+            "start_datetime": "08/14/23, 09:19:18",
+            "load_time": "0:00:00.000465",
+            "transcribe_time": "0:04:55.666798",
+            "accuracy_data": {
+                "word_error_rate": 0.3387096774193548,
+                "match_error_rate": 0.3030464991982897,
+                "character_error_rate": 0.08350266086115142,
+                "word_information_lost": 0.4494416437593288,
+                "word_information_preserved": 0.5505583562406712
+            }
+        },
+        "computing_entanglement_talk": {
+            "start_datetime": "08/14/23, 09:24:18",
+            "load_time": "0:00:00.000465",
+            "transcribe_time": "0:04:59.553263",
+            "accuracy_data": {
+                "word_error_rate": 0.3515258215962441,
+                "match_error_rate": 0.31460084033613445,
+                "character_error_rate": 0.11526902569074164,
+                "word_information_lost": 0.46640266049043866,
+                "word_information_preserved": 0.5335973395095613
+            }
+        },
+        "fitting_models_with_mcmc_talk": {
+            "start_datetime": "08/14/23, 09:24:33",
+            "load_time": "0:00:00.000465",
+            "transcribe_time": "0:00:15.098251",
+            "accuracy_data": {
+                "word_error_rate": 0.9565217391304348,
+                "match_error_rate": 0.9515570934256056,
+                "character_error_rate": 0.9319847552037526,
+                "word_information_lost": 0.9636405797101449,
+                "word_information_preserved": 0.036359420289855074
+            }
+        },
+        "numerical_methods_lecture": {
+            "start_datetime": "08/14/23, 09:26:39",
+            "load_time": "0:00:00.000465",
+            "transcribe_time": "0:02:05.669018",
+            "accuracy_data": {
+                "word_error_rate": 0.6993060909791827,
+                "match_error_rate": 0.6824680210684725,
+                "character_error_rate": 0.6264495114006514,
+                "word_information_lost": 0.7433559832539505,
+                "word_information_preserved": 0.2566440167460495
+            }
+        },
+        "quantum_foundations_lecture": {
+            "start_datetime": "08/14/23, 09:27:26",
+            "load_time": "0:00:00.000465",
+            "transcribe_time": "0:00:47.090983",
+            "accuracy_data": {
+                "word_error_rate": 0.9010566762728146,
+                "match_error_rate": 0.8958930276981852,
+                "character_error_rate": 0.8578006020896051,
+                "word_information_lost": 0.9316582972383762,
+                "word_information_preserved": 0.06834170276162373
+            }
+        },
+        "quantum_gravity_and_paradoxes_podcast": {
+            "start_datetime": "08/14/23, 09:32:20",
+            "load_time": "0:00:00.000465",
+            "transcribe_time": "0:04:53.139786",
+            "accuracy_data": {
+                "word_error_rate": 0.5481577246283129,
+                "match_error_rate": 0.4520255863539446,
+                "character_error_rate": 0.11033035225406096,
+                "word_information_lost": 0.6305471641583371,
+                "word_information_preserved": 0.3694528358416629
+            }
+        },
+        "quantum_theory_lecture": {
+            "start_datetime": "08/14/23, 09:32:34",
+            "load_time": "0:00:00.000465",
+            "transcribe_time": "0:00:14.509026",
+            "accuracy_data": {
+                "word_error_rate": 0.9612476370510397,
+                "match_error_rate": 0.9585296889726673,
+                "character_error_rate": 0.9429916317991632,
+                "word_information_lost": 0.9695022054190297,
+                "word_information_preserved": 0.030497794580970385
+            }
+        }
+    },
+    "test_summary": {
+        "word_error_rate": 0.6795036238681976,
+        "match_error_rate": 0.6511601081504713,
+        "character_error_rate": 0.5240469341855895,
+        "word_information_lost": 0.7363640762899438,
+        "word_information_preserved": 0.26363592371005634
+    }
+}
