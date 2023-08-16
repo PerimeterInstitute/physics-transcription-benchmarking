@@ -1,7 +1,9 @@
 from os import mkdir
-from os.path import isdir
+from os.path import isdir, join
 import requests, json
 from bs4 import BeautifulSoup
+
+OUTPUT_DIR = "./datasets/"
 
 DATE = "2023-08-04"
 
@@ -90,14 +92,14 @@ for current_audio_data in audio_data["data"]:
 
 # SAVING DATASET:
 
-dataset_folder_name = "./datasets/"+DATE+"/"
+dataset_folder = join(OUTPUT_DIR, DATE)
 
 # Making folders:
-if not isdir("./datasets/"):                # make 'datasets' folder if it doesn't already exist
-    mkdir("./datasets/")
-if not isdir(dataset_folder_name):          # make 'DATE' folder
-    mkdir(dataset_folder_name)       
+if not isdir(OUTPUT_DIR):                   # make OUTPUT_DIR folder if it doesn't already exist
+    mkdir(OUTPUT_DIR)
+if not isdir(dataset_folder):               # make DATE folder
+    mkdir(dataset_folder)       
 
 # Making JSON file:
-with open(dataset_folder_name+DATE+".json", "w") as f:
+with open(join(dataset_folder, DATE+".json"), "w") as f:
     f.write(json.dumps(dataset, indent=4))
