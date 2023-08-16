@@ -1,0 +1,19 @@
+"Full Dataset" was ran on WhisperPI, WhisperOpenAI, and AzureTextToSpeech models.
+Each Model/dataset audio pair was tested with 12 different prompt functions:
+10 prompts:
+- Templated prompts (6 total)
+    - Description
+    - Rachael’s keywords
+    - Azure keywords
+    - Spacy/KeyBERT keywords
+    - ChatGPT keywords
+    - ChatGPT challenging keywords
+- Keyword prompts (6 total)
+    - Description
+    - Rachael’s keywords
+    - Azure keywords
+    - Spacy/KeyBERT keywords
+    - ChatGPT keywords 
+    - ChatGPT challenging keywords
+
+See 'physics-transcription-benchmarking/prompt_functions/prompt_functions.py' for prompt-loading code.

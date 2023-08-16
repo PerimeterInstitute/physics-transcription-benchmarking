@@ -1,0 +1,390 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+<!-- TABLE CODE -->
+    <div class="flex flex-col">
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                <div class="overflow-hidden">
+                    <table class="min-w-full text-center text-sm font-light">
+                        <thead class="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
+                            <tr>
+                                <th scope="col" class=" px-6 py-4">Model Class</th>
+                                <th scope="col" class=" px-6 py-4">Prompt Loading Function</th>
+                                <th scope="col" class=" px-6 py-4">Average Word Error Rate</th>
+                                <th scope="col" class=" px-6 py-4">Average Match Error Rate</th>
+                                <th scope="col" class=" px-6 py-4">Average Character Error Rate</th>
+                                <th scope="col" class=" px-6 py-4">Average Word Information Lost</th>
+                                <th scope="col" class=" px-6 py-4">Average Word Information Preserved</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_description()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.30423254602643063</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.26984357388849695</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.07419440674945453</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3944804944974182</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6055195055025818</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_gpt_challenging_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2948315840976834</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.26090644611853697</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.06525280957499584</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.38209595421160963</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6179040457883904</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_gpt_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3181006240224606</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2780749109833807</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.08970439626737788</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.40059069583191026</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.5994093041680897</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_rachaels_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.29426279332604033</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2622738675716902</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.07100064784764289</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3851798414151127</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6148201585848874</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_gpt_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3026759532980443</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.26871892656580415</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.0752784812856624</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3915815147531249</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.608418485246875</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_azure_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2959418300148316</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2617593094162815</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.06921918428833788</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.38118715462038427</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6188128453796159</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_gpt_challenging_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2943468856853209</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2609411832378189</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.0677640101260132</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3830326136612966</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6169673863387034</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_azure_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2953331508329298</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2623296011678</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.0690955441259397</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.38518522686349643</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6148147731365036</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_azure_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3095540669712536</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.275219291990915</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.09304884967300144</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3932192507899382</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.606780749210062</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_spacy_keybert_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.34933815058440043</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3052868984775219</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.13366598237266375</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.427513614886899</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.572486385113101</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_gpt_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.29853121881581673</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.26588179183181093</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.0748879207116937</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.38939614000094874</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6106038599990511</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_description()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3012220539565912</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.26584275401217505</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.07610211189122854</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.38681015123423546</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6131898487657645</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_rachaels_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2998174653392009</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.26614124641327275</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.06860621645677523</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3906883240269046</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6093116759730953</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_gpt_challenging_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3116137295873837</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.27213662518716253</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.08253937006254523</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3932056431158821</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6067943568841179</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_rachaels_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2946864267793276</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.26165304561311586</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.07987928640226784</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3761207165626042</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6238792834373958</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_description()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3819569879947741</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3383366194392493</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.16947611117778555</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.4731192919493837</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.5268807080506164</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">AzureSpeechToText</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_description()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6795036238681976</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6511601081504713</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.5240469341855895</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.7363640762899438</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.26363592371005634</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_spacy_keybert_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3104086964766696</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.27578257996545813</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.0792007574724521</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.4035049754105765</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.5964950245894235</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_gpt_challenging_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.30870126215258614</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2750578273830452</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.09805423837554463</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.39256570480349845</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6074342951965016</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_description()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3370495021710253</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3032537611888387</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.1288281031858232</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.4289735925168484</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.5710264074831517</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_azure_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3030921134634972</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2688819869757765</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.07210929485781524</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3935323213903739</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.606467678609626</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_rachaels_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2966460419255616</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.26287634551374484</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.07404702302410458</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.38164808534117284</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6183519146588272</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperOpenAI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_formatted_spacy_keybert_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.39280857374245637</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3671729580402708</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2024138816655611</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.47351590604201643</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.5264840939579836</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_spacy_keybert_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3843486451206624</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3221966078994076</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.1507698513455821</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.45099383773220214</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.5490061622677979</td> 
+                            </tr> 
+                            <tr class="border-b dark:border-neutral-500"> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">WhisperPI</td> 
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">get_gpt_keywords()</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3107977372213024</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.2781824094860706</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.09580603251596534</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.3991477856386202</td> 
+                                <td class="whitespace-nowrap px-6 py-4">0.6008522143613798</td> 
+                            </tr> 
+
+                        </tbody>
+                    </table>
+                    <div class="whitespace-nowrap px-6 py-4"><canvas id="myChart"></canvas></div>
+                    <p class="whitespace-nowrap px-6 py-4 font-normal text-center text-sm">
+                        An ideal model will have low <i>Word Error Rate</i>, <i>Match Error Rate</i>, <i>Character Error Rate</i>, and <i>Word Information Lost</i> scores, along with a high <i>Word Information Preserved</i> score. 
+                        <br>See more information <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://github.com/jitsi/jiwer">here</a>.</p>
+                    <p class="whitespace-nowrap px-6 py-4 font-normal">Last updated: August 14, 2023 - 14:00:41</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!-- BAR CHART CODE -->
+<script>
+    const ctx = document.getElementById('myChart');
+  
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Word Error Rate', 'Match Error Rate', 'Character Error Rate', 'Word Information Lost', 'Word Information Preserved'],
+            datasets: [
+                { 
+                    label: "WhisperOpenAI - get_description()", 
+                    data: [0.30423254602643063, 0.26984357388849695, 0.07419440674945453, 0.3944804944974182, 0.6055195055025818] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_gpt_challenging_keywords()", 
+                    data: [0.2948315840976834, 0.26090644611853697, 0.06525280957499584, 0.38209595421160963, 0.6179040457883904] 
+                },
+                { 
+                    label: "WhisperPI - get_formatted_gpt_keywords()", 
+                    data: [0.3181006240224606, 0.2780749109833807, 0.08970439626737788, 0.40059069583191026, 0.5994093041680897] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_formatted_rachaels_keywords()", 
+                    data: [0.29426279332604033, 0.2622738675716902, 0.07100064784764289, 0.3851798414151127, 0.6148201585848874] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_gpt_keywords()", 
+                    data: [0.3026759532980443, 0.26871892656580415, 0.0752784812856624, 0.3915815147531249, 0.608418485246875] 
+                },
+                { 
+                    label: "WhisperPI - get_formatted_azure_keywords()", 
+                    data: [0.2959418300148316, 0.2617593094162815, 0.06921918428833788, 0.38118715462038427, 0.6188128453796159] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_formatted_gpt_challenging_keywords()", 
+                    data: [0.2943468856853209, 0.2609411832378189, 0.0677640101260132, 0.3830326136612966, 0.6169673863387034] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_formatted_azure_keywords()", 
+                    data: [0.2953331508329298, 0.2623296011678, 0.0690955441259397, 0.38518522686349643, 0.6148147731365036] 
+                },
+                { 
+                    label: "WhisperPI - get_azure_keywords()", 
+                    data: [0.3095540669712536, 0.275219291990915, 0.09304884967300144, 0.3932192507899382, 0.606780749210062] 
+                },
+                { 
+                    label: "WhisperPI - get_formatted_spacy_keybert_keywords()", 
+                    data: [0.34933815058440043, 0.3052868984775219, 0.13366598237266375, 0.427513614886899, 0.572486385113101] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_formatted_gpt_keywords()", 
+                    data: [0.29853121881581673, 0.26588179183181093, 0.0748879207116937, 0.38939614000094874, 0.6106038599990511] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_formatted_description()", 
+                    data: [0.3012220539565912, 0.26584275401217505, 0.07610211189122854, 0.38681015123423546, 0.6131898487657645] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_rachaels_keywords()", 
+                    data: [0.2998174653392009, 0.26614124641327275, 0.06860621645677523, 0.3906883240269046, 0.6093116759730953] 
+                },
+                { 
+                    label: "WhisperPI - get_formatted_gpt_challenging_keywords()", 
+                    data: [0.3116137295873837, 0.27213662518716253, 0.08253937006254523, 0.3932056431158821, 0.6067943568841179] 
+                },
+                { 
+                    label: "WhisperPI - get_rachaels_keywords()", 
+                    data: [0.2946864267793276, 0.26165304561311586, 0.07987928640226784, 0.3761207165626042, 0.6238792834373958] 
+                },
+                { 
+                    label: "WhisperPI - get_formatted_description()", 
+                    data: [0.3819569879947741, 0.3383366194392493, 0.16947611117778555, 0.4731192919493837, 0.5268807080506164] 
+                },
+                { 
+                    label: "AzureSpeechToText - get_description()", 
+                    data: [0.6795036238681976, 0.6511601081504713, 0.5240469341855895, 0.7363640762899438, 0.26363592371005634] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_spacy_keybert_keywords()", 
+                    data: [0.3104086964766696, 0.27578257996545813, 0.0792007574724521, 0.4035049754105765, 0.5964950245894235] 
+                },
+                { 
+                    label: "WhisperPI - get_gpt_challenging_keywords()", 
+                    data: [0.30870126215258614, 0.2750578273830452, 0.09805423837554463, 0.39256570480349845, 0.6074342951965016] 
+                },
+                { 
+                    label: "WhisperPI - get_description()", 
+                    data: [0.3370495021710253, 0.3032537611888387, 0.1288281031858232, 0.4289735925168484, 0.5710264074831517] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_azure_keywords()", 
+                    data: [0.3030921134634972, 0.2688819869757765, 0.07210929485781524, 0.3935323213903739, 0.606467678609626] 
+                },
+                { 
+                    label: "WhisperPI - get_formatted_rachaels_keywords()", 
+                    data: [0.2966460419255616, 0.26287634551374484, 0.07404702302410458, 0.38164808534117284, 0.6183519146588272] 
+                },
+                { 
+                    label: "WhisperOpenAI - get_formatted_spacy_keybert_keywords()", 
+                    data: [0.39280857374245637, 0.3671729580402708, 0.2024138816655611, 0.47351590604201643, 0.5264840939579836] 
+                },
+                { 
+                    label: "WhisperPI - get_spacy_keybert_keywords()", 
+                    data: [0.3843486451206624, 0.3221966078994076, 0.1507698513455821, 0.45099383773220214, 0.5490061622677979] 
+                },
+                { 
+                    label: "WhisperPI - get_gpt_keywords()", 
+                    data: [0.3107977372213024, 0.2781824094860706, 0.09580603251596534, 0.3991477856386202, 0.6008522143613798] 
+                },
+
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
