@@ -3,9 +3,8 @@ __pycache__/*
 */__pycache__/*
 
 # General testing:
-*results.json
 results/*
-past_results/*
+past_results/results-*
 datasets/*_TEST
 datasets/2023*
 datasets/*/*/*.wav
