@@ -7,6 +7,7 @@ results/*
 past_results/results-*
 datasets/*_TEST
 datasets/2023*
+datasets/*/*/*.wav
 test_transcribe.py
 
 # Symmetry testing:
