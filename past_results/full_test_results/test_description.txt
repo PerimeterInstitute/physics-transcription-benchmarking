@@ -1,6 +1,5 @@
-"Full Dataset" was ran on WhisperPI, WhisperOpenAI, and AzureTextToSpeech models.
-Each Model/dataset audio pair was tested with 12 different prompt functions:
-10 prompts:
+'full_dataset' (in 'physics-transcription-benchmarking/datasets/') was ran on WhisperPI, WhisperOpenAI, and AzureTextToSpeech models.
+Each Model was used to transcript each audio file in the 'full_dataset', and each Model/audio pair was tested with 12 different prompt functions:
 - Templated prompts (6 total)
     - Description
     - Rachael’s keywords
