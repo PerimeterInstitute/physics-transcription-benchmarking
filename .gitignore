@@ -12,8 +12,6 @@ test_transcribe.py
 
 # Symmetry testing:
 *.out
-*.sh
-example.py
 
 # Summary testing:
 create_test_summary/test_summary.html
