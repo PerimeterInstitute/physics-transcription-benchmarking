@@ -1,6 +1,6 @@
 from time import time
 from datetime import timedelta
-from ModelWrapper import ModelWrapper
+from .ModelWrapper import ModelWrapper
 import pi_whisper as whisper
 
 class WhisperPI(ModelWrapper):

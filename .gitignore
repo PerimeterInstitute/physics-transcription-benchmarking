@@ -9,6 +9,7 @@ datasets/*_TEST
 datasets/2023*
 datasets/*/*/*.wav
 test_transcribe.py
+examples/results/*
 
 # Symmetry testing:
 *.out

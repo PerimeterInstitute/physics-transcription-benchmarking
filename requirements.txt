@@ -1,0 +1,25 @@
+python==3.11.0
+azure-cognitiveservices-speech==1.34.1
+click==8.1.7
+ffmpeg-python==0.2.0
+filelock==3.13.1
+fsspec==2023.12.2
+future==0.18.3
+install==1.3.5
+jiwer==3.0.3
+llvmlite==0.41.1
+more-itertools==10.2.0
+mpmath==1.3.0
+networkx==3.2.1
+numba==0.58.1
+numpy==1.26.3
+openai-whisper==20231117
+pi-whisper @ git+https://github.com/rmohl/whisper.git@646b054086dc53803392701c34d8c69634fd497c
+psutil==5.9.7
+rapidfuzz==3.6.1
+regex==2023.12.25
+sympy==1.12
+tiktoken==0.3.3
+torch==2.1.2
+tqdm==4.66.1
+webencodings==0.5.1

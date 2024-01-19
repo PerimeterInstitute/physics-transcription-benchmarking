@@ -1,7 +1,8 @@
 from time import time
 from datetime import timedelta
-from ModelWrapper import ModelWrapper
-import whisper
+from .ModelWrapper import ModelWrapper
+# import whisper
+import pi_whisper as whisper
 
 class WhisperOpenAI(ModelWrapper):
 
