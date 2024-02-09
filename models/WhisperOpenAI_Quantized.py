@@ -28,6 +28,9 @@ class WhisperOpenAI(ModelWrapper):
     def load(self):
 
         quantized_model_path = os.path.join("./models/download/", f"{self.name}_quantized_model.pth")
+        # If the quantized model directory doesn't exist, create it
+        os.makedirs("./models/download/", exist_ok=True)
+        
         if os.path.exists(quantized_model_path):
             # Load the quantized model if it exists
             self.__model = torch.load(quantized_model_path)
