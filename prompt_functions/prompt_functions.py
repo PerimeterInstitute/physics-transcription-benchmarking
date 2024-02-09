@@ -7,6 +7,9 @@ from string import Template
 prompt_keyword_template = Template("$speaker I will be presenting a talk called '$title'. Some of the topics we will cover include $keywords.$speakers")
 prompt_description_template = Template("$speaker I will be presenting a talk called '$title'. $description$speakers")
 speaker_template = Template(" - Hi my name is $name and I'm representing $institution.")
+# prompt_keyword_template = Template("Je présenterai une conférence intitulée '$title'. Certains des sujets que nous aborderons incluent $keywords. $speakers.")
+# prompt_description_template = Template("$speaker Je présenterai une conférence intitulée '$title'. $description$speakers.")
+# speaker_template = Template(" - Salut, je m'appelle $name et je représente $institution.")
 
 # ==================================== #
 # ==== TEMPLATED Prompt Functions ==== #
