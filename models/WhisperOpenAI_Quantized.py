@@ -34,6 +34,8 @@ class WhisperOpenAI(ModelWrapper):
         if os.path.exists(quantized_model_path):
             # Load the quantized model if it exists
             self.__model = torch.load(quantized_model_path)
+            # Move the model to the GPU if available
+            self.__model = self.__model.to(torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
             return
 
         # load model
@@ -46,6 +48,9 @@ class WhisperOpenAI(ModelWrapper):
             dtype=torch.qint8)  # the target dtype for quantized weights
 
         load_end = time()
+
+        # Move the model to the GPU if available
+        self.__model = self.__model.to(torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
 
         # Save the quantized model to the specified directory
         torch.save(self.__model, quantized_model_path)
