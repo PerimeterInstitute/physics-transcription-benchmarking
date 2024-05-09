@@ -1,6 +1,6 @@
 from time import time
 from datetime import timedelta
-from ModelWrapper import ModelWrapper
+from models.ModelWrapper import ModelWrapper
 import whisper
 
 class WhisperOpenAI(ModelWrapper):
