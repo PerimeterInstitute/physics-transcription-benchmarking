@@ -2,7 +2,7 @@ from os import listdir, mkdir
 from os.path import join, isdir
 from prompt_functions.prompt_functions import get_description
 from whisper.utils import get_writer
-import gc, json
+import gc, os, json
 
 # ========================== #
 # ==== Transcribe Class ==== #
@@ -49,14 +49,16 @@ class Transcribe():
             prompt = prompt_function(audio_info)
 
             # transcribing model
-            model.transcribe(audio_name, audio_file, prompt)
+            model.transcribe(audio_name, os.path.join(dataset_path, "test_data", audio_file), prompt)
 
             # saving transcription
-            with open("./transcriptions/"+audio_name+".txt", "w") as f:     # as txt file
-                f.write(model.transcription[audio_name])
+            if audio_name in model.transcription:
+                with open("./transcriptions/"+audio_name+".txt", "w") as f:     # as txt file
+                    f.write(model.transcription[audio_name])
 
-            writer = get_writer("vtt", "./transcriptions/")                 # as vtt file
-            writer(model.result_object[audio_name], audio_name+".vtt", {"max_line_width": None, "max_line_count": None, "highlight_words": None})
+            if audio_name in model.result_object:
+                writer = get_writer("vtt", "./transcriptions/")                 # as vtt file
+                writer(model.result_object[audio_name], audio_name+".vtt", {"max_line_width": None, "max_line_count": None, "highlight_words": None})
 
             # freeing memory
             del audio_name

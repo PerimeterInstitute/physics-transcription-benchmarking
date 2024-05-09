@@ -86,13 +86,13 @@ class Test():
                     current_test_results = {}
                     audio_name = test_case["audio_name"]
                     audio_file = test_case["audio_file"]
-                    transcript_file = test_case["transcript_file"]
+                    transcript_file = test_case["transcript_filename"]
                     
                     # creating prompt
                     prompt = prompt_function(test_case["audio_info"])
 
                     # transcribing model
-                    model.transcribe(audio_name, audio_file, prompt)
+                    model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
     
                     # adding load time and transcribe time to result dict
                     current_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
@@ -102,7 +102,7 @@ class Test():
                         current_test_results.update({"transcribe_time": model.transcribe_time[audio_name]})
 
                     # evaluating transcription
-                    with open(transcript_file, "r") as f:
+                    with open(join(dataset_path, "test_data", transcript_file), "r") as f:
                         reference = f.read()
                     accuracy_data = self.__compare(reference, model.transcription[audio_name])
 
