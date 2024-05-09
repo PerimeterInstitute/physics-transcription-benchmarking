@@ -9,6 +9,8 @@ datasets/*_TEST
 datasets/2023*
 datasets/*/*/*.wav
 test_transcribe.py
+hpc_scripts/*
+*.html
 
 # Symmetry testing:
 *.out
@@ -20,4 +22,6 @@ create_dataset/datasets/
 whisper.cpp/
 test-whispercpp.py
 test-whispercpp.ipynb
-models/WhisperCPP.py
+Test.ipynb
+test_whisperCPP.ipynb
+create_test_summary.ipynb
