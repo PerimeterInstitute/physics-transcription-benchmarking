@@ -66,7 +66,8 @@ class Test():
                 # create test_details dictionary, add to current model
                 test_details = {"model_info": {"class_name": model.__class__.__name__,
                                             "model_name": model.name,
-                                            **model_attributes},
+                                            **model_attributes,
+                                            "load_time": model.load_time},
                                 "prompt_info": {"prompt_function_name": prompt_function.__name__,
                                                 "prompt_function_code": inspect.getsource(prompt_function)},
                                 "system_info": {"system": uname.system,
@@ -79,6 +80,8 @@ class Test():
                                 "memory_info": {"total_memory": mem.total,
                                                 "available_memory": mem.available,
                                                 "used_memory": mem.used}}
+                # TODO: add GPU details?
+                
                 current_model.update({"test_details": test_details})
 
                 for test_case in dataset:
@@ -94,10 +97,8 @@ class Test():
                     # transcribing model
                     model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
     
-                    # adding load time and transcribe time to result dict
+                    # adding current date and transcribe time to result dict
                     current_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
-                    if model.load_time[audio_name]:
-                        current_test_results.update({"load_time": model.load_time[audio_name]})
                     if model.transcribe_time[audio_name]:
                         current_test_results.update({"transcribe_time": model.transcribe_time[audio_name]})
 

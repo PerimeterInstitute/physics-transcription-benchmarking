@@ -29,7 +29,7 @@ class WhisperOpenAI(ModelWrapper):
         self.__model = whisper.load_model(self.model_type)
         load_end = time()
 
-        self.__load_time__ = load_end - load_start
+        self.load_time = str(timedelta(seconds=load_end - load_start))
 
     def unload(self):
         del self.__model
@@ -44,8 +44,7 @@ class WhisperOpenAI(ModelWrapper):
         result = self.__model.transcribe(audio_file, initial_prompt=prompt, **self.options)
         transcribe_end = time()
         
-        # save load time, transcribe time, and result object
-        self.load_time.update({audio_name: str(timedelta(seconds=self.__load_time__))})
+        # save transcribe time and result object
         self.transcribe_time.update({audio_name: str(timedelta(seconds=transcribe_end - transcribe_start))})
         self.result_object.update({audio_name: result})
 

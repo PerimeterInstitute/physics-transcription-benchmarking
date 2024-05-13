@@ -30,7 +30,7 @@ class AzureSpeechToText(ModelWrapper):
         self.__speech_config = speechsdk.SpeechConfig(subscription=self.key, region=self.region, **self.options)
         load_end = time()
 
-        self.__load_time__ = load_end - load_start
+        self.load_time = str(timedelta(seconds=load_end - load_start))
 
     def unload(self):
         del self.__speech_config
@@ -71,8 +71,7 @@ class AzureSpeechToText(ModelWrapper):
 
         transcribe_end = time()
         
-        # save load time, and transcribe time, and transcription
-        self.load_time.update({audio_name: str(timedelta(seconds=self.__load_time__))})
+        # save transcribe time and transcription
         self.transcribe_time.update({audio_name: str(timedelta(seconds=transcribe_end - transcribe_start))})
         self.transcription.update({audio_name: result})
 
