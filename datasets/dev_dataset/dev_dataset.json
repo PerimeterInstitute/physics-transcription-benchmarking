@@ -21,7 +21,7 @@
             },
             "notes": "good audio quality, involves simple spoken mathematics, involves mathematical and astrophysical terminology"
         },
-        "transcript_filename": "fitting_models_with_mcmc_talk-30sec.txt",
+        "transcript_file": "fitting_models_with_mcmc_talk-30sec.txt",
         "transcript_info": {
             "source": "",
             "notes": "human edited/reviewed WhisperPI model transcription"
@@ -49,7 +49,7 @@
             },
             "notes": "mediocre audio quality, involves simple spoken mathematics, involves mathematical and cosmological terminology"
         },
-        "transcript_filename": "celestial_holography_talk-30sec.txt",
+        "transcript_file": "celestial_holography_talk-30sec.txt",
         "transcript_info": {
             "source": "",
             "notes": "human edited/reviewed WhisperPI model transcription"
@@ -77,7 +77,7 @@
             },
             "notes": "mediocre audio quality, involves spoken mathematics, involves mathematical and quantum terminology"
         },
-        "transcript_filename": "computing_entanglement_talk-2min.txt",
+        "transcript_file": "computing_entanglement_talk-2min.txt",
         "transcript_info": {
             "source": "",
             "notes": "human edited/reviewed WhisperPI model transcription"

@@ -86,7 +86,7 @@ class Test():
                     current_test_results = {}
                     audio_name = test_case["audio_name"]
                     audio_file = test_case["audio_file"]
-                    transcript_file = test_case["transcript_filename"]
+                    transcript_file = test_case["transcript_file"]
                     
                     # creating prompt
                     prompt = prompt_function(test_case["audio_info"])
