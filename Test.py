@@ -1,6 +1,6 @@
 from os import listdir, mkdir
 from os.path import join, isdir
-from datetime import datetime
+from datetime import datetime, timedelta
 from prompt_functions.prompt_functions import get_description
 import gc, inspect, jiwer, json, platform, psutil
 
@@ -38,6 +38,8 @@ class Test():
             mkdir("./results/")
 
         for model in model_array:
+
+            all_transcribe_times = []
 
             # load model
             model.load()
@@ -81,7 +83,7 @@ class Test():
                                                 "available_memory": mem.available,
                                                 "used_memory": mem.used}}
                 # TODO: add GPU details?
-                
+
                 current_model.update({"test_details": test_details})
 
                 for test_case in dataset:
@@ -100,7 +102,14 @@ class Test():
                     # adding current date and transcribe time to result dict
                     current_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
                     if model.transcribe_time[audio_name]:
-                        current_test_results.update({"transcribe_time": model.transcribe_time[audio_name]})
+                        current_transcribe_time = model.transcribe_time[audio_name]
+
+                        # add to current test dict
+                        current_test_results.update({"transcribe_time": current_transcribe_time})
+
+                        # convert string to timedelta and add to array
+                        converted_time = datetime.strptime(current_transcribe_time,"%H:%M:%S.%f")
+                        all_transcribe_times.append(timedelta(hours=converted_time.hour, minutes=converted_time.minute, seconds=converted_time.second, microseconds=converted_time.microsecond))
 
                     # evaluating transcription
                     with open(join(dataset_path, "test_data", transcript_file), "r") as f:
@@ -122,8 +131,17 @@ class Test():
                     del accuracy_data
                     gc.collect()
 
+                # determine average transcribe time and convert to a string
+                # print(all_transcribe_times)
+                average_transcribe_time = str(self.__add_times(all_transcribe_times) / len(all_transcribe_times))
+
+                # finalizing test summary dict
+                test_summary = self.__summarize(test_summary)
+                test_summary["all_transcribe_times"] = [str(time) for time in all_transcribe_times]
+                test_summary["average_transcribe_time"] = average_transcribe_time
+
                 # adding test_results and test_summary to current_model dictionary 
-                current_model.update({"test_results": test_results, "test_summary": self.__summarize(test_summary)})
+                current_model.update({"test_results": test_results, "test_summary": test_summary})
 
                 # creating json file for model
                 json_obj = json.dumps(current_model, indent=4)
@@ -137,10 +155,12 @@ class Test():
                 del test_details
                 del json_obj
                 del mem
+                del average_transcribe_time
                 gc.collect()
 
             # freeing memory
             model.unload()
+            del all_transcribe_times
             del model_attributes
             gc.collect()
 
@@ -190,3 +210,8 @@ class Test():
                 summarized_data.update({key: value})
         return summarized_data
     
+    def __add_times(self, timedelta_arr):           # sum() function did not work for timedelta objects, so this function is used instead
+        total_time = timedelta(0)
+        for time in timedelta_arr:
+            total_time += time
+        return total_time
