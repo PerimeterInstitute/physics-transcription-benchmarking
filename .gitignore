@@ -24,4 +24,6 @@ test-whispercpp.py
 test-whispercpp.ipynb
 Test.ipynb
 test_whisperCPP.ipynb
+test_whisperCPP.py
 create_test_summary.ipynb
+past_results/hpc_cpp_results/*
