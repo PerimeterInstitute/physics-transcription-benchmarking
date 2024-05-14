@@ -3,6 +3,7 @@ from os.path import join, isdir
 from datetime import datetime, timedelta
 from prompt_functions.prompt_functions import get_description
 import gc, inspect, jiwer, json, platform, psutil
+from whisper.normalizers import EnglishTextNormalizer
 
 # ==================== #
 # ==== Test Class ==== #
@@ -31,6 +32,10 @@ class Test():
         # GETTING SYSTEM INFORMATION:
 
         uname = platform.uname()
+
+        # CREATING NORMALIZER CLASS:
+
+        normalizer = EnglishTextNormalizer()
 
         # RUNNING TESTS:
 
@@ -114,7 +119,7 @@ class Test():
                     # evaluating transcription
                     with open(join(dataset_path, "test_data", transcript_file), "r") as f:
                         reference = f.read()
-                    accuracy_data = self.__compare(reference, model.transcription[audio_name])
+                    accuracy_data = self.__compare(normalizer(reference), normalizer(model.transcription[audio_name]))
 
                     # updating dictionaries
                     test_summary = self.__merge_dicts(test_summary, accuracy_data)
@@ -132,12 +137,10 @@ class Test():
                     gc.collect()
 
                 # determine average transcribe time and convert to a string
-                # print(all_transcribe_times)
                 average_transcribe_time = str(self.__add_times(all_transcribe_times) / len(all_transcribe_times))
 
                 # finalizing test summary dict
                 test_summary = self.__summarize(test_summary)
-                test_summary["all_transcribe_times"] = [str(time) for time in all_transcribe_times]
                 test_summary["average_transcribe_time"] = average_transcribe_time
 
                 # adding test_results and test_summary to current_model dictionary 
@@ -167,6 +170,7 @@ class Test():
         # freeing memory
         del dataset
         del uname
+        del normalizer
         gc.collect()
 
     def __compare(self, reference, hypothesis):
