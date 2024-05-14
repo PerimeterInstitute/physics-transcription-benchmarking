@@ -27,6 +27,7 @@ class WhisperCPP(ModelWrapper):
     def load(self):
 
         with cd(self.pathToWhisperCPP):
+            
             # load model
             load_start = time()
 
