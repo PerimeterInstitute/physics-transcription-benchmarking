@@ -9,6 +9,7 @@
 </head>
 
 <body>
+
 <!-- TABLE CODE -->
     <div class="flex flex-col">
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -19,6 +20,7 @@
                             <tr>
                                 <th scope="col" class=" px-6 py-4">Model Class</th>
                                 <th scope="col" class=" px-6 py-4">Prompt Loading Function</th>
+                                <th scope="col" class=" px-6 py-4">Average Transcription Time (hh:mm:ss)</th>
                                 <th scope="col" class=" px-6 py-4">Average Word Error Rate</th>
                                 <th scope="col" class=" px-6 py-4">Average Match Error Rate</th>
                                 <th scope="col" class=" px-6 py-4">Average Character Error Rate</th>
@@ -30,10 +32,13 @@
 $table_data
                         </tbody>
                     </table>
-                    <div class="whitespace-nowrap px-6 py-4"><canvas id="myChart"></canvas></div>
+                    <div class="whitespace-nowrap px-6 py-4"><canvas id="accuracy_graph"></canvas></div>
                     <p class="whitespace-nowrap px-6 py-4 font-normal text-center text-sm">
                         An ideal model will have low <i>Word Error Rate</i>, <i>Match Error Rate</i>, <i>Character Error Rate</i>, and <i>Word Information Lost</i> scores, along with a high <i>Word Information Preserved</i> score. 
                         <br>See more information <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://github.com/jitsi/jiwer">here</a>.</p>
+                    <div class="whitespace-nowrap px-6 py-4"><canvas id="time_graph"></canvas></div>
+                    <p class="whitespace-nowrap px-6 py-4 font-normal text-center text-sm">
+                        An ideal model will take a minimal amount of processing time while still retaining transcription accuracy.</p>
                     <p class="whitespace-nowrap px-6 py-4 font-normal">Last updated: $date</p>
                 </div>
             </div>
@@ -44,20 +49,58 @@ $table_data
 
 <!-- BAR CHART CODE -->
 <script>
-    const ctx = document.getElementById('myChart');
+    const accuracy_graph = document.getElementById('accuracy_graph');
+    const time_graph = document.getElementById('time_graph')
   
-    new Chart(ctx, {
+    new Chart(accuracy_graph, {
         type: 'bar',
         data: {
             labels: ['Word Error Rate', 'Match Error Rate', 'Character Error Rate', 'Word Information Lost', 'Word Information Preserved'],
             datasets: [
-$graph_data
+$accuracy_graph_data
             ]
         },
         options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Comparison of Accuracy Data Between Models"
+                }
+            },
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: "Rate (%)"
+                    }
+                }
+            }
+        }
+    });
+
+    new Chart(time_graph, {
+        type: 'bar',
+        data: {
+            labels: $time_graph_labels,
+            datasets: [
+$time_graph_data
+            ]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Comparison of Transcription Times Between Models"
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: "Transcription Time (s)"
+                    }
                 }
             }
         }
