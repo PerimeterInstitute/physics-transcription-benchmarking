@@ -69,8 +69,12 @@ class WhisperCPPQuantized(ModelWrapper):
     def createTranscription(self, audio_name):
         transcription = ""
 
-        file = open(os.path.join(self.__pathToWhisperCPP, audio_name+".txt"), "r")
-        lines = file.readlines()
+        try:
+            file = open(os.path.join(self.__pathToWhisperCPP, audio_name+".txt"), "r")
+            lines = file.readlines()
+        except:
+            file = open(os.path.join(self.__pathToWhisperCPP, audio_name+".txt"), "r", encoding="latin-1")
+            lines = file.readlines()
 
         for line in lines:
             split_line = line.split("]", 1)
