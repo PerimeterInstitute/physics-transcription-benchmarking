@@ -11,12 +11,10 @@ datasets/*/*/*.wav
 test_transcribe.py
 hpc_scripts/*
 *.html
+Test_old.py
 
 # Symmetry testing:
 *.out
-
-# Create dataset testing:
-create_dataset/datasets/
 
 # WhisperCPP testing:
 whisper.cpp/
@@ -27,3 +25,4 @@ test_whisperCPP.ipynb
 test_whisperCPP.py
 create_test_summary.ipynb
 past_results/hpc_cpp_results/*
+create_test_summary_only.py
