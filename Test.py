@@ -11,7 +11,7 @@ from whisper.normalizers import EnglishTextNormalizer
 
 class Test():
 
-    def __init__(self, model_array, prompt_function_array=[get_description], dataset_path="full"):
+    def __init__(self, model_array, prompt_function_array=[get_description], dataset_path="full", run_num=1):
 
         # LOADING SCOPE DATASETS:
 
@@ -33,7 +33,7 @@ class Test():
 
         uname = platform.uname()
 
-        # CREATING NORMALIZER CLASS:
+        # CREATING NORMALIZER:
 
         normalizer = EnglishTextNormalizer()
 
@@ -43,8 +43,6 @@ class Test():
             mkdir("./results/")
 
         for model in model_array:
-
-            all_transcribe_times = []
 
             # load model
             model.load()
@@ -89,61 +87,75 @@ class Test():
                                                 "used_memory": mem.used}}
                 # TODO: add GPU details?
 
+                # add test details to current model
                 current_model.update({"test_details": test_details})
 
                 for test_case in dataset:
 
-                    current_test_results = {}
+                    local_test_results = {}
+                    local_summary = {}
                     audio_name = test_case["audio_name"]
                     audio_file = test_case["audio_file"]
                     transcript_file = test_case["transcript_file"]
+
+                    for i in range(run_num):
+
+                        local_rerun_test_results = {}
                     
-                    # creating prompt
-                    prompt = prompt_function(test_case["audio_info"])
+                        # creating prompt
+                        prompt = prompt_function(test_case["audio_info"])
 
-                    # transcribing model
-                    model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
-    
-                    # adding current date and transcribe time to result dict
-                    current_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
-                    if model.transcribe_time[audio_name]:
-                        current_transcribe_time = model.transcribe_time[audio_name]
+                        # transcribing model
+                        model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
+        
+                        # adding current date and transcribe time to result dict
+                        local_rerun_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
+                        if model.transcribe_time[audio_name]:
+                            current_transcribe_time = model.transcribe_time[audio_name]
 
-                        # add to current test dict
-                        current_test_results.update({"transcribe_time": current_transcribe_time})
+                            # add to current test dict
+                            local_rerun_test_results.update({"transcribe_time": current_transcribe_time})
 
-                        # convert string to timedelta and add to array
-                        converted_time = datetime.strptime(current_transcribe_time,"%H:%M:%S.%f")
-                        all_transcribe_times.append(timedelta(hours=converted_time.hour, minutes=converted_time.minute, seconds=converted_time.second, microseconds=converted_time.microsecond))
+                            # convert string to timedelta and add to array
+                            converted_time = datetime.strptime(current_transcribe_time,"%H:%M:%S.%f")
+                            transcribe_time = timedelta(hours=converted_time.hour, minutes=converted_time.minute, seconds=converted_time.second, microseconds=converted_time.microsecond)
 
-                    # evaluating transcription
-                    with open(join(dataset_path, "test_data", transcript_file), "r") as f:
-                        reference = f.read()
-                    accuracy_data = self.__compare(normalizer(reference), normalizer(model.transcription[audio_name]))
+                        # evaluating transcription
+                        with open(join(dataset_path, "test_data", transcript_file), "r") as f:
+                            reference = f.read()
+                        accuracy_data = self.__compare(normalizer(reference), normalizer(model.transcription[audio_name]))
+                        
+                        # updating dictionaries
+                        run_data = {"transcribe_time": transcribe_time, **accuracy_data}
+                        local_summary = self.__merge_dicts(local_summary, run_data)
+                        test_summary = self.__merge_dicts(test_summary, run_data)
+                        local_rerun_test_results.update(accuracy_data)
+                        local_test_results.update({"run_"+str(i): local_rerun_test_results})
 
-                    # updating dictionaries
-                    test_summary = self.__merge_dicts(test_summary, accuracy_data)
-                    current_test_results.update({"accuracy_data": accuracy_data})
-                    test_results.update({test_case["audio_name"]: current_test_results})
+                        # freeing memory
+                        del local_rerun_test_results
+                        del prompt
+                        del reference
+                        del accuracy_data
+
+                    # adding local summary to local test results dictionary
+                    local_test_results.update({"summary": self.__summarize(local_summary)})
+
+                    # updating test result dictionary
+                    test_results.update({test_case["audio_name"]: local_test_results})
 
                     # freeing memory
-                    del current_test_results
+                    del local_test_results
+                    del local_summary
                     del audio_name
                     del audio_file
                     del transcript_file
-                    del prompt
-                    del reference
-                    del accuracy_data
                     gc.collect()
 
-                # determine average transcribe time and convert to a string
-                average_transcribe_time = str(self.__add_times(all_transcribe_times) / len(all_transcribe_times))
+                # finalizing test summary dictionary
+                test_summary = {"transcriptions_per_audio": run_num, **self.__summarize(test_summary)}
 
-                # finalizing test summary dict
-                test_summary = self.__summarize(test_summary)
-                test_summary["average_transcribe_time"] = average_transcribe_time
-
-                # adding test_results and test_summary to current_model dictionary 
+                # adding test_results and test_summary to model dictionary 
                 current_model.update({"test_results": test_results, "test_summary": test_summary})
 
                 # creating json file for model
@@ -155,15 +167,14 @@ class Test():
                 del current_model
                 del test_results
                 del test_summary
+                del mem
                 del test_details
                 del json_obj
-                del mem
-                del average_transcribe_time
                 gc.collect()
 
             # freeing memory
             model.unload()
-            del all_transcribe_times
+            # del model ?
             del model_attributes
             gc.collect()
 
@@ -172,6 +183,12 @@ class Test():
         del uname
         del normalizer
         gc.collect()
+
+    '''
+    NAME: __compare()
+
+    FUNCTION: Compares two texts and returns various accuracy data.
+    '''
 
     def __compare(self, reference, hypothesis):
 
@@ -192,10 +209,36 @@ class Test():
 
         return current_dataset
     
+    '''
+    NAME: __merge_dicts()
+
+    FUNCTION: If there are repeated keys in given dictionaries, merge the dictionaries 
+              such that all values associated with repeated keys are turned into one 
+              key-value pair where the value is a list of all unique values.
+              Leaves unique keys the same.
+
+    EXAMPLE:
+    Input -->       dict1: {
+                                "greeting": "hello", 
+                                "fruit": "apple"
+                            }
+                    dict2: {
+                                "greeting": "hi", 
+                                "vegetable": "carrot"
+                            }
+
+    Output--> merged_dict: {
+                                "greeting": ["hello", "hi"],
+                                "fruit": "apple",
+                                "vegetable": "carrot"
+                           }
+    '''
+
     def __merge_dicts(self, dict1, dict2):
 
         merged_dict = {**dict2, **dict1}        # this order ensures values in dict1 take priority
         for key, value in merged_dict.items():
+            
             if key in dict1 and key in dict2:
                 if isinstance(value, list):
                     value.append(dict2[key])
@@ -205,16 +248,49 @@ class Test():
 
         return merged_dict
     
+    '''
+    NAME: __summarize()
+
+    FUNCTION: If any values are lists, take the average of all values in the list
+              and replace the orginal list value with a single average value.
+              Otherwise leave the key-value pairs as they are.
+
+    EXAMPLE:
+    Input -->            dict: {
+                                "value1": 3, 
+                                "value2": [1, 2, 8, 9]
+                               }
+
+    Output--> summarized_dict: {
+                                "value1": 3,
+                                "value2": 5
+                               }
+    '''
+    
     def __summarize(self, accuracy_data):
         summarized_data = {}
         for key, value in accuracy_data.items():
-            if isinstance(value, list):
-                summarized_data.update({key: sum(value)/len(value)})
-            else:
-                summarized_data.update({key: value})
+
+            if isinstance(value, list):                     # if list
+                if isinstance(value[0], timedelta):         # if timedelta list
+                    summarized_data.update({key: str(self.__sum_timedeltas(value)/len(value))})
+                else:
+                    summarized_data.update({key: sum(value)/len(value)})
+            else:                                           # if single value
+                if isinstance(value, timedelta):            # if timedelta value
+                    summarized_data.update({key: str(value)})
+                else:
+                    summarized_data.update({key: value})
+
         return summarized_data
     
-    def __add_times(self, timedelta_arr):           # sum() function did not work for timedelta objects, so this function is used instead
+    '''
+    NAME: __sum_timedeltas()
+
+    FUNCTION: Find the sum of a list of timedelta objects.
+    '''
+
+    def __sum_timedeltas(self, timedelta_arr):           # sum() function did not work for timedelta objects, so this function is used instead
         total_time = timedelta(0)
         for time in timedelta_arr:
             total_time += time

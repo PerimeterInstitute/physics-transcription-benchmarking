@@ -19,6 +19,7 @@
                         <thead class="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
                             <tr>
                                 <th scope="col" class=" px-6 py-4">Model Class</th>
+                                <th scope="col" class=" px-6 py-4">Model Name</th>
                                 <th scope="col" class=" px-6 py-4">Prompt Loading Function</th>
                                 <th scope="col" class=" px-6 py-4">Average Transcription Time (hh:mm:ss)</th>
                                 <th scope="col" class=" px-6 py-4">Average Word Error Rate</th>
@@ -32,13 +33,20 @@
 $table_data
                         </tbody>
                     </table>
+                    <p class="whitespace-nowrap px-6 py-4 font-normal">Additional Notes: </p>
+                    <ul class="whitespace-nowrap px-6 font-normal">
+                        <li> - Each model was tested with $num_audio_samples different audio samples.</li> 
+                        <li> - Each model transcribed each audio sample a total of $num_runs times.</li>
+                    </ul>
                     <div class="whitespace-nowrap px-6 py-4"><canvas id="accuracy_graph"></canvas></div>
                     <p class="whitespace-nowrap px-6 py-4 font-normal text-center text-sm">
                         An ideal model will have low <i>Word Error Rate</i>, <i>Match Error Rate</i>, <i>Character Error Rate</i>, and <i>Word Information Lost</i> scores, along with a high <i>Word Information Preserved</i> score. 
-                        <br>See more information <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://github.com/jitsi/jiwer">here</a>.</p>
+                        <br>See more information <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://github.com/jitsi/jiwer">here</a>.
+                    </p>
                     <div class="whitespace-nowrap px-6 py-4"><canvas id="time_graph"></canvas></div>
                     <p class="whitespace-nowrap px-6 py-4 font-normal text-center text-sm">
-                        An ideal model will take a minimal amount of processing time while still retaining transcription accuracy.</p>
+                        An ideal model will take a minimal amount of processing time while still retaining transcription accuracy.
+                    </p>
                     <p class="whitespace-nowrap px-6 py-4 font-normal">Last updated: $date</p>
                 </div>
             </div>

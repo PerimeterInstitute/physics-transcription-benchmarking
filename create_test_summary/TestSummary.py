@@ -17,6 +17,7 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
     table_row_template = Template('\
                             <tr class="border-b dark:border-neutral-500"> \n\
                                 <td class="whitespace-nowrap px-6 py-4 font-medium">$model_class</td> \n\
+                                <td class="whitespace-nowrap px-6 py-4 font-medium">$model_name</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4 font-medium">$prompt_function</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$avg_transcribe_time</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$wer</td> \n\
@@ -62,16 +63,18 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
             if add_to_labels:
                 time_graph_labels.append(audio_sample)
 
-            # update transcribe times
-            transcribe_times.append(convertStringToSeconds(test_results[audio_sample]["transcribe_time"]))
-            
+            # update transcribe times (averaged across all runs for current sample audio)
+            transcribe_times.append(convertStringToSeconds(test_results[audio_sample]["summary"]["transcribe_time"]))
+        
+        # update transcribe times (averaged across ALL runs)
+        transcribe_times.append(convertStringToSeconds(summary_info["transcribe_time"]))
         add_to_labels = False           # we only need to get the labels from one test result file to know them all, so we stop adding after the first time
-        transcribe_times.append(convertStringToSeconds(summary_info["average_transcribe_time"]))        # add average transcribe time
-
+        
         # add row template to table data
         table_data = table_data + table_row_template.substitute({'model_class': model_info["class_name"],
+                                                                 'model_name': model_info["model_name"],
                                                                  'prompt_function': prompt_info["prompt_function_name"] + "()",
-                                                                 'avg_transcribe_time': summary_info["average_transcribe_time"],
+                                                                 'avg_transcribe_time': summary_info["transcribe_time"],
                                                                  'wer': summary_info["word_error_rate"],
                                                                  'mer': summary_info["match_error_rate"],
                                                                  'cer': summary_info["character_error_rate"],
@@ -89,7 +92,13 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
                                                                  'transcribe_times': transcribe_times})
 
     time_graph_labels.append("Average Transcription Time")
-    summary_table = table_template.substitute({'table_data': table_data, 'accuracy_graph_data': accuracy_graph_data, 'time_graph_labels': time_graph_labels, 'time_graph_data': time_graph_data, 'date': datetime.now().strftime("%B %d, %Y - %H:%M:%S")})
+    summary_table = table_template.substitute({'table_data': table_data,
+                                               'num_audio_samples': len(test_results),
+                                               'num_runs': summary_info["transcriptions_per_audio"],
+                                               'accuracy_graph_data': accuracy_graph_data, 
+                                               'time_graph_labels': time_graph_labels, 
+                                               'time_graph_data': time_graph_data, 
+                                               'date': datetime.now().strftime("%B %d, %Y - %H:%M:%S")})
 
     try:
         print("Creating " + filename + " ...")
