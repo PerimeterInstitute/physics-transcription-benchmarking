@@ -11,7 +11,7 @@ you already expect the metric isn't going to be flat anymore
 once you add some matter.
 So for asymptotically flat space times,
 I'm going to be using the boundaries I mentioned before
-and performing a larger expansion near null infinity.
+and performing a large R expansion near null infinity.
 I do that.
 I follow Bondi, Van de burg, Metzner and Sachs
 and I pick a nice gauge.
