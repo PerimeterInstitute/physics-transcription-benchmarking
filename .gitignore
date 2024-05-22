@@ -26,3 +26,9 @@ test_whisperCPP.py
 create_test_summary.ipynb
 past_results/hpc_cpp_results/*
 create_test_summary_only.py
+normalize_text.py
+
+# No speech testing
+poster_prize_talk_long.wav
+poster_prize_talk.wav
+datasets/no_speech_dataset/
