@@ -1,5 +1,5 @@
-from os import listdir, mkdir
-from os.path import join, isdir
+from os import listdir, mkdir, system
+from os.path import join, isdir, normpath, basename
 from datetime import datetime, timedelta
 from prompt_functions.prompt_functions import get_description
 import gc, inspect, jiwer, json, platform, psutil, copy
@@ -11,7 +11,7 @@ from whisper.normalizers import EnglishTextNormalizer
 
 class Test():
 
-    def __init__(self, model_array, prompt_function_array=[get_description], dataset_path="full", run_num=1):
+    def __init__(self, model_array, prompt_function_array=[get_description], dataset_path="full", run_num=1, saveTranscription=False):
 
         # LOADING DATASET:
         
@@ -86,6 +86,15 @@ class Test():
 
                         # transcribing model
                         model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
+
+                        if saveTranscription:
+                            if not isdir("./transcriptions/"):         # make 'transcriptions' folder if it doesn't already exist
+                                mkdir("./transcriptions/")
+                            transcription = model.transcription[audio_name]
+                            with open("./transcriptions/" + model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".txt", "w") as f:
+                                f.write(transcription)
+                            with open("./transcriptions/" + model.name + "_" + prompt_function.__name__ + "_" + audio_name + "-normalized.txt", "w") as f:
+                                f.write(normalizer(transcription))
         
                         # adding current date and transcribe time to result dict
                         local_rerun_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
@@ -396,11 +405,16 @@ def load_dataset(dataset_path):
     elif dataset_path == "dev":
         dataset_path = "./datasets/dev_dataset/"
 
+    # copy dataset to /local
+    system("cp -r " + dataset_path + " /local/")
+    dataset_path = join("/local", basename(normpath(dataset_path)))
+
     # loading dataset json file
     for file in listdir(dataset_path):
         if file.endswith(".json"):
             json_file_path = join(dataset_path, file)
             break
+        
     json_file = open(json_file_path)
     dataset = json.load(json_file)
     json_file.close()
