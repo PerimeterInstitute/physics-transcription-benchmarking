@@ -1,8 +1,10 @@
+from os import system, getcwd, chdir, mkdir
+from os.path import join, isdir, expanduser
+from subprocess import run
 from time import time
 from shutil import which
 from datetime import timedelta
 from models.ModelWrapper import ModelWrapper
-import os, subprocess
 
 class WhisperCPP(ModelWrapper):
 
@@ -22,6 +24,9 @@ class WhisperCPP(ModelWrapper):
         self.options = options
         self.transcribe_options = self.getTranscribeOptions()
         self.pathToWhisperCPP = pathToWhisperCPP
+        self.outputPath = join(pathToWhisperCPP, "transcriptions")
+        if not isdir(self.outputPath):         # make output folder if it doesn't already exist
+            mkdir(self.outputPath)
         self.makeClean()
 
     def load(self):
@@ -32,11 +37,11 @@ class WhisperCPP(ModelWrapper):
             load_start = time()
 
             # download model
-            subprocess.run(["bash", "models/download-ggml-model.sh", self.model_type])          # no check, since whispercpp does not download if it already exists!
+            run(["bash", "models/download-ggml-model.sh", self.model_type])          # no check, since whispercpp does not download if it already exists!
 
             # create main executable
             if (which("main") == None):                 # if main does not exist
-                os.system("WHISPER_CUDA=1 make -j")
+                system("WHISPER_CUDA=1 make -j")
 
             load_end = time()
 
@@ -47,13 +52,22 @@ class WhisperCPP(ModelWrapper):
         del self.model_type
         del self.options
 
-    def transcribe(self, audio_name, audio_file, prompt=None):
+    def transcribe(self, audio_name, audio_file, prompt=None, create_vtt=False):
 
         with cd(self.pathToWhisperCPP):
 
+            # remove quotes from prompt
+            prompt = prompt.replace('"', '')
+
+            # create transcribe command string
+            cmd = "./main "+self.transcribe_options+" -m models/ggml-"+self.model_type+".bin -f "+audio_file+" --prompt \""+prompt+"\" --output-file "+join(self.outputPath, audio_name)+ " --output-txt"
+            
+            if create_vtt:
+                cmd = cmd + " --output-vtt"
+
             # transcribe audio
             transcribe_start = time()
-            os.system("./main "+self.transcribe_options+" -m models/ggml-"+self.model_type+".bin -f "+audio_file+" > "+audio_name+".txt")
+            system(cmd)
             transcribe_end = time()
         
         # save transcribe time and transcription text
@@ -63,22 +77,14 @@ class WhisperCPP(ModelWrapper):
     def createTranscription(self, audio_name):
         transcription = ""
 
-        file = open(os.path.join(self.pathToWhisperCPP, audio_name+".txt"), "r")
-        lines = file.readlines()
+        with open(join(self.outputPath, audio_name+".txt"), "r") as file:
+            transcription = file.readlines()
 
-        for line in lines:
-            split_line = line.split("]", 1)
-
-            if len(split_line) > 1:
-                transcription = transcription + split_line[1].strip() + " "
-
-        file.close()
-
-        return transcription
+        return " ".join(transcription)
     
     def makeClean(self):
         with cd(self.pathToWhisperCPP):
-            os.system("make clean")
+            system("make clean")
 
     def getTranscribeOptions(self):
         transcribe_options = []
@@ -95,11 +101,11 @@ class WhisperCPP(ModelWrapper):
 class cd:     # from https://stackoverflow.com/questions/431684/equivalent-of-shell-cd-command-to-change-the-working-directory
     """Context manager for changing the current working directory"""
     def __init__(self, newPath):
-        self.newPath = os.path.expanduser(newPath)
+        self.newPath = expanduser(newPath)
 
     def __enter__(self):
-        self.savedPath = os.getcwd()
-        os.chdir(self.newPath)
+        self.savedPath = getcwd()
+        chdir(self.newPath)
 
     def __exit__(self, etype, value, traceback):
-        os.chdir(self.savedPath)
+        chdir(self.savedPath)
