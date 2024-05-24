@@ -32,3 +32,4 @@ normalize_text.py
 poster_prize_talk_long.wav
 poster_prize_talk.wav
 datasets/no_speech_dataset/
+datasets/long_test_dataset/
