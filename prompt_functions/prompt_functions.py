@@ -169,6 +169,9 @@ def get_formatted_gpt_challenging_keywords(json_obj):
 # ==== KEYWORD Prompt Functions ==== #
 # ================================== #
 
+def no_prompt(json_obj):
+    return ""
+
 def get_speakers_collections_subjects(json_obj):
 
     # FORMATTING PROMPT:
