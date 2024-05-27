@@ -1,4 +1,4 @@
-from os import listdir, mkdir, system
+from os import listdir, mkdir, system, getcwd
 from os.path import join, isdir, basename, normpath
 from prompt_functions.prompt_functions import get_description
 from whisper.utils import get_writer
@@ -62,19 +62,18 @@ class Transcribe():
             # transcribing model
             model.transcribe(audio_name, os.path.join(dataset_path, "test_data", audio_file), prompt)
 
-            # saving transcription
-            if audio_name in model.transcription:
-                with open("./transcriptions/"+audio_name+".txt", "w") as f:     # as txt file
+            # saving transcription as txt
+            if audio_name in model.transcription:                               
+                with open("./transcriptions/"+audio_name+".txt", "w") as f:     # TODO: use getcwd() instead of ./
                     text = model.transcription[audio_name]
-                    
                     if normalize:
                         text = normalizer(text)
                     f.write(text)
-                    
-
-            if audio_name in model.result_object:
-                writer = get_writer("vtt", "./transcriptions/")                 # as vtt file
-                writer(model.result_object[audio_name], audio_name+".vtt", {"max_line_width": None, "max_line_count": None, "highlight_words": None})
+            
+            # saving transcription as vtt
+            if audio_name in model.vtt:
+                with open("./transcriptions/"+audio_name+".vtt", "w") as f:     # TODO: use getcwd() instead of ./
+                    f.write(model.vtt[audio_name])
 
             # freeing memory
             del audio_name
