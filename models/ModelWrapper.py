@@ -14,17 +14,17 @@ class ModelWrapper(ABC):
 
     @property
     @abstractmethod
+    def vtt(self):
+        pass
+
+    @property
+    @abstractmethod
     def load_time(self):
         pass
 
     @property
     @abstractmethod
     def transcribe_time(self):
-        pass
-
-    @property
-    @abstractmethod
-    def takes_prompt(self):
         pass
 
     @abstractmethod

@@ -1,6 +1,10 @@
 from time import time
+from os import getcwd, mkdir
+from os.path import join, isdir
+from shutil import rmtree
 from datetime import timedelta
 from models.ModelWrapper import ModelWrapper
+from pi_whisper.utils import get_writer
 import pi_whisper as whisper
 
 class WhisperPI(ModelWrapper):
@@ -9,10 +13,10 @@ class WhisperPI(ModelWrapper):
 
     name = ""
     model_type = ""
-    takes_prompt = True
     options = {}
 
     transcription = {}
+    vtt = {}
     load_time = {}
     transcribe_time = {}
     result_object = {}
@@ -21,6 +25,9 @@ class WhisperPI(ModelWrapper):
         self.name = name
         self.model_type = options.pop("model_type", "large")
         self.options = options
+        self.__outputPath = join(getcwd(), "output")
+        if not isdir(self.__outputPath):         # make output folder if it doesn't already exist
+            mkdir(self.__outputPath)
 
     def load(self):
 
@@ -44,15 +51,33 @@ class WhisperPI(ModelWrapper):
         result = self.__model.transcribe(audio_file, initial_prompt=prompt, **self.options)
         transcribe_end = time()
         
-        # save transcribe time and result object
+        # save transcribe time, result object, transcription text, and transcription vtt
         self.transcribe_time.update({audio_name: str(timedelta(seconds=transcribe_end - transcribe_start))})
         self.result_object.update({audio_name: result})
+        self.transcription.update({audio_name: self.__createTranscription(audio_name)})
+        self.vtt.update({audio_name: self.__createVTT(audio_name)})
 
-        # save transcription text
+        # delete output folder and contents
+        rmtree(self.__outputPath)
+
+    def __createTranscription(self, audio_name):
         transcription = ""
-        for segment in result["segments"]:
-            transcription += segment["text"]
-        self.transcription.update({audio_name: transcription})
+
+        for segment in self.result_object[audio_name]["segments"]:
+            transcription += (segment["text"] + "\n")
+
+        return transcription
+        
+    def __createVTT(self, audio_name):
+        vtt = ""
+
+        writer = get_writer("vtt", self.__outputPath)
+        writer(self.result_object[audio_name], audio_name+".vtt", {"max_line_width": None, "max_line_count": None, "highlight_words": None})
+        with open(join(self.__outputPath, audio_name+".vtt"), 'r') as file:
+            vtt = file.readlines()
+        del writer 
+
+        return "".join(vtt)
 
     def get_model(self):
         return self.__model

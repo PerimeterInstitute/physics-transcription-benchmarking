@@ -2,7 +2,7 @@ from os import system, getcwd, chdir, mkdir
 from os.path import join, isdir, expanduser
 from subprocess import run
 from time import time
-from shutil import which
+from shutil import which, rmtree
 from datetime import timedelta
 from models.ModelWrapper import ModelWrapper
 
@@ -10,28 +10,27 @@ class WhisperCPP(ModelWrapper):
 
     name = ""
     model_type = ""
-    takes_prompt = True
     options = {}
 
     transcription = {}
+    vtt = {}
     load_time = {}
     transcribe_time = {}
-    result_object = {}
 
     def __init__(self, name, pathToWhisperCPP, options):
         self.name = name
         self.model_type = options.pop("model_type", "medium.en")       # other model options listed here: https://github.com/ggerganov/whisper.cpp?tab=readme-ov-file#more-audio-samples
         self.options = options
-        self.transcribe_options = self.getTranscribeOptions()
-        self.pathToWhisperCPP = pathToWhisperCPP
-        self.outputPath = join(pathToWhisperCPP, "transcriptions")
-        if not isdir(self.outputPath):         # make output folder if it doesn't already exist
-            mkdir(self.outputPath)
-        self.makeClean()
+        self.__transcribe_options = self.__getTranscribeOptions()
+        self.__pathToWhisperCPP = pathToWhisperCPP
+        self.__outputPath = join(pathToWhisperCPP, "output")
+        if not isdir(self.__outputPath):         # make output folder if it doesn't already exist
+            mkdir(self.__outputPath)
+        self.__makeClean()
 
     def load(self):
 
-        with cd(self.pathToWhisperCPP):
+        with cd(self.__pathToWhisperCPP):
             
             # load model
             load_start = time()
@@ -52,41 +51,47 @@ class WhisperCPP(ModelWrapper):
         del self.model_type
         del self.options
 
-    def transcribe(self, audio_name, audio_file, prompt=None, create_vtt=False):
+    def transcribe(self, audio_name, audio_file, prompt=None):
 
-        with cd(self.pathToWhisperCPP):
+        with cd(self.__pathToWhisperCPP):
 
             # remove quotes from prompt
             prompt = prompt.replace('"', '')
 
-            # create transcribe command string
-            cmd = "./main "+self.transcribe_options+" -m models/ggml-"+self.model_type+".bin -f "+audio_file+" --prompt \""+prompt+"\" --output-file "+join(self.outputPath, audio_name)+ " --output-txt"
-            
-            if create_vtt:
-                cmd = cmd + " --output-vtt"
-
             # transcribe audio
             transcribe_start = time()
-            system(cmd)
+            system("./main "+self.__transcribe_options+" -m models/ggml-"+self.model_type+".bin -f "+audio_file+" --prompt \""+prompt+"\" --output-file "+join(self.__outputPath, audio_name)+ " --output-txt --output-vtt")
             transcribe_end = time()
         
-        # save transcribe time and transcription text
+        # save transcribe time, transcription text, and transcription vtt
         self.transcribe_time.update({audio_name: str(timedelta(seconds=transcribe_end - transcribe_start))})
-        self.transcription.update({audio_name: self.createTranscription(audio_name)})
+        self.transcription.update({audio_name: self.__createTranscription(audio_name)})
+        self.vtt.update({audio_name: self.__createVTT(audio_name)})
 
-    def createTranscription(self, audio_name):
+        # delete output folder and contents
+        rmtree(self.__outputPath)
+
+    def __createTranscription(self, audio_name):
         transcription = ""
 
-        with open(join(self.outputPath, audio_name+".txt"), "r") as file:
+        with open(join(self.__outputPath, audio_name+".txt"), "r") as file:
             transcription = file.readlines()
 
-        return " ".join(transcription)
+        return "".join(transcription)
     
-    def makeClean(self):
-        with cd(self.pathToWhisperCPP):
+    def __createVTT(self, audio_name):
+        vtt = ""
+
+        with open(join(self.__outputPath, audio_name+".vtt"), "r") as file:
+            vtt = file.readlines()
+
+        return "".join(vtt)
+    
+    def __makeClean(self):
+        with cd(self.__pathToWhisperCPP):
             system("make clean")
 
-    def getTranscribeOptions(self):
+    def __getTranscribeOptions(self):
         transcribe_options = []
 
         for key in self.options:

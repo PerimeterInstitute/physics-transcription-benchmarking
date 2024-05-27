@@ -10,10 +10,10 @@ class AzureSpeechToText(ModelWrapper):
     name = ""
     key = ""
     region = ""
-    takes_prompt = False
     options = {}
 
     transcription = {}
+    vtt = {}                # TODO: fill this in transcribe() function
     load_time = {}
     transcribe_time = {}
 
