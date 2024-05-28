@@ -12,10 +12,10 @@ See [Test.ipynb](examples/Test.ipynb) for an example of the following steps put 
 See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper) to create your own model wrapper.
 
 #### Importing Models
-- [WhisperPI] (https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperpi) --> `from models.WhisperPI import WhisperPI`
-- [WhisperOpenAI] (https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperopenai) --> `from models.WhisperOpenAI import WhisperOpenAI`
-- [WhisperCPP] (https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whispercpp) --> `from models.WhisperCPP import WhisperCPP`
-- [AzureSpeechToText] (https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#azurespeechtotext) --> `from models.AzureSpeechToText import AzureSpeechToText`
+- [WhisperPI](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperpi) --> `from models.WhisperPI import WhisperPI`
+- [WhisperOpenAI](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperopenai) --> `from models.WhisperOpenAI import WhisperOpenAI`
+- [WhisperCPP](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whispercpp) --> `from models.WhisperCPP import WhisperCPP`
+- [AzureSpeechToText](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#azurespeechtotext) --> `from models.AzureSpeechToText import AzureSpeechToText`
 
 #### Instantiating Models
 See the wrapper model's associated [constructor](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#constructor-1) to create an instance of it!
