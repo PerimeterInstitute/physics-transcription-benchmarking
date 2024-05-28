@@ -8,24 +8,26 @@ See [Test.ipynb](examples/Test.ipynb) for an example of the following steps put 
 ### 1. Clone Repo
 `$ git clone https://github.com/PerimeterInstitute/physics-transcription-benchmarking`
 
-### 2. Create Transcription Model(s)
-See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper) to create your own model wrapper.
+### 2. Use Transcription Model Wrapper
 
-#### Importing Models
+#### Importing Model Wrapper
 - [WhisperPI](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperpi) --> `from models.WhisperPI import WhisperPI`
 - [WhisperOpenAI](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperopenai) --> `from models.WhisperOpenAI import WhisperOpenAI`
 - [WhisperCPP](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whispercpp) --> `from models.WhisperCPP import WhisperCPP`
 - [AzureSpeechToText](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#azurespeechtotext) --> `from models.AzureSpeechToText import AzureSpeechToText`
 
-#### Instantiating Models
+#### Instantiating Model Wrapper
 See the wrapper model's associated [constructor](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#constructor-1) to create an instance of it!
 
-### 3. Create Benchmarking Test 
+#### Creating Your Own Model Wrapper
+See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper) to create your own model wrapper.
+
+### 3. Use Test Class for Benchmarking
 
 #### Importing Test Class
 `from Test import Test`
 
-#### Creating Test Instance
+#### Instantiating Test
 See Test class [constructor](#constructor).
 
 ### 4. View Results
@@ -134,7 +136,7 @@ Example JSON result file:
 }
 ```
 
-## AddToExistingTest Class
+### AddToExistingTest Class
 
 #### Required Packages/Downloads
 - JiWER --> `$ pip install jiwer`
@@ -182,7 +184,7 @@ class NewModelWrapper(ModelWrapper):
 
 ### Using Model Wrapper
 
-Put the Model Wrapper class file in [models/](models/) folder. Import the Wrapper using `from models.YOUR_WRAPPER_NAME import YOUR_WRAPPER_NAME`
+Put your model wrapper class file in [models/](models/) folder. Import the Wrapper using `from models.YOUR_WRAPPER_NAME import YOUR_WRAPPER_NAME`
 
 
 
