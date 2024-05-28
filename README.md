@@ -44,7 +44,7 @@ See Test class [constructor](#constructor).
 
 #### Constructor
 `Test(model_array, prompt_function_array=[no_prompt], dataset_path="full", run_num=1, save_transcription=False)` : Creates Test instance
-- `Model[] model_array` : Array of models to be tested
+- `ModelWrapper[] model_array` : Array of models to be tested
 - `Method[] prompt_function_array` : Array of prompt loading functions to be tested (defaults to contain provided prompt loading function, `no_prompt()`, which returns an empty string)
 - `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
 - `int run_num` : Number of times to transcribe the same audio file with the same model, prompt, etc.
@@ -144,7 +144,7 @@ Example JSON result file:
 #### Constructor
 `AddToExistingTest(existing_test_json, model, prompt_function=no_prompt, dataset_path="full", run_num=1, output_file_name=None)` : Creates AddToExistingTest instance
 - `String existing_test_json` : JSON file created from a previous test
-- `Model model` : Model to be further tested (should be same as model used in provided JSON)
+- `ModelWrapper model` : Model to be further tested (should be same as model used in provided JSON)
 - `Method prompt_function` : Prompt function to be further tested (should be same as prompt function used in provided JSON)
 - `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
 - `int run_num` : Number of times to transcribe the same audio file with the same model, prompt, etc.
@@ -222,5 +222,5 @@ Benchmark using this dataset by using the `dataset_path` parameter when instatia
 ### Using 'create_test_summary_html()'
 
 `create_test_summary_html(results_folder, filename="test_summary.html")` : Creates HTML file that displays test summary information with a table and bar chart.
-    - `String results_folder` : File path to results folder containing result test model JSON files
-    - `String filename` : Output name for HTML file, defaults to `test_summary.html`
+- `String results_folder` : File path to results folder containing result test model JSON files
+- `String filename` : Output name for HTML file, defaults to `test_summary.html`
