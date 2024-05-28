@@ -39,7 +39,7 @@ class AzureSpeechToText(ModelWrapper):
         del self.region
         del self.options
 
-    def transcribe(self, audio_name, audio_file, prompt=None):
+    def transcribe(self, audio_name, audio_file, prompt=None):          # TODO: implement prompt option (?)
 
         # transcribe audio
         transcribe_start = time()
