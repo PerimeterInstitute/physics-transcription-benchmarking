@@ -1,7 +1,7 @@
 from os import listdir, mkdir, system
 from os.path import join, isdir, normpath, basename
 from datetime import datetime, timedelta
-from prompt_functions.prompt_functions import get_description
+from prompt_functions.prompt_functions import no_prompt
 import gc, inspect, jiwer, json, platform, psutil, copy
 from whisper.normalizers import EnglishTextNormalizer
 
@@ -11,7 +11,7 @@ from whisper.normalizers import EnglishTextNormalizer
 
 class Test():
 
-    def __init__(self, model_array, prompt_function_array=[get_description], dataset_path="full", run_num=1, saveTranscription=False):
+    def __init__(self, model_array, prompt_function_array=[no_prompt], dataset_path="full", run_num=1, save_transcription=False):
 
         # LOADING DATASET:
         
@@ -87,7 +87,7 @@ class Test():
                         # transcribing model
                         model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
 
-                        if saveTranscription:
+                        if save_transcription:
                             if not isdir("./transcriptions/"):         # make 'transcriptions' folder if it doesn't already exist
                                 mkdir("./transcriptions/")
                             transcription = model.transcription[audio_name]
@@ -193,7 +193,7 @@ Notes: This class will update the given json test output file.
     
 class AddToExistingTest():
 
-    def __init__(self, existing_test_json, model, prompt_function=get_description, output_file_name=None, dataset_path="full", run_num=1):
+    def __init__(self, existing_test_json, model, prompt_function=no_prompt, dataset_path="full", run_num=1, output_file_name=None):
 
         # LOADING PROVIDED MODEL:
 
@@ -400,12 +400,12 @@ def load_dataset(dataset_path):
 
     # loading premade dataset paths
     if dataset_path == "full":
-        dataset_path = "./datasets/full_dataset/"
+        dataset_path = "./datasets/full_dataset/"       # TODO: use getcwd(), check if the dir exists and raise exception if it doesnt
 
     elif dataset_path == "dev":
-        dataset_path = "./datasets/dev_dataset/"
+        dataset_path = "./datasets/dev_dataset/"       # TODO: use getcwd(), check if the dir exists and raise exception if it doesnt
 
-    # copy dataset to /local
+    # copy dataset to /local --> for when running on hpc
     system("cp -r " + dataset_path + " /local/")
     dataset_path = join("/local", basename(normpath(dataset_path)))
 
