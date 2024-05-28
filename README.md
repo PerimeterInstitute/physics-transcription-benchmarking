@@ -10,16 +10,16 @@ See [Test.ipynb](examples/Test.ipynb) for an example of the following steps put 
 
 ### 2. Use Transcription Model Wrapper
 
-#### Importing Model Wrapper
+#### Importing Wrapper
 - [WhisperPI](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperpi) --> `from models.WhisperPI import WhisperPI`
 - [WhisperOpenAI](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperopenai) --> `from models.WhisperOpenAI import WhisperOpenAI`
 - [WhisperCPP](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whispercpp) --> `from models.WhisperCPP import WhisperCPP`
 - [AzureSpeechToText](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#azurespeechtotext) --> `from models.AzureSpeechToText import AzureSpeechToText`
 
-#### Instantiating Model Wrapper
-See the wrapper model's associated [constructor](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#constructor-1) to create an instance of it!
+#### Instantiating Wrapper
+See the wrapper model's associated constructor (defined in [this README](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models/README.md)) to create an instance of it.
 
-#### Creating Your Own Model Wrapper
+#### Creating Your Own Wrapper
 See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper) to create your own model wrapper.
 
 ### 3. Use Test Class for Benchmarking
