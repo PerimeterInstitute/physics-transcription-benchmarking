@@ -37,7 +37,7 @@ See Test class [constructor](#constructor).
 
 ## Test.py 
 
-### Test Class
+### 'Test' Class
 
 #### Required Packages/Downloads
 - JiWER --> `$ pip install jiwer`
@@ -136,7 +136,7 @@ Example JSON result file:
 }
 ```
 
-### AddToExistingTest Class
+### 'AddToExistingTest' Class
 
 #### Required Packages/Downloads
 - JiWER --> `$ pip install jiwer`
@@ -158,15 +158,15 @@ After running this test, an updated JSON result file will exist containing both 
 
 ### ModelWrapper Interface
 
-In order to be compatible with the Test class, a Model Wrapper class must have `name`, `transcription`, `load_time`, and `transcribe_time` attributes, as well as a `transcribe()` method. Using the [ModelWrapper.py](ModelWrapper.py) interface ensures that all required attributes and methods are implemented in a Model Wrapper class. 
+In order to be compatible with the Test class, a Model Wrapper class must have `name`, `transcription`, `vtt`, `load_time`, and `transcribe_time` attributes, as well as a `transcribe()` method. Using the [ModelWrapper.py](ModelWrapper.py) interface ensures that all required attributes and methods are implemented in a Model Wrapper class. 
 
 ```
 from ModelWrapper import ModelWrapper
 
-class NewModelWrapper(ModelWrapper):
+class YOUR_WRAPPER_NAME(ModelWrapper):
     name = ""
-    takes_prompt = True
     transcription = {}
+    vtt = {}
     load_time = {}
     transcribe_time = {}
 
@@ -182,20 +182,20 @@ class NewModelWrapper(ModelWrapper):
     ...
 ```
 
-### Using Model Wrapper
+### Using Your Wrapper
 
-Put your model wrapper class file in [models/](models/) folder. Import the Wrapper using `from models.YOUR_WRAPPER_NAME import YOUR_WRAPPER_NAME`
+Put your model wrapper class file in the [models/](models/) folder. Import the wrapper using `from models.YOUR_WRAPPER_NAME import YOUR_WRAPPER_NAME`
 
 
 
 ## Datasets
 
 ### Provided Datasets
-- [Full Dataset](datasets/full_dataset/) --> use dataset path "full" in Test [constructor](#constructor)
-- [Development Dataset](datasets/dev_dataset/) --> use dataset path "dev" in Test [constructor](#constructor)
+- [Full Dataset](datasets/full_dataset/) --> use dataset path "full" when instantiating [Test](#test-class) and [AddToExistingTest](#addtoexistingtest-class) classes
+- [Development Dataset](datasets/dev_dataset/) --> use dataset path "dev" when instantiating [Test](#test-class) and [AddToExistingTest](#addtoexistingtest-class) classes
 
 ### Other Datasets
-Datasets must have the following structure in order to be used with the Test class:
+Datasets must have the following structure in order to be used with the [Test](#test-class) class:
 ```
 dataset_name/
     --> dataset_name.json
@@ -210,13 +210,17 @@ Please reference [full_dataset.json](datasets/full_dataset/full_dataset.json) fo
 
 For each audio/transcript pair that will be tested, there should be an audio or video file (.mp4, .mp3, .wav, etc.) and a text file of the same name that contains a reference transcription. All of these files should go in the 'test_data' folder.
 
-Test using this dataset by passing it's local path into the Test class [constructor](#constructor).
+Benchmark using this dataset by using the `dataset_path` parameter when instatiating the [Test](#test-class) class.
 
 
 
-## TestSummary.py
+## Creating a Summary HTML File
 
-### Methods
-- `create_test_summary_html(results_folder, filename="test_summary.html")` : Creates HTML file that displays test summary information with a table and bar chart.
+### Importing 'create_test_summary_html()'
+`from create_test_summary.TestSummary import create_test_summary_html`
+
+### Using 'create_test_summary_html()'
+
+`create_test_summary_html(results_folder, filename="test_summary.html")` : Creates HTML file that displays test summary information with a table and bar chart.
     - `String results_folder` : File path to results folder containing result test model JSON files
     - `String filename` : Output name for HTML file, defaults to `test_summary.html`
