@@ -1,68 +1,57 @@
 # Physics Transcription Benchmarking
-
 Test suite created for benchmarking transcription models.
 
 
-
 ## How To Run
-
 See [Test.ipynb](examples/Test.ipynb) for an example of the following steps put together.
 
-### 1. Import Test Class
+### 1. Clone Repo
+`$ git clone https://github.com/PerimeterInstitute/physics-transcription-benchmarking`
+
+### 2. Create Transcription Model(s)
+See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper) to create your own model wrapper.
+
+#### Importing Models
+- [WhisperPI] (https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperpi) --> `from models.WhisperPI import WhisperPI`
+- [WhisperOpenAI] (https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperopenai) --> `from models.WhisperOpenAI import WhisperOpenAI`
+- [WhisperCPP] (https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whispercpp) --> `from models.WhisperCPP import WhisperCPP`
+- [AzureSpeechToText] (https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#azurespeechtotext) --> `from models.AzureSpeechToText import AzureSpeechToText`
+
+#### Instantiating Models
+See the wrapper model's associated [constructor](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#constructor-1) to create an instance of it!
+
+### 3. Create Benchmarking Test 
+
+#### Importing Test Class
 `from Test import Test`
 
-### 2. Import Transcription Model(s)
-
-#### Provided Model Wrappers
-- [WhisperPI](#whisperpi) --> `from models.WhisperPI import WhisperPI`
-- [WhisperOpenAI](#whisperopenai) --> `from models.WhisperOpenAI import WhisperOpenAI`
-- [AzureSpeechToText](#azurespeechtotext) --> `from models.AzureSpeechToText import AzureSpeechToText`
-
-#### Other Model Wrappers
-See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper).
-
-### 3. Create Model Instance(s)
-
-#### Provided Model Wrappers
-- [WhisperPI](#whisperpi) --> See WhisperPI [constructor](#constructor-1)
-- [WhisperOpenAI](#whisperopenai) --> See WhisperOpenAI [constructor](#constructor-2)
-- [AzureSpeechToText](#azurespeechtotext) --> See AzureSpeechToText [constructor](#constructor-3)
-
-#### Other Model Wrappers
-See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper).
-
-### 4. Create Test Instance
+#### Creating Test Instance
 See Test class [constructor](#constructor).
 
-### 5. Access Resulting Data
-Access test data (load time, transcription time, accuracy data, etc.) through Test class [attributes](#attributes).
-
-Access transcription data through Model Wrapper class [attributes](#attributes-1).
-
+### 4. View Results
+- Access TXT and VTT transcription(s) through Model Wrapper object.
+- See resulting JSON files (contain load times, transcription times, accuracy data, etc.) in current working directory.
 
 
 ## Test.py 
 
-### Prompt Loading Function
-
-`load_prompt_default(json_obj)` : Loads prompt string given audio information.
-- `Dict json_obj` : JSON object containing audio information (it's suggested that this is loaded from a [dataset](#datasets) JSON file).
-
 ### Test Class
 
-#### Required Packages
+#### Required Packages/Downloads
 - JiWER --> `$ pip install jiwer`
 
 #### Constructor
-`Test(model_array, prompt_function_array=[load_prompt_default], dataset_path="full")` : Creates Test instance.
+`Test(model_array, prompt_function_array=[no_prompt], dataset_path="full", run_num=1, save_transcription=False)` : Creates Test instance
 - `Model[] model_array` : Array of models to be tested
-- `Method[] prompt_function_array` : Array of prompt loading functions to be tested (defaults to contain provided prompt loading function, [load_prompt_default()](#prompt-loading-function))
+- `Method[] prompt_function_array` : Array of prompt loading functions to be tested (defaults to contain provided prompt loading function, `no_prompt()`, which returns an empty string)
 - `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
+- `int run_num` : Number of times to transcribe the same audio file with the same model, prompt, etc.
+- `Boolean save_transcription` : Boolean indicating if transcriptions should be saved
 
-#### Attributes
-- `Dict results` : Dictionary containing load time, transcription time, and accuracy data (word error rate, character error rate, etc.) for each model that was provided in the constructor
+#### Results
+After running the test, a 'results/' folder in the current working directory will be created. This folder will contain various JSON result files that hold transcription data from each unique model/prompt combination.
 
-Example `results` dictionary: 
+Example JSON result file: 
 ```
 "results": {
     "model_1": {
@@ -145,99 +134,22 @@ Example `results` dictionary:
 }
 ```
 
+## AddToExistingTest Class
 
-
-## Model Wrappers
-
-### WhisperPI
-Wrapper for the WhisperPI transcription model. WhisperPI is an altered version of [OpenAI's Whisper](https://github.com/openai/whisper) speech recognition model, used to transcribe videos on the Perimeter Institute Recorded Seminar Archive (PIRSA).
-
-#### Required Packages
-- pi-whisper --> `$ pip install git+https://github.com/rmohl/whisper.git`
+#### Required Packages/Downloads
+- JiWER --> `$ pip install jiwer`
 
 #### Constructor
-`WhisperPI(name, options)` : Creates WhisperPI instance.
-- `String name` : Name of model
-- `Dict options` : Model options (includes `model_type`, `language`, `temperature`, and other options offered by [OpenAI's Whisper](https://github.com/openai/whisper))
+`AddToExistingTest(existing_test_json, model, prompt_function=no_prompt, dataset_path="full", run_num=1, output_file_name=None)` : Creates AddToExistingTest instance
+- `String existing_test_json` : JSON file created from a previous test
+- `Model model` : Model to be further tested (should be same as model used in provided JSON)
+- `Method prompt_function` : Prompt function to be further tested (should be same as prompt function used in provided JSON)
+- `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
+- `int run_num` : Number of times to transcribe the same audio file with the same model, prompt, etc.
+- `String output_file_name` : New JSON result file name (optional, will overwrite provided JSON if not used)
 
-
-#### Attributes
-- `String name` : Name of model
-- `String model_type` : Model type ("tiny", "base", "medium", "large", etc.)
-- `Bool takes_prompt` : Indicates whether the model takes a prompt or not
-- `Dict options` : Model options
-- `Dict full_result` : Dictionary containing all result objects.
-- `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
-- `Dict load_time` : Dictionary containing all load times.
-- `Dict transcribe_time` : Dictionary containing all transcribe times.
-
-#### Methods
-- `load()` : Loads model.
-- `unload()` : "Unloads" model (i.e. removes select model attributes from memory).
-- `transcribe(audio, prompt=None)` : Transcribes given audio file, updates result-related attributes.
-    - `String audio` : File path to audio file
-    - `String prompt` : Transcription prompt
-
-
-### WhisperOpenAI
-Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recognition model.
-
-#### Required Packages
-- openai-whisper --> `$ pip install -U openai-whisper`
-
-#### Constructor
-`WhisperOpenAI(name, options)` : Creates WhisperOpenAI instance.
-- `String name` : Name of model
-- `Dict options` : Model options (includes `model_type`, `language`, `temperature`, and other options offered by [OpenAI's Whisper](https://github.com/openai/whisper))
-
-#### Attributes
-- `String name` : Name of model
-- `String model_type` : Model type ("tiny", "base", "medium", "large", etc.)
-- `Bool takes_prompt` : Indicates whether the model takes a prompt or not
-- `Dict options` : Model options
-- `Dict full_result` : Dictionary containing all result objects.
-- `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
-- `Dict load_time` : Dictionary containing all load times.
-- `Dict transcribe_time` : Dictionary containing all transcribe times.
-
-#### Methods
-- `load()` : Loads model.
-- `unload()` : "Unloads" model (i.e. removes select model attributes from memory).
-- `transcribe(audio, prompt=None)` : Transcribes given audio file, updates result-related attributes.
-    - `String audio` : File path to audio file
-    - `String prompt` : Transcription prompt, defaults to `None`
-
-
-### AzureSpeechToText
-Wrapper for Azure's speech recognition model.
-
-#### Required Packages
-- Azure Cognitive Services Speech SDK --> `$ pip install azure-cognitiveservices-speech`
-
-#### Constructor
-`AzureSpeechToText(name, key, region, options)` : Creates AzureSpeechToText instance.
-- `String name` : Name of model
-- `String key` : Azure subscription key
-- `String region` : Region name (see [regions](https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/regions))
-- `Dict options` : Model options (includes `speech_recognition_language`, `endpoint`, `host`, and other options offered by [Azure's Cognitive Services Speech SDK](https://learn.microsoft.com/en-us/python/api/azure-cognitiveservices-speech/azure.cognitiveservices.speech.speechconfig?view=azure-python#constructor))
-
-#### Attributes
-- `String name` : Name of model
-- `String key` : Azure subscription key
-- `String region` : Region name
-- `Bool takes_prompt` : Indicates whether the model takes a prompt or not
-- `Dict options` : Model options
-- `Dict transcription` : Dictionary containing the text from all resulting transcriptions.
-- `Dict load_time` : Dictionary containing all load times.
-- `Dict transcribe_time` : Dictionary containing all transcribe times.
-
-#### Methods
-- `load()` : Loads model.
-- `unload()` : "Unloads" model (i.e. removes select model attributes from memory).
-- `transcribe(audio, prompt=None)` : Transcribes given audio file, updates result-related attributes.
-    - `String audio` : File path to audio file
-    - `String prompt` : Transcription prompt, defaults to `None`
-
+#### Results
+After running this test, an updated JSON result file will exist containing both the original and desired additional transcription data.
 
 
 ## How to Implement a Model Wrapper
@@ -300,11 +212,9 @@ Test using this dataset by passing it's local path into the Test class [construc
 
 
 
-## Creating Test Summary HTML
+## TestSummary.py
 
-### TestSummary.py
-
-#### Methods
+### Methods
 - `create_test_summary_html(results_folder, filename="test_summary.html")` : Creates HTML file that displays test summary information with a table and bar chart.
     - `String results_folder` : File path to results folder containing result test model JSON files
     - `String filename` : Output name for HTML file, defaults to `test_summary.html`
