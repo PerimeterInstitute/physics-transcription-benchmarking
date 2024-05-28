@@ -17,20 +17,19 @@ class WhisperCPP(ModelWrapper):
     load_time = {}
     transcribe_time = {}
 
-    def __init__(self, name, pathToWhisperCPP, options):
+    def __init__(self, name, path_to_whispercpp, options):
         self.name = name
         self.model_type = options.pop("model_type", "medium.en")       # other model options listed here: https://github.com/ggerganov/whisper.cpp?tab=readme-ov-file#more-audio-samples
         self.options = options
         self.__transcribe_options = self.__getTranscribeOptions()
-        self.__pathToWhisperCPP = pathToWhisperCPP
-        self.__outputPath = join(pathToWhisperCPP, "output")
+        self.__path_to_whispercpp = path_to_whispercpp
+        self.__outputPath = join(path_to_whispercpp, "output")
         if not isdir(self.__outputPath):         # make output folder if it doesn't already exist
             mkdir(self.__outputPath)
-        self.__makeClean()
 
     def load(self):
 
-        with cd(self.__pathToWhisperCPP):
+        with cd(self.__path_to_whispercpp):
             
             # load model
             load_start = time()
@@ -50,10 +49,12 @@ class WhisperCPP(ModelWrapper):
         del self.name
         del self.model_type
         del self.options
+        # rmtree(self.__outputPath)
+        self.__makeClean()
 
     def transcribe(self, audio_name, audio_file, prompt=None):
 
-        with cd(self.__pathToWhisperCPP):
+        with cd(self.__path_to_whispercpp):
 
             # remove quotes from prompt
             prompt = prompt.replace('"', '')
@@ -67,10 +68,7 @@ class WhisperCPP(ModelWrapper):
         self.transcribe_time.update({audio_name: str(timedelta(seconds=transcribe_end - transcribe_start))})
         self.transcription.update({audio_name: self.__createTranscription(audio_name)})
         self.vtt.update({audio_name: self.__createVTT(audio_name)})
-
-        # delete output folder and contents
-        rmtree(self.__outputPath)
-
+        
     def __createTranscription(self, audio_name):
         transcription = ""
 
@@ -88,7 +86,7 @@ class WhisperCPP(ModelWrapper):
         return "".join(vtt)
     
     def __makeClean(self):
-        with cd(self.__pathToWhisperCPP):
+        with cd(self.__path_to_whispercpp):
             system("make clean")
 
     def __getTranscribeOptions(self):
@@ -101,7 +99,6 @@ class WhisperCPP(ModelWrapper):
                 transcribe_options.append(str(self.options[key]))
 
         return " ".join(transcribe_options)
-    
 
 class cd:     # from https://stackoverflow.com/questions/431684/equivalent-of-shell-cd-command-to-change-the-working-directory
     """Context manager for changing the current working directory"""

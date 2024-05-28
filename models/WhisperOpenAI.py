@@ -28,6 +28,7 @@ class WhisperOpenAI(ModelWrapper):
         self.__outputPath = join(getcwd(), "output")
         if not isdir(self.__outputPath):         # make output folder if it doesn't already exist
             mkdir(self.__outputPath)
+        self.__vtt_writer = get_writer("vtt", self.__outputPath)
 
     def load(self):
 
@@ -43,6 +44,8 @@ class WhisperOpenAI(ModelWrapper):
         del self.name
         del self.model_type
         del self.options
+        del self.__vtt_writer
+        # rmtree(self.__outputPath) 
 
     def transcribe(self, audio_name, audio_file, prompt=None):
 
@@ -57,9 +60,6 @@ class WhisperOpenAI(ModelWrapper):
         self.transcription.update({audio_name: self.__createTranscription(audio_name)})
         self.vtt.update({audio_name: self.__createVTT(audio_name)})
 
-        # delete output folder and contents
-        rmtree(self.__outputPath)
-
     def __createTranscription(self, audio_name):
         transcription = ""
 
@@ -71,11 +71,9 @@ class WhisperOpenAI(ModelWrapper):
     def __createVTT(self, audio_name):
         vtt = ""
 
-        writer = get_writer("vtt", self.__outputPath)
-        writer(self.result_object[audio_name], audio_name+".vtt", {"max_line_width": None, "max_line_count": None, "highlight_words": None})
+        self.__vtt_writer(self.result_object[audio_name], audio_name+".vtt", {"max_line_width": None, "max_line_count": None, "highlight_words": None})
         with open(join(self.__outputPath, audio_name+".vtt"), 'r') as file:
             vtt = file.readlines()
-        del writer
 
         return "".join(vtt)
 
