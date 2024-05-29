@@ -5,7 +5,7 @@ from shutil import rmtree
 from datetime import timedelta
 from models.ModelWrapper import ModelWrapper
 from whisper.utils import get_writer
-import whisper
+import whisper, gc
 
 class WhisperOpenAI(ModelWrapper):
 
@@ -26,26 +26,29 @@ class WhisperOpenAI(ModelWrapper):
         self.model_type = options.pop("model_type", "large")
         self.options = options
         self.__outputPath = join(getcwd(), "output")
-        if not isdir(self.__outputPath):         # make output folder if it doesn't already exist
-            mkdir(self.__outputPath)
         self.__vtt_writer = get_writer("vtt", self.__outputPath)
 
     def load(self):
+
+        # make output folder
+        if not isdir(self.__outputPath):        
+            mkdir(self.__outputPath)
 
         # load model
         load_start = time()
         self.__model = whisper.load_model(self.model_type)
         load_end = time()
-
         self.load_time = str(timedelta(seconds=load_end - load_start))
 
     def unload(self):
+        rmtree(self.__outputPath)       # delete output folder
         del self.__model
         del self.name
         del self.model_type
         del self.options
+        del self.__outputPath
         del self.__vtt_writer
-        # rmtree(self.__outputPath) 
+        gc.collect()
 
     def transcribe(self, audio_name, audio_file, prompt=None):
 

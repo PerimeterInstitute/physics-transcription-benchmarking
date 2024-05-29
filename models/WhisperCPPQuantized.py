@@ -5,6 +5,7 @@ from time import time
 from shutil import which, rmtree
 from datetime import timedelta
 from models.ModelWrapper import ModelWrapper
+import gc
 
 class WhisperCPPQuantized(ModelWrapper):
 
@@ -17,23 +18,24 @@ class WhisperCPPQuantized(ModelWrapper):
     load_time = {}
     transcribe_time = {}
 
-    def __init__(self, name, pathToWhisperCPP, options):
+    def __init__(self, name, path_to_whispercpp, options):
         self.name = name
         self.model_type = options.pop("model_type", "large-v2")       # other model options listed here: https://github.com/ggerganov/whisper.cpp?tab=readme-ov-file#more-audio-samples
         self.quantize_type = options.pop("quantize_type", "q8_0")           # defaults to this quantization method
         self.options = options
         self.__transcribe_options = self.__getTranscribeOptions()
-        self.__pathToWhisperCPP = pathToWhisperCPP
+        self.__path_to_whispercpp = path_to_whispercpp
+        self.__outputPath = join(path_to_whispercpp, "output")
         self.__model_file = "models/ggml-"+self.model_type+".bin"
         self.__q_model_file = "models/ggml-"+self.model_type+"-"+self.quantize_type+".bin"
-        self.__outputPath = join(pathToWhisperCPP, "output")
-        if not isdir(self.__outputPath):         # make output folder if it doesn't already exist
-            mkdir(self.__outputPath)
-        self.__makeClean()
-
+        
     def load(self):
 
-        with cd(self.__pathToWhisperCPP):
+        # make output folder
+        if not isdir(self.__outputPath):
+            mkdir(self.__outputPath)
+
+        with cd(self.__path_to_whispercpp):
             
             # load model
             load_start = time()
@@ -53,13 +55,21 @@ class WhisperCPPQuantized(ModelWrapper):
         self.load_time = str(timedelta(seconds=load_end - load_start))
 
     def unload(self):
+        rmtree(self.__outputPath)       # delete output folder
         del self.name
         del self.model_type
+        del self.quantize_type
         del self.options
+        del self.__transcribe_options
+        del self.__path_to_whispercpp
+        del self.__outputPath
+        del self.__model_file
+        del self.__q_model_file
+        gc.collect()
 
     def transcribe(self, audio_name, audio_file, prompt=None):
 
-        with cd(self.__pathToWhisperCPP):
+        with cd(self.__path_to_whispercpp):
 
             # transcribe audio
             transcribe_start = time()
@@ -71,8 +81,9 @@ class WhisperCPPQuantized(ModelWrapper):
         self.transcription.update({audio_name: self.__createTranscription(audio_name)})
         self.vtt.update({audio_name: self.__createVTT(audio_name)})
 
-        # delete output folder and contents
-        rmtree(self.__outputPath)
+    def makeClean(self):
+        with cd(self.__path_to_whispercpp):
+            system("make clean")
 
     def __createTranscription(self, audio_name):
         transcription = ""
@@ -94,10 +105,6 @@ class WhisperCPPQuantized(ModelWrapper):
             vtt = file.readlines()
 
         return "".join(vtt)
-    
-    def __makeClean(self):
-        with cd(self.__pathToWhisperCPP):
-            system("make clean")
 
     def __getTranscribeOptions(self):
         transcribe_options = []

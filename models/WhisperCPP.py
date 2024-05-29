@@ -5,6 +5,7 @@ from time import time
 from shutil import which, rmtree
 from datetime import timedelta
 from models.ModelWrapper import ModelWrapper
+import gc
 
 class WhisperCPP(ModelWrapper):
 
@@ -24,10 +25,14 @@ class WhisperCPP(ModelWrapper):
         self.__transcribe_options = self.__getTranscribeOptions()
         self.__path_to_whispercpp = path_to_whispercpp
         self.__outputPath = join(path_to_whispercpp, "output")
-        if not isdir(self.__outputPath):         # make output folder if it doesn't already exist
-            mkdir(self.__outputPath)
 
     def load(self):
+
+        system("nvidia-smi")
+
+        # make output folder
+        if not isdir(self.__outputPath):        
+            mkdir(self.__outputPath)
 
         with cd(self.__path_to_whispercpp):
             
@@ -46,11 +51,14 @@ class WhisperCPP(ModelWrapper):
         self.load_time = str(timedelta(seconds=load_end - load_start))
 
     def unload(self):
+        rmtree(self.__outputPath)       # delete output folder
         del self.name
         del self.model_type
         del self.options
-        # rmtree(self.__outputPath)
-        self.__makeClean()
+        del self.__transcribe_options
+        del self.__path_to_whispercpp
+        del self.__outputPath
+        gc.collect()
 
     def transcribe(self, audio_name, audio_file, prompt=None):
 
@@ -68,26 +76,32 @@ class WhisperCPP(ModelWrapper):
         self.transcribe_time.update({audio_name: str(timedelta(seconds=transcribe_end - transcribe_start))})
         self.transcription.update({audio_name: self.__createTranscription(audio_name)})
         self.vtt.update({audio_name: self.__createVTT(audio_name)})
+
+    def makeClean(self):
+        with cd(self.__path_to_whispercpp):
+            system("make clean")
         
     def __createTranscription(self, audio_name):
         transcription = ""
 
-        with open(join(self.__outputPath, audio_name+".txt"), "r") as file:
-            transcription = file.readlines()
+        try:
+            with open(join(self.__outputPath, audio_name+".txt"), "r") as file:
+                transcription = file.readlines()
+        except:
+            print("Could not transcribe file!")
 
         return "".join(transcription)
     
     def __createVTT(self, audio_name):
         vtt = ""
 
-        with open(join(self.__outputPath, audio_name+".vtt"), "r") as file:
-            vtt = file.readlines()
+        try:
+            with open(join(self.__outputPath, audio_name+".vtt"), "r") as file:
+                vtt = file.readlines()
+        except:
+            print("Could not transcribe file!")
 
         return "".join(vtt)
-    
-    def __makeClean(self):
-        with cd(self.__path_to_whispercpp):
-            system("make clean")
 
     def __getTranscribeOptions(self):
         transcribe_options = []

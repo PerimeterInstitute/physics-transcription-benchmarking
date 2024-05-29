@@ -6,6 +6,7 @@ from datetime import timedelta
 from models.ModelWrapper import ModelWrapper
 from pi_whisper.utils import get_writer
 import pi_whisper as whisper
+import gc
 
 class WhisperPI(ModelWrapper):
 
@@ -26,11 +27,13 @@ class WhisperPI(ModelWrapper):
         self.model_type = options.pop("model_type", "large")
         self.options = options
         self.__outputPath = join(getcwd(), "output")
-        if not isdir(self.__outputPath):         # make output folder if it doesn't already exist
-            mkdir(self.__outputPath)
         self.__vtt_writer = get_writer("vtt", self.__outputPath)
 
     def load(self):
+
+        # make output folder
+        if not isdir(self.__outputPath):        
+            mkdir(self.__outputPath)
 
         # load model
         load_start = time()
@@ -40,12 +43,14 @@ class WhisperPI(ModelWrapper):
         self.load_time = str(timedelta(seconds=load_end - load_start))
 
     def unload(self):
+        rmtree(self.__outputPath)       # delete output folder
         del self.__model
         del self.name
         del self.model_type
         del self.options
+        del self.__outputPath
         del self.__vtt_writer
-        # rmtree(self.__outputPath)  
+        gc.collect()
 
     def transcribe(self, audio_name, audio_file, prompt=None):
 
