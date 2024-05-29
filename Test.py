@@ -1,9 +1,10 @@
 from os import listdir, mkdir, system
 from os.path import join, isdir, normpath, basename
+from inspect import getsource
 from datetime import datetime, timedelta
 from prompt_functions.prompt_functions import no_prompt
-import gc, inspect, jiwer, json, platform, psutil, copy
 from whisper.normalizers import EnglishTextNormalizer
+import gc, jiwer, json, platform, psutil, copy
 
 # ==================== #
 # ==== Test Class ==== #
@@ -53,7 +54,7 @@ class Test():
                                             **model_attributes,
                                             "load_time": model.load_time},
                                 "prompt_info": {"prompt_function_name": prompt_function.__name__,
-                                                "prompt_function_code": inspect.getsource(prompt_function)},
+                                                "prompt_function_code": getsource(prompt_function)},
                                 "system_info": {"system": uname.system,
                                                 "release": uname.release,
                                                 "version": uname.version,
@@ -224,7 +225,7 @@ class AddToExistingTest():
                                "load_time": model.load_time}
         existing_prompt_info = existing_test_details["prompt_info"]
         provided_prompt_info = {"prompt_function_name": prompt_function.__name__,
-                                "prompt_function_code": inspect.getsource(prompt_function)}
+                                "prompt_function_code": getsource(prompt_function)}
 
         for parameter in existing_model_info:
             if parameter != "model_name" and parameter != "load_time":
@@ -245,7 +246,7 @@ class AddToExistingTest():
         mem = psutil.virtual_memory()
         provided_test_details = {"model_info": provided_model_info,
                         "prompt_info": {"prompt_function_name": prompt_function.__name__,
-                                        "prompt_function_code": inspect.getsource(prompt_function)},
+                                        "prompt_function_code": getsource(prompt_function)},
                         "system_info": {"system": uname.system,
                                         "release": uname.release,
                                         "version": uname.version,

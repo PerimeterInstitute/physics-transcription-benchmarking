@@ -1,9 +1,9 @@
 from os import listdir, mkdir, system, getcwd
 from os.path import join, isdir, basename, normpath
-from prompt_functions.prompt_functions import get_description
-from whisper.utils import get_writer
+from json import load
+from gc import collect
+from prompt_functions.prompt_functions import no_prompt
 from whisper.normalizers import EnglishTextNormalizer
-import gc, os, json
 
 # ========================== #
 # ==== Transcribe Class ==== #
@@ -11,7 +11,7 @@ import gc, os, json
 
 class Transcribe():
 
-    def __init__(self, model, prompt_function=get_description, dataset_path="full", normalize=False):
+    def __init__(self, model, prompt_function=no_prompt, dataset_path="full", normalize=False):
 
         # LOADING SCOPE DATASETS:
 
@@ -31,7 +31,7 @@ class Transcribe():
             if file.endswith(".json"):
                 json_file = join(dataset_path, file)
                 break
-        dataset = json.load(open(json_file))
+        dataset = load(open(json_file))
 
         # CREATING OUTPUT FOLDER:
 
@@ -60,7 +60,7 @@ class Transcribe():
             prompt = prompt_function(audio_info)
 
             # transcribing model
-            model.transcribe(audio_name, os.path.join(dataset_path, "test_data", audio_file), prompt)
+            model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
 
             # saving transcription as txt
             if audio_name in model.transcription:                               
@@ -80,9 +80,9 @@ class Transcribe():
             del audio_file
             del audio_info
             del prompt
-            gc.collect()
+            collect()
 
         # freeing memory
         model.unload()
         del dataset
-        gc.collect()
+        collect()
