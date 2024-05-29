@@ -7,6 +7,8 @@ from datetime import timedelta
 from models.ModelWrapper import ModelWrapper
 import gc
 
+OUTPUT_FOLDER = "output-cpp"
+
 class WhisperCPP(ModelWrapper):
 
     name = ""
@@ -24,7 +26,7 @@ class WhisperCPP(ModelWrapper):
         self.options = options
         self.__transcribe_options = self.__getTranscribeOptions()
         self.__path_to_whispercpp = path_to_whispercpp
-        self.__outputPath = join(path_to_whispercpp, "output")
+        self.__outputPath = join(path_to_whispercpp, OUTPUT_FOLDER)
 
     def load(self):
 
