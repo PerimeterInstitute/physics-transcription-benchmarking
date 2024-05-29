@@ -7,6 +7,8 @@ from datetime import timedelta
 from models.ModelWrapper import ModelWrapper
 import gc
 
+OUTPUT_FOLDER = "output-cpp-q"
+
 class WhisperCPPQuantized(ModelWrapper):
 
     name = ""
@@ -25,7 +27,7 @@ class WhisperCPPQuantized(ModelWrapper):
         self.options = options
         self.__transcribe_options = self.__getTranscribeOptions()
         self.__path_to_whispercpp = path_to_whispercpp
-        self.__outputPath = join(path_to_whispercpp, "output")
+        self.__outputPath = join(path_to_whispercpp, OUTPUT_FOLDER)
         self.__model_file = "models/ggml-"+self.model_type+".bin"
         self.__q_model_file = "models/ggml-"+self.model_type+"-"+self.quantize_type+".bin"
         
@@ -87,22 +89,32 @@ class WhisperCPPQuantized(ModelWrapper):
 
     def __createTranscription(self, audio_name):
         transcription = ""
+        file = None
 
+        # opening file
         try:
             file = open(join(self.__outputPath, audio_name+".txt"), "r")
         except:
-            file = open(join(self.__outputPath, audio_name+".txt"), "r", encoding="latin-1")
-        
-        transcription = file.readlines()
-        file.close()
+            try:
+                file = open(join(self.__outputPath, audio_name+".txt"), "r", encoding="latin-1")
+            except:
+                print("Could not transcribe file!")
+
+        # reading file
+        if file != None:
+            transcription = file.readlines()
+            file.close()
 
         return "\n".join(transcription)
     
     def __createVTT(self, audio_name):
         vtt = ""
 
-        with open(join(self.__outputPath, audio_name+".vtt"), "r") as file:
-            vtt = file.readlines()
+        try:
+            with open(join(self.__outputPath, audio_name+".vtt"), "r") as file:
+                vtt = file.readlines()
+        except:
+            print("Could not transcribe file!")
 
         return "".join(vtt)
 
