@@ -11,25 +11,18 @@ datasets/*/*/*.wav
 test_transcribe.py
 hpc_scripts/*
 *.html
-Test_old.py
+normalize_text.py
 
 # Symmetry testing:
 *.out
 
 # WhisperCPP testing:
 whisper.cpp/
-test-whispercpp.py
-test-whispercpp.ipynb
-Test.ipynb
-test_whisperCPP.ipynb
 test_whisperCPP.py
-create_test_summary.ipynb
 past_results/hpc_cpp_results/*
 create_test_summary_only.py
-normalize_text.py
 
 # No speech testing
-poster_prize_talk_long.wav
-poster_prize_talk.wav
 datasets/no_speech_dataset/
 datasets/long_test_dataset/
+clear_gpu_mem.py
