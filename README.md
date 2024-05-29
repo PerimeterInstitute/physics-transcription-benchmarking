@@ -41,6 +41,7 @@ See Test class [constructor](#constructor).
 
 #### Required Packages/Downloads
 - JiWER --> `$ pip install jiwer`
+- openai-whisper --> `$ pip install -U openai-whisper`
 
 #### Constructor
 `Test(model_array, prompt_function_array=[no_prompt], dataset_path="full", run_num=1, save_transcription=False)` : Creates Test instance
@@ -140,6 +141,7 @@ Example JSON result file:
 
 #### Required Packages/Downloads
 - JiWER --> `$ pip install jiwer`
+- openai-whisper --> `$ pip install -U openai-whisper`
 
 #### Constructor
 `AddToExistingTest(existing_test_json, model, prompt_function=no_prompt, dataset_path="full", run_num=1, output_file_name=None)` : Creates AddToExistingTest instance
@@ -152,6 +154,27 @@ Example JSON result file:
 
 #### Results
 After running this test, an updated JSON result file will exist containing both the original and desired additional transcription data.
+
+
+
+## Transcribe.py
+See [Transcribe.ipynb](examples/Transcribe.ipynb) for an example of the following steps put together.
+
+#### Required Packages/Downloads
+- openai-whisper --> `$ pip install -U openai-whisper`
+
+#### Constructor
+`Transcribe(model, prompt_function=no_prompt, dataset_path="full", normalize=False)` : Creates AddToExistingTest instance
+- `String existing_test_json` : JSON file created from a previous test
+- `ModelWrapper model` : Model to be further tested (should be same as model used in provided JSON)
+- `Method prompt_function` : Prompt function to be further tested (should be same as prompt function used in provided JSON)
+- `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
+- `int run_num` : Number of times to transcribe the same audio file with the same model, prompt, etc.
+- `String output_file_name` : New JSON result file name (optional, will overwrite provided JSON if not used)
+
+#### Results
+After running this test, an updated JSON result file will exist containing both the original and desired additional transcription data.
+
 
 
 ## How to Implement a Model Wrapper
@@ -215,6 +238,7 @@ Benchmark using this dataset by using the `dataset_path` parameter when instatia
 
 
 ## Creating a Summary HTML File
+See [create_test_summary.ipynb](examples/create_test_summary.ipynb) for an example of the following steps put together.
 
 ### Importing 'create_test_summary_html()'
 `from create_test_summary.TestSummary import create_test_summary_html`
