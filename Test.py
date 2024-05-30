@@ -24,7 +24,7 @@ class Test():
         self.run_name = None
         self.results_folder = None
 
-    def run(self, dataset_path, run_name, run_num=1, save_transcription=False):
+    def run(self, run_name, dataset_path, run_num=1, save_transcription=False):
         self.run_name = run_name
         self.results_folder = "./results-"+run_name+"/"
 
@@ -192,27 +192,28 @@ class Test():
     def addModel(self, new_model):
         self.model_array.append(new_model)
 
-    def removeModel(self, model_name):
+    def removeModel(self, existing_model_name):
         for model in self.model_array:
-            if model.name == model_name:
+            if model.name == existing_model_name:
                 self.model_array.remove(model)
 
     def addPromptFunction(self, new_prompt_func):
         self.prompt_function_array.append(new_prompt_func)
 
-    def removePromptFunction(self, prompt_func_name):
+    def removePromptFunction(self, existing_prompt_func_name):
         for prompt_function in self.prompt_function_array:
-            if prompt_function.__name__ == prompt_func_name:
+            if prompt_function.__name__ == existing_prompt_func_name:
                 self.model_array.remove(prompt_function)
 
     def createSummaryHTML(self, html_filename=None):
         if self.results_folder == None:
             print("Please use run() before creating summary HTML.")
-        else:
-            if html_filename == None:
-                html_filename = self.run_name
-            create_test_summary_html(results_folder=self.results_folder,
-                                    filename=html_filename)
+            return
+
+        if html_filename == None:
+            html_filename = self.run_name
+        create_test_summary_html(results_folder=self.results_folder,
+                                filename=html_filename)
 
     def free(self):
         del self.model_array
@@ -239,7 +240,8 @@ Notes: This class will update the given json test output file.
     
 class AddToExistingTest():
 
-    def __init__(self, existing_test_json, model, prompt_function=no_prompt):
+    def __init__(self, existing_test_json, dataset_path, model, prompt_function=no_prompt):
+        self.dataset_path = dataset_path
         self.model = model
         self.prompt_function = prompt_function
         self.normalizer = EnglishTextNormalizer()
@@ -292,13 +294,13 @@ class AddToExistingTest():
         del provided_prompt_info
         gc.collect()
 
-    def run(self, dataset_path, run_name, run_num=1, output_file_name=None):
+    def run(self, run_name, run_num=1, output_file_name=None):
 
         # LOADING DATASET:
 
-        dataset = load_dataset(dataset_path)
+        dataset = load_dataset(self.dataset_path)
         if dataset == None:
-            print("Invalid dataset path provided: '"+dataset_path+"'")
+            print("Invalid dataset path provided: '"+self.dataset_path+"'")
             return
 
         # GETTING PROVIDED MODEL STATS:
@@ -363,7 +365,7 @@ class AddToExistingTest():
                 prompt = self.prompt_function(test_case["audio_info"])
 
                 # transcribing model
-                self.model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
+                self.model.transcribe(audio_name, join(self.dataset_path, "test_data", audio_file), prompt)
 
                 # adding current date and transcribe time to result dict
                 local_rerun_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
@@ -378,7 +380,7 @@ class AddToExistingTest():
                     transcribe_time = string_to_timedelta(current_transcribe_time)
 
                 # evaluating transcription
-                with open(join(dataset_path, "test_data", transcript_file), "r") as f:
+                with open(join(self.dataset_path, "test_data", transcript_file), "r") as f:
                     reference = f.read()
                 accuracy_data = compare(self.normalizer(reference), self.normalizer(self.model.transcription[audio_name]))
                 
@@ -437,6 +439,7 @@ class AddToExistingTest():
     def free(self):
         # freeing model
         self.model.unload()
+        self.dataset_path
         del self.model
         del self.prompt_function
         del self.normalizer

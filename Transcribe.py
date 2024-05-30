@@ -16,7 +16,7 @@ class Transcribe():
         self.prompt_function = prompt_function
         self.normalizer = EnglishTextNormalizer()
 
-    def run(self, dataset_path, run_name, normalize=False):
+    def run(self, run_name, dataset_path, normalize=False):
 
         # LOADING DATASET:
 
