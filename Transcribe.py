@@ -16,7 +16,7 @@ class Transcribe():
         self.prompt_function = prompt_function
         self.normalizer = EnglishTextNormalizer()
 
-    def run(self, dataset_path="full", normalize=False):
+    def run(self, dataset_path, run_name, normalize=False):
 
         # LOADING DATASET:
 
@@ -24,8 +24,9 @@ class Transcribe():
 
         # CREATING OUTPUT FOLDER:
 
-        if not isdir("./transcriptions/"):         # make 'transcriptions' folder if it doesn't already exist
-            mkdir("./transcriptions/")
+        transcriptions_folder = "./transcriptions-"+run_name+"/"
+        if not isdir(transcriptions_folder):         # make 'transcriptions' folder if it doesn't already exist
+            mkdir(transcriptions_folder)
 
         # LOADING MODEL:
 
@@ -48,7 +49,7 @@ class Transcribe():
 
             # saving transcription as txt
             if audio_name in self.model.transcription:                               
-                with open("./transcriptions/"+audio_name+".txt", "w") as f:     # TODO: use getcwd() instead of ./
+                with open(join(transcriptions_folder, audio_name+".txt"), "w") as f:     
                     text = self.model.transcription[audio_name]
                     if normalize:
                         text = self.normalizer(text)
@@ -56,7 +57,7 @@ class Transcribe():
             
             # saving transcription as vtt
             if audio_name in self.model.vtt:
-                with open("./transcriptions/"+audio_name+".vtt", "w") as f:     # TODO: use getcwd() instead of ./
+                with open(join(transcriptions_folder, audio_name+".vtt"), "w") as f:
                     f.write(self.model.vtt[audio_name])
 
             # freeing memory
