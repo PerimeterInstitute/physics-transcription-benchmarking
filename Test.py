@@ -4,6 +4,7 @@ from inspect import getsource
 from datetime import datetime
 from helper_functions.prompt_functions import no_prompt
 from helper_functions.test_transcribe_help import load_dataset, string_to_timedelta, compare, merge_dicts, summarize
+from create_test_summary.TestSummary import create_test_summary_html
 from whisper.normalizers import EnglishTextNormalizer
 import gc, json, platform, psutil, copy
 
@@ -21,7 +22,9 @@ class Test():
         self.prompt_function_array = prompt_function_array
         self.normalizer = EnglishTextNormalizer()
 
-    def run(self, dataset_path="full", run_num=1, save_transcription=False):
+    def run(self, dataset_path, run_name, run_num=1, save_transcription=False):
+        self.run_name = run_name
+        self.results_folder = "./results-"+run_name+"/"
 
         # LOADING DATASET:
         
@@ -92,12 +95,13 @@ class Test():
                         model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
 
                         if save_transcription:
-                            if not isdir("./transcriptions/"):         # make 'transcriptions' folder if it doesn't already exist
-                                mkdir("./transcriptions/")
+                            transcriptions_folder = "./transcriptions-"+run_name+"/"
+                            if not isdir(transcriptions_folder):         # make 'transcriptions' folder if it doesn't already exist
+                                mkdir(transcriptions_folder)
                             transcription = model.transcription[audio_name]
-                            with open("./transcriptions/" + model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".txt", "w") as f:
+                            with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".txt"), "w") as f:
                                 f.write(transcription)
-                            with open("./transcriptions/" + model.name + "_" + prompt_function.__name__ + "_" + audio_name + "-normalized.txt", "w") as f:
+                            with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + "-normalized.txt"), "w") as f:
                                 f.write(self.normalizer(transcription))
         
                         # adding current date and transcribe time to result dict
@@ -154,9 +158,9 @@ class Test():
                 json_obj = json.dumps(current_model, indent=4)
 
                 # writing json object to file
-                if not isdir("./results/"):         # make 'results' folder if it doesn't already exist
-                    mkdir("./results/")
-                with open("./results/" + model.name + "_" + prompt_function.__name__ + "_results.json", "w") as f:
+                if not isdir(self.results_folder):         # make results folder if it doesn't already exist
+                    mkdir(self.results_folder)
+                with open(join(self.results_folder, model.name + "_" + prompt_function.__name__ + "_results.json"), "w") as f:
                     f.write(json_obj)
 
                 # freeing memory
@@ -195,6 +199,12 @@ class Test():
         for prompt_function in self.prompt_function_array:
             if prompt_function.__name__ == prompt_func_name:
                 self.model_array.remove(prompt_function)
+
+    def createSummaryHTML(self, html_filename=None):
+        if html_filename == None:
+            html_filename = self.run_name
+        create_test_summary_html(results_folder=self.results_folder,
+                                 filename=html_filename)
 
     def free(self):
         del self.model_array
@@ -272,7 +282,7 @@ class AddToExistingTest():
         del provided_prompt_info
         gc.collect()
 
-    def run(self, dataset_path="full", run_num=1, output_file_name=None):
+    def run(self, dataset_path, run_name, run_num=1, output_file_name=None):
 
         # LOADING DATASET:
 
@@ -394,13 +404,15 @@ class AddToExistingTest():
         current_model.update({"test_results": test_results, "test_summary": test_summary})
         json_obj = json.dumps(current_model, indent=4)
 
-        if not isdir("./results/"):         # make 'results' folder if it doesn't already exist
-            mkdir("./results/")
+        # writing json object to file
+        results_folder = "./results-"+run_name+"/"
+        if not isdir(results_folder):         # make 'results' folder if it doesn't already exist
+            mkdir(results_folder)
         if output_file_name != None:
-            with open(join("./results/", output_file_name), "w") as f:
+            with open(join(results_folder, output_file_name), "w") as f:
                 f.write(json_obj)
         else:
-            with open(join("./results/", self.existing_model_info["model_name"] + "_" + self.prompt_function.__name__ + "_results.json"), "w") as f:
+            with open(join(results_folder, self.existing_model_info["model_name"] + "_" + self.prompt_function.__name__ + "_results.json"), "w") as f:
                 f.write(json_obj)
 
         # freeing memory
