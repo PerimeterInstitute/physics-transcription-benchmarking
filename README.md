@@ -51,24 +51,25 @@ See [Test.ipynb](examples/Test.ipynb) for an example of how to use this class.
 
 #### Methods
 - `run(run_name, dataset_path, run_num=1, save_transcription=False)` : Runs tests comparing the transcriptions of each unique model/prompt/audio combination
-    - `run_name` : Name of run
+    - `String run_name` : Name of run
     - `String dataset_path` : Path to dataset to use for testing
     - `int run_num` : Number of times to transcribe the same audio file with the same model/prompt combiation (good for testing consistency!)
     - `Boolean save_transcription` : Boolean indicating if transcriptions should be saved
 - `addModel(new_model)` : Adds provided model to model array
-    - `new_model` : New model to be added
+    - `ModelWrapper new_model` : New model to be added
 - `removeModel(existing_model_name)` : Removes model with provided name from model array
-    - `existing_model_name` : Name of model to be removed
+    - `String existing_model_name` : Name of model to be removed
 - `addPromptFunction(new_prompt_func)` : Adds provided prompt function to prompt function array
-    - `new_prompt_func` : New prompt function to be added
+    - `Method new_prompt_func` : New prompt function to be added
 - `removePromptFunction(existing_prompt_func_name)` : Removes prompt function with provided name from prompt function array
-    - `existing_prompt_func_name` : Name of prompt function to be removed
+    - `String existing_prompt_func_name` : Name of prompt function to be removed
 - `createSummaryHTML(html_filename=None)` : Creates HTML file that displays intuitive summary of test data from most recent run.
-    - `html_filename` : Output file name (do not include extension, defaults to RUN_NAME)
+    - `String html_filename` : Output file name (do not include extension, defaults to RUN_NAME)
 - `free()` : Removes and frees select attributes from memory
 
 #### Results
 After running, a 'results+RUN_NAME/' folder in the current working directory will be created. This folder will contain various JSON result files that hold transcription data from each unique model/prompt combination.
+
 If `save_transcription` is set to `True`, a 'transcriptions+RUN_NAME/' folder in the current working directory will be created. This folder will contain both the original and normalized transcriptions of each unique model/prompt/audio combination.
 
 Example JSON result file: 
@@ -189,7 +190,7 @@ Example JSON result file:
 
 #### Methods
 - `run(run_name, run_num=1, output_file_name=None)` : Adds test runs and updates provided test JSON with new run information
-    - `run_name` : Name of run
+    - `String run_name` : Name of run
     - `int run_num` : Number of test runs to add
     - `String output_file_name` : New JSON result file name (optional, defaults to file name of existing json)
 - `free()` : Removes and frees select attributes from memory
