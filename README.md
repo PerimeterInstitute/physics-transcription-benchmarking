@@ -37,143 +37,190 @@ See Test class [constructor](#constructor).
 
 ## Test.py 
 
-### 'Test' Class
+### Test Class
+See [Test.ipynb](examples/Test.ipynb) for an example of how to use this class.
 
 #### Required Packages/Downloads
 - JiWER --> `$ pip install jiwer`
 - openai-whisper --> `$ pip install -U openai-whisper`
 
 #### Constructor
-`Test(model_array, prompt_function_array=[no_prompt], dataset_path="full", run_num=1, save_transcription=False)` : Creates Test instance
+`Test(model_array, prompt_function_array=[no_prompt])` : Creates Test instance
 - `ModelWrapper[] model_array` : Array of models to be tested
 - `Method[] prompt_function_array` : Array of prompt loading functions to be tested (defaults to contain provided prompt loading function, `no_prompt()`, which returns an empty string)
-- `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
-- `int run_num` : Number of times to transcribe the same audio file with the same model, prompt, etc.
-- `Boolean save_transcription` : Boolean indicating if transcriptions should be saved
+
+#### Methods
+- `run(run_name, dataset_path, run_num=1, save_transcription=False)` : Runs tests comparing the transcriptions of each unique model/prompt/audio combination
+    - `run_name` : Name of run
+    - `String dataset_path` : Path to dataset to use for testing
+    - `int run_num` : Number of times to transcribe the same audio file with the same model/prompt combiation (good for testing consistency!)
+    - `Boolean save_transcription` : Boolean indicating if transcriptions should be saved
+- `addModel(new_model)` : Adds provided model to model array
+    - `new_model` : New model to be added
+- `removeModel(existing_model_name)` : Removes model with provided name from model array
+    - `existing_model_name` : Name of model to be removed
+- `addPromptFunction(new_prompt_func)` : Adds provided prompt function to prompt function array
+    - `new_prompt_func` : New prompt function to be added
+- `removePromptFunction(existing_prompt_func_name)` : Removes prompt function with provided name from prompt function array
+    - `existing_prompt_func_name` : Name of prompt function to be removed
+- `createSummaryHTML(html_filename=None)` : Creates HTML file that displays intuitive summary of test data from most recent run.
+    - `html_filename` : Output file name (do not include extension, defaults to RUN_NAME)
+- `free()` : Removes and frees select attributes from memory
 
 #### Results
-After running the test, a 'results/' folder in the current working directory will be created. This folder will contain various JSON result files that hold transcription data from each unique model/prompt combination.
+After running, a 'results+RUN_NAME/' folder in the current working directory will be created. This folder will contain various JSON result files that hold transcription data from each unique model/prompt combination.
+If `save_transcription` is set to `True`, a 'transcriptions+RUN_NAME/' folder in the current working directory will be created. This folder will contain both the original and normalized transcriptions of each unique model/prompt/audio combination.
 
 Example JSON result file: 
 ```
-"results": {
-    "model_1": {
-        "test_details": {
-            "model_info": {
-                "class_name": "WhisperOpenAI",
-                "model_name": "model_1",
-                "model_type": "medium",
-                "options": {
-                    "language": "en"
-                }
-            },
-        "prompt_info": {
-            "prompt_function_name": "load_prompt_default",
-            "prompt_function_code": "def load_prompt_default(json_obj): ..."
-        },
-            "system_info": {
-                "system": "Linux",
-                "release": "5.15.0-1040-azure",
-                "version": "#47-Ubuntu SMP Thu Jun 1 19:38:24 UTC 2023",
-                "machine": "x86_64",
-                "processor": "x86_64"
-            },
-            "cpu_info": {
-                "physical_cores": 2,
-                "total_cores": 4
-            },
-            "memory_info": {
-                "total_memory": 16767574016,
-                "available_memory": 7527411712,
-                "used_memory": 8884101120
+{
+    "test_details": {
+        "model_info": {
+            "class_name": "WhisperOpenAI",
+            "model_name": "model_1",
+            "model_type": "medium",
+            "options": {
+                "language": "en"
             }
         },
-        "test_results": {
-            "test_audio_1": {
-                "start_datetime": "06/30/2023 15:01:37",
-                "load_time": "0:00:16.374215",
-                "transcribe_time": "0:00:55.688600",
-                "accuracy_data": {
-                    "word_error_rate": 0.1917808219178082,
-                    "match_error_rate": 0.17721518987341772,
-                    "word_information_lost": 0.25799086757990863,
-                    "word_information_preserved": 0.7420091324200914,
-                    "character_error_rate": 0.023305084745762712
-                }
-            },
-            "test_audio_2": {
-                "start_datetime": "06/30/2023 15:02:26",
-                "load_time": "0:00:16.374215",
-                "transcribe_time": "0:00:48.690690",
-                "accuracy_data": {
-                    "word_error_rate": 0.19047619047619047,
-                    "match_error_rate": 0.17647058823529413,
-                    "word_information_lost": 0.2679738562091504,
-                    "word_information_preserved": 0.7320261437908496,
-                    "character_error_rate": 0.019178082191780823
-                }
-            },
-            "test_audio_3": {
-                "start_datetime": "06/30/2023 15:05:03",
-                "load_time": "0:00:16.374215",
-                "transcribe_time": "0:02:37.643353",
-                "accuracy_data": {
-                    "word_error_rate": 0.3380952380952381,
-                    "match_error_rate": 0.3141592920353982,
-                    "word_information_lost": 0.4846632346632347,
-                    "word_information_preserved": 0.5153367653367653,
-                    "character_error_rate": 0.12126696832579185
-                }
-            }
+    "prompt_info": {
+        "prompt_function_name": "load_prompt_default",
+        "prompt_function_code": "def load_prompt_default(json_obj): ..."
+    },
+        "system_info": {
+            "system": "Linux",
+            "release": "5.15.0-1040-azure",
+            "version": "#47-Ubuntu SMP Thu Jun 1 19:38:24 UTC 2023",
+            "machine": "x86_64",
+            "processor": "x86_64"
         },
-        "test_summary": {
-            "word_error_rate": 0.2401174168297456,
-            "match_error_rate": 0.22261502338137004,
-            "word_information_lost": 0.3368759861507646,
-            "word_information_preserved": 0.6631240138492355,
-            "character_error_rate": 0.05458337842111179
+        "cpu_info": {
+            "physical_cores": 2,
+            "total_cores": 4
+        },
+        "memory_info": {
+            "total_memory": 16767574016,
+            "available_memory": 7527411712,
+            "used_memory": 8884101120
         }
+    },
+    "test_results": {
+        "test_audio_1": {
+            "run_0": {
+                "start_datetime": "05/30/24, 15:10:58",
+                "transcribe_time": "0:00:03.993462",
+                "word_error_rate": 0.012195121951219513,
+                "match_error_rate": 0.012048192771084338,
+                "character_error_rate": 0.010548523206751054,
+                "word_information_lost": 0.012048192771084376,
+                "word_information_preserved": 0.9879518072289156
+            },
+            "run_1": {
+                "start_datetime": "05/30/24, 15:11:02",
+                "transcribe_time": "0:00:03.941539",
+                "word_error_rate": 0.012195121951219513,
+                "match_error_rate": 0.012048192771084338,
+                "character_error_rate": 0.010548523206751054,
+                "word_information_lost": 0.012048192771084376,
+                "word_information_preserved": 0.9879518072289156
+            },
+            "summary": {
+                "transcribe_time": "0:00:03.967500",
+                "word_error_rate": 0.012195121951219513,
+                "match_error_rate": 0.03951752632280421,
+                "character_error_rate": 0.010548523206751054,
+                "word_information_lost": 0.012048192771084376,
+                "word_information_preserved": 0.9879518072289156
+            }
+        },
+        "test_audio_2": {
+            "run_0": {
+                "start_datetime": "05/30/24, 15:11:25",
+                "transcribe_time": "0:00:11.942993",
+                "word_error_rate": 0.0546448087431694,
+                "match_error_rate": 0.05291005291005291,
+                "character_error_rate": 0.03714859437751004,
+                "word_information_lost": 0.06370357382893543,
+                "word_information_preserved": 0.9362964261710646
+            },
+            "run_1": {
+                "start_datetime": "05/30/24, 15:11:37",
+                "transcribe_time": "0:00:11.962662",
+                "word_error_rate": 0.0546448087431694,
+                "match_error_rate": 0.05291005291005291,
+                "character_error_rate": 0.03714859437751004,
+                "word_information_lost": 0.06370357382893543,
+                "word_information_preserved": 0.9362964261710646
+            },
+            "summary": {
+                "transcribe_time": "0:00:11.952828",
+                "word_error_rate": 0.0546448087431694,
+                "match_error_rate": 0.05291005291005291,
+                "character_error_rate": 0.03714859437751004,
+                "word_information_lost": 0.06370357382893543,
+                "word_information_preserved": 0.9362964261710646
+            }
+        }
+    },
+    "test_summary": {
+        "transcriptions_per_audio": 2,
+        "transcribe_time": "0:00:07.960164",
+        "word_error_rate": 0.03341996534719446,
+        "match_error_rate": 0.04621378961642856,
+        "character_error_rate": 0.023848558792130548,
+        "word_information_lost": 0.037875883300009905,
+        "word_information_preserved": 0.9621241166999901
     }
 }
 ```
 
-### 'AddToExistingTest' Class
+### AddToExistingTest Class
 
 #### Required Packages/Downloads
 - JiWER --> `$ pip install jiwer`
 - openai-whisper --> `$ pip install -U openai-whisper`
 
 #### Constructor
-`AddToExistingTest(existing_test_json, model, prompt_function=no_prompt, dataset_path="full", run_num=1, output_file_name=None)` : Creates AddToExistingTest instance
+`AddToExistingTest(existing_test_json, model, prompt_function=no_prompt, dataset_path)` : Creates AddToExistingTest instance
 - `String existing_test_json` : JSON file created from a previous test
 - `ModelWrapper model` : Model to be further tested (should be same as model used in provided JSON)
 - `Method prompt_function` : Prompt function to be further tested (should be same as prompt function used in provided JSON)
-- `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
-- `int run_num` : Number of times to transcribe the same audio file with the same model, prompt, etc.
-- `String output_file_name` : New JSON result file name (optional, will overwrite provided JSON if not used)
+- `String dataset_path` : Dataset to be further tested (should be same as dataset used in provided JSON)
+
+#### Methods
+- `run(run_name, run_num=1, output_file_name=None)` : Adds test runs and updates provided test JSON with new run information
+    - `run_name` : Name of run
+    - `int run_num` : Number of test runs to add
+    - `String output_file_name` : New JSON result file name (optional, defaults to file name of existing json)
+- `free()` : Removes and frees select attributes from memory
 
 #### Results
-After running this test, an updated JSON result file will exist containing both the original and desired additional transcription data.
+After running, a 'results+RUN_NAME/' folder in the current working directory will be created. This folder will contain an updated JSON result file with both previous and new test information.
 
 
 
 ## Transcribe.py
-See [Transcribe.ipynb](examples/Transcribe.ipynb) for an example of the following steps put together.
+
+### Transcribe Class
+See [Transcribe.ipynb](examples/Transcribe.ipynb) for an example of how to use this class.
 
 #### Required Packages/Downloads
 - openai-whisper --> `$ pip install -U openai-whisper`
 
 #### Constructor
-`Transcribe(model, prompt_function=no_prompt, dataset_path="full", normalize=False)` : Creates AddToExistingTest instance
-- `String existing_test_json` : JSON file created from a previous test
-- `ModelWrapper model` : Model to be further tested (should be same as model used in provided JSON)
-- `Method prompt_function` : Prompt function to be further tested (should be same as prompt function used in provided JSON)
-- `String dataset_path` : Path to dataset to use for testing (use "full" or "dev" to use provided dataset)
-- `int run_num` : Number of times to transcribe the same audio file with the same model, prompt, etc.
-- `String output_file_name` : New JSON result file name (optional, will overwrite provided JSON if not used)
+`Transcribe(model, prompt_function=no_prompt)` : Creates Transcribe instance
+- `ModelWrapper model` : Model to use for transcriptions
+- `Method prompt_function` : Prompt function to use for transcriptions
+
+#### Methods
+- `run(run_name, dataset_path, normalize=False)` : Creates transcription for each audio sample in provided dataset
+    - `String run_name` : Name of run
+    - `String dataset_path` : Path to dataset to use for transcriptions
+    - `Boolean normalize` : Boolean indicating whether or not to include normalized transcriptions alongside untouched transcriptions
+- `free()` : Removes and frees select attributes from memory
 
 #### Results
-After running this test, an updated JSON result file will exist containing both the original and desired additional transcription data.
+After running, a 'transcriptions+RUN_NAME/' folder in the current working directory will be created. This folder will contain the transcriptions of each audio sample in the provided dataset. If `normalize` is set to `True`, this folder will also contain the normalized transcriptions of each audio sample in the provided dataset
 
 
 
@@ -214,8 +261,8 @@ Put your model wrapper class file in the [models/](models/) folder. Import the w
 ## Datasets
 
 ### Provided Datasets
-- [Full Dataset](datasets/full_dataset/) --> use dataset path "full" when instantiating [Test](#test-class) and [AddToExistingTest](#addtoexistingtest-class) classes
-- [Development Dataset](datasets/dev_dataset/) --> use dataset path "dev" when instantiating [Test](#test-class) and [AddToExistingTest](#addtoexistingtest-class) classes
+- [Full Dataset](datasets/full_dataset/)
+- [Development Dataset](datasets/dev_dataset/)
 
 ### Other Datasets
 Datasets must have the following structure in order to be used with the [Test](#test-class) class:
