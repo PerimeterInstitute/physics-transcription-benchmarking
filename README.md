@@ -209,9 +209,9 @@ See [Transcribe.ipynb](examples/Transcribe.ipynb) for an example of how to use t
 - openai-whisper --> `$ pip install -U openai-whisper`
 
 #### Constructor
-`Transcribe(model, prompt_function=no_prompt)` : Creates Transcribe instance
-- `ModelWrapper model` : Model to use for transcriptions
-- `Method prompt_function` : Prompt function to use for transcriptions
+`Transcribe(model_array, prompt_function_array=[no_prompt])` : Creates Transcribe instance
+- `ModelWrapper[] model_array` : Array of models to use for transcriptions
+- `Method[] prompt_function_array` : Array of prompt loading functions to to use for transcriptions (defaults to contain provided prompt loading function, `no_prompt()`, which returns an empty string)
 
 #### Methods
 - `run(run_name, dataset_path, normalize=False)` : Creates transcription for each audio sample in provided dataset
