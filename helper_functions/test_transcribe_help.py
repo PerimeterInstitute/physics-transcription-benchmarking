@@ -15,12 +15,7 @@ FUNCTION: Loads dataset given dataset path.
 
 def load_dataset(dataset_path):
 
-    # loading premade dataset paths
-    if dataset_path == "full":
-        dataset_path = "./datasets/full_dataset/"       # TODO: use getcwd(), check if the dir exists and raise exception if it doesnt
-
-    elif dataset_path == "dev":
-        dataset_path = "./datasets/dev_dataset/"       # TODO: use getcwd(), check if the dir exists and raise exception if it doesnt
+    # TODO: check if dataset path exists
 
     # copy dataset to /local --> for when running on hpc
     system("cp -r " + dataset_path + " /local/")
