@@ -11,9 +11,9 @@ import gc
 
 class Transcribe():
 
-    def __init__(self, model, prompt_function=no_prompt):
-        self.model = model
-        self.prompt_function = prompt_function
+    def __init__(self, model_array, prompt_function_array=[no_prompt]):
+        self.model_array = model_array
+        self.prompt_function_array = prompt_function_array
         self.normalizer = EnglishTextNormalizer()
 
     def run(self, run_name, dataset_path, normalize=False):
@@ -31,53 +31,66 @@ class Transcribe():
         if not isdir(transcriptions_folder):         # make 'transcriptions' folder if it doesn't already exist
             mkdir(transcriptions_folder)
 
-        # LOADING MODEL:
-
-        self.model.load()
-
         # CREATING TRANSCRIPTIONS:
 
-        for audio in dataset:
+        for model in self.model_array:
 
-            # getting audio variables
-            audio_name = audio["audio_name"]
-            audio_file = audio["audio_file"]
-            audio_info = audio["audio_info"]
+            # load model
+            model.load()
 
-            # creating prompt
-            prompt = self.prompt_function(audio_info)
+            for prompt_function in self.prompt_function_array:
 
-            # transcribing model
-            self.model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
+                for audio in dataset:
 
-            # saving transcription as txt
-            if audio_name in self.model.transcription:                               
-                with open(join(transcriptions_folder, audio_name+".txt"), "w") as f:     
-                    text = self.model.transcription[audio_name]
-                    if normalize:
-                        text = self.normalizer(text)
-                    f.write(text)
-            
-            # saving transcription as vtt
-            if audio_name in self.model.vtt:
-                with open(join(transcriptions_folder, audio_name+".vtt"), "w") as f:
-                    f.write(self.model.vtt[audio_name])
+                    # getting audio variables
+                    audio_name = audio["audio_name"]
+                    audio_file = audio["audio_file"]
+                    audio_info = audio["audio_info"]
+
+                    # creating prompt
+                    prompt = prompt_function(audio_info)
+
+                    # transcribing model
+                    model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
+
+                    # saving transcription as txt
+                    if audio_name in model.transcription:   
+                        transcription = model.transcription[audio_name]
+
+                        with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".txt"), "w") as f:     
+                            f.write(transcription)
+
+                        if normalize:
+                            with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + "-normalized.txt"), "w") as f: 
+                                f.write(self.normalizer(transcription))
+                    
+                    # saving transcription as vtt
+                    if audio_name in model.vtt:
+                        with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".vtt"), "w") as f:
+                            f.write(model.vtt[audio_name])
+
+                    # freeing memory
+                    del audio_name
+                    del audio_file
+                    del audio_info
+                    del prompt
+                    gc.collect()
+
+                # freeing memory
+                del prompt_function
+                gc.collect()
 
             # freeing memory
-            del audio_name
-            del audio_file
-            del audio_info
-            del prompt
+            model.unload()
+            del model
             gc.collect()
 
         # freeing memory
-        self.model.unload()
         del dataset
         gc.collect()
 
     def free(self):
-        del self.model
-        del self.prompt_function
+        del self.model_array
+        del self.prompt_function_array
         del self.normalizer
         gc.collect()
-
