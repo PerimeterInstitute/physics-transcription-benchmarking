@@ -10,28 +10,30 @@ import jiwer, json
 '''
 NAME: load_dataset()
 
-FUNCTION: Loads dataset given dataset path.
+FUNCTION: Loads dataset given dataset path. Returns None if dataset
+          cannot be found/loaded.
 '''
 
 def load_dataset(dataset_path):
 
-    # TODO: check if dataset path exists
+    try:
+        # copy dataset to /local --> for when running on hpc
+        system("cp -r " + dataset_path + " /local/")
+        dataset_path = join("/local", basename(normpath(dataset_path)))
 
-    # copy dataset to /local --> for when running on hpc
-    system("cp -r " + dataset_path + " /local/")
-    dataset_path = join("/local", basename(normpath(dataset_path)))
+        # loading dataset json file
+        for file in listdir(dataset_path):
+            if file.endswith(".json"):
+                json_file_path = join(dataset_path, file)
+                break
+            
+        json_file = open(json_file_path)
+        dataset = json.load(json_file)
+        json_file.close()
+        return dataset
 
-    # loading dataset json file
-    for file in listdir(dataset_path):
-        if file.endswith(".json"):
-            json_file_path = join(dataset_path, file)
-            break
-        
-    json_file = open(json_file_path)
-    dataset = json.load(json_file)
-    json_file.close()
-
-    return dataset
+    except:
+        return None
 
 '''
 NAME: compare()

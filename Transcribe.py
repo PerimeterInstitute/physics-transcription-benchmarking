@@ -21,6 +21,9 @@ class Transcribe():
         # LOADING DATASET:
 
         dataset = load_dataset(dataset_path)
+        if dataset == None:
+            print("Invalid dataset path provided: '"+dataset_path+"'")
+            return
 
         # CREATING OUTPUT FOLDER:
 

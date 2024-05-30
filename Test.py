@@ -21,6 +21,8 @@ class Test():
         self.model_array = model_array
         self.prompt_function_array = prompt_function_array
         self.normalizer = EnglishTextNormalizer()
+        self.run_name = None
+        self.results_folder = None
 
     def run(self, dataset_path, run_name, run_num=1, save_transcription=False):
         self.run_name = run_name
@@ -29,6 +31,9 @@ class Test():
         # LOADING DATASET:
         
         dataset = load_dataset(dataset_path)
+        if dataset == None:
+            print("Invalid dataset path provided: '"+dataset_path+"'")
+            return
 
         # GETTING SYSTEM/MEMORY INFORMATION:
 
@@ -201,15 +206,20 @@ class Test():
                 self.model_array.remove(prompt_function)
 
     def createSummaryHTML(self, html_filename=None):
-        if html_filename == None:
-            html_filename = self.run_name
-        create_test_summary_html(results_folder=self.results_folder,
-                                 filename=html_filename)
+        if self.results_folder == None:
+            print("Please use run() before creating summary HTML.")
+        else:
+            if html_filename == None:
+                html_filename = self.run_name
+            create_test_summary_html(results_folder=self.results_folder,
+                                    filename=html_filename)
 
     def free(self):
         del self.model_array
         del self.prompt_function_array
         del self.normalizer
+        del self.run_name
+        del self.results_folder
         gc.collect()
 
 # ================================= #
@@ -287,6 +297,9 @@ class AddToExistingTest():
         # LOADING DATASET:
 
         dataset = load_dataset(dataset_path)
+        if dataset == None:
+            print("Invalid dataset path provided: '"+dataset_path+"'")
+            return
 
         # GETTING PROVIDED MODEL STATS:
 
