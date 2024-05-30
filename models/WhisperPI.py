@@ -8,6 +8,8 @@ from pi_whisper.utils import get_writer
 import pi_whisper as whisper
 import gc
 
+OUTPUT_FOLDER = "output-pi"
+
 class WhisperPI(ModelWrapper):
 
     __model = None
@@ -26,7 +28,7 @@ class WhisperPI(ModelWrapper):
         self.name = name
         self.model_type = options.pop("model_type", "large")
         self.options = options
-        self.__outputPath = join(getcwd(), "output")
+        self.__outputPath = join(getcwd(), OUTPUT_FOLDER)
         self.__vtt_writer = get_writer("vtt", self.__outputPath)
 
     def load(self):

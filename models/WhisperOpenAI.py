@@ -7,6 +7,8 @@ from models.ModelWrapper import ModelWrapper
 from whisper.utils import get_writer
 import whisper, gc
 
+OUTPUT_FOLDER = "output-openai"
+
 class WhisperOpenAI(ModelWrapper):
 
     __model = None
@@ -25,7 +27,7 @@ class WhisperOpenAI(ModelWrapper):
         self.name = name
         self.model_type = options.pop("model_type", "large")
         self.options = options
-        self.__outputPath = join(getcwd(), "output")
+        self.__outputPath = join(getcwd(), OUTPUT_FOLDER)
         self.__vtt_writer = get_writer("vtt", self.__outputPath)
 
     def load(self):
