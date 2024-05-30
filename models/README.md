@@ -4,7 +4,7 @@
 Wrapper for the WhisperPI transcription model. WhisperPI is an altered version of [OpenAI's Whisper](https://github.com/openai/whisper) speech recognition model, used to transcribe videos on the Perimeter Institute Recorded Seminar Archive (PIRSA).
 
 ### Required Packages/Downloads
-- pi-whisper --> `$ pip install git+https://github.com/rmohl/whisper.git`
+- pi-whisper --> `$ pip install git+https://github.com/PerimeterInstitute/whisper.git`
 - FFmpeg --> `$ sudo apt install ffmpeg`
 
 ### Constructor
