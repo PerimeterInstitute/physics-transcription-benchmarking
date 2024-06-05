@@ -15,6 +15,8 @@
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
+
+                    <!-- Summary Table -->
                     <table class="min-w-full text-center text-sm font-light">
                         <thead class="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
                             <tr>
@@ -27,6 +29,7 @@
                                 <th scope="col" class=" px-6 py-4">Average Character Error Rate</th>
                                 <th scope="col" class=" px-6 py-4">Average Word Information Lost</th>
                                 <th scope="col" class=" px-6 py-4">Average Word Information Preserved</th>
+                                <th scope="col" class=" px-6 py-4">Average Number of Phrase Repetitions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,11 +41,21 @@ $table_data
                         <li> - Each model was tested with $num_audio_samples different audio samples.</li> 
                         <li> - Each model transcribed each audio sample a total of $num_runs times.</li>
                     </ul>
+
+                    <!-- Accuracy Data Graph -->
                     <div class="whitespace-nowrap px-6 py-4"><canvas id="accuracy_graph"></canvas></div>
                     <p class="whitespace-nowrap px-6 py-4 font-normal text-center text-sm">
                         An ideal model will have low <i>Word Error Rate</i>, <i>Match Error Rate</i>, <i>Character Error Rate</i>, and <i>Word Information Lost</i> scores, along with a high <i>Word Information Preserved</i> score. 
                         <br>See more information <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://github.com/jitsi/jiwer">here</a>.
                     </p>
+
+                    <!-- Phrase Repetition Graph -->
+                    <div class="whitespace-nowrap px-6 py-4"><canvas id="repeat_graph"></canvas></div>
+                    <p class="whitespace-nowrap px-6 py-4 font-normal text-center text-sm">
+                        High phrase repetition is indicative of hallucination. 
+                    </p>
+
+                    <!-- Transcription Time Graph -->
                     <div class="whitespace-nowrap px-6 py-4"><canvas id="time_graph"></canvas></div>
                     <p class="whitespace-nowrap px-6 py-4 font-normal text-center text-sm">
                         An ideal model will take a minimal amount of processing time while still retaining transcription accuracy.
@@ -55,11 +68,12 @@ $table_data
 </body>
 </html>
 
-<!-- BAR CHART CODE -->
+<!-- GRAPH CODE -->
 <script>
     const accuracy_graph = document.getElementById('accuracy_graph');
     const time_graph = document.getElementById('time_graph')
   
+    // Accuracy Data Graph 
     new Chart(accuracy_graph, {
         type: 'bar',
         data: {
@@ -87,6 +101,35 @@ $accuracy_graph_data
         }
     });
 
+    // Phrase Repetition Graph
+    new Chart(repeat_graph, {
+        type: 'bar',
+        data: {
+            labels: $repeat_graph_labels,
+            datasets: [
+$repeat_graph_data
+            ]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Comparison of Phrase Repetitions Between Models"
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: "Number of Phrase Repetitions"
+                    }
+                }
+            }
+        }
+    });
+
+    // Transcription Time Graph
     new Chart(time_graph, {
         type: 'bar',
         data: {

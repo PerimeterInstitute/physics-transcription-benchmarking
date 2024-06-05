@@ -1,7 +1,7 @@
 from os import listdir, system
 from os.path import join, normpath, basename
 from datetime import datetime, timedelta
-import jiwer, json
+import jiwer, json, re
 
 # ========================================== #
 # ==== Test/Transcribe Helper Functions ==== #
@@ -48,6 +48,7 @@ def compare(reference, hypothesis):
     # comparing transcriptions
     word_output = jiwer.process_words(reference, hypothesis)
     char_output = jiwer.process_characters(reference, hypothesis)
+    phrase_repeats = countRepeatedPhrases(hypothesis)
 
     # creating results dictionary
     current_dataset.update({"word_error_rate": word_output.wer})
@@ -55,8 +56,63 @@ def compare(reference, hypothesis):
     current_dataset.update({"character_error_rate": char_output.cer})
     current_dataset.update({"word_information_lost": word_output.wil})
     current_dataset.update({"word_information_preserved": word_output.wip})
+    current_dataset.update({"phrase_repeats": phrase_repeats})
 
     return current_dataset
+
+'''
+NAME: countRepeatedPhrases()
+
+FUNCTION: Returns number of repeated phrases. 
+          In this function, a repeated phrase is defined as a valid word or
+          phrase that has already occured before, seperated only by whitespace.
+
+EXAMPLE:
+Input --> "I like pizza I like pizza I like pizza "
+          "I like pizza hello I like pizza "
+          "hello I like pizza I like pizza hello "
+          "hello hello hello I like pizza I like pizza "
+
+Output --> 2
+           0
+           1
+           3
+'''
+
+def countRepeatedPhrases(text):
+    regex = re.compile(r'\s(.+)\s+\1', flags=re.I)     # slightly altered from https://stackoverflow.com/questions/64529827/find-repeated-sentences-within-text
+    return __countRepeatedPhrasesRecursive(regex.split(text), regex.findall(text), regex)
+
+'''
+NAME: __countRepeatedPhrasesRecursive()
+
+FUNCTION: Internal recursive function that helps countRepeatedPhrases().
+'''
+
+def __countRepeatedPhrasesRecursive(substrings, repeats, regex):
+    if len(substrings) == 1:          # i.e. no repeats found
+        return 0
+    
+    num = len(repeats)
+
+    # CASE 1: Repeats are present in already confirmed repeats
+    for text in repeats:
+        text = " "+text+" "         # ensures deeper repeats are found by regex
+        num = num + 2*__countRepeatedPhrasesRecursive(regex.split(text), regex.findall(text), regex)        # '2*' is added since any repeats found in previously confirmed repeat has occurred twice!
+
+    # CASE 2: Repeat is present in a substring following an already confirmed repeat
+    for idx in range(0, len(substrings)):
+        substring = substrings[idx]
+        if substring in repeats:            # if substring has already been confirmed as a repeat, check the start of the next substring for another repeat
+            if substrings[idx+1].strip().startswith(substring):
+                num += 1
+
+    # CASE 3: Repeats are present in remaining substrings
+    new_list = [x for x in substrings if x not in repeats]            # 'substrings' array without any elements that are in 'repeats' array
+    for text in new_list:
+        num = num + __countRepeatedPhrasesRecursive(regex.split(text), regex.findall(text), regex)
+
+    return num
 
 '''
 NAME: merge_dicts()
