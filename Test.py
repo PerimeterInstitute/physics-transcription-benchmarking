@@ -203,7 +203,7 @@ class Test():
     def removePromptFunction(self, existing_prompt_func_name):
         for prompt_function in self.prompt_function_array:
             if prompt_function.__name__ == existing_prompt_func_name:
-                self.model_array.remove(prompt_function)
+                self.prompt_function_array.remove(prompt_function)
 
     def createSummaryHTML(self, html_filename=None):
         if self.results_folder == None:
