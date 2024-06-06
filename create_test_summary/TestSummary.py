@@ -25,7 +25,7 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
                                 <td class="whitespace-nowrap px-6 py-4">$cer</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$wil</td> \n\
                                 <td class="whitespace-nowrap px-6 py-4">$wip</td> \n\
-                                <td class="whitespace-nowrap px-6 py-4">$avg_phrase_repeats</td> \n\
+                                <td class="whitespace-nowrap px-6 py-4">$avg_phrase_repeat_diff</td> \n\
                             </tr> \n')
     
     accuracy_graph_template = Template('\
@@ -37,7 +37,7 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
     repeat_graph_template = Template('\
                 { \n\
                     label: "$model_title", \n\
-                    data: $phrase_repeats \n\
+                    data: $phrase_repeat_diffs \n\
                 },\n')
     
     time_graph_template = Template('\
@@ -66,7 +66,7 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
         summary_info = model_test_info["test_summary"]
 
         transcribe_times = []
-        phrase_repeats = []
+        phrase_repeat_diffs = []
         for audio_sample in test_results:
 
             # update labels
@@ -76,11 +76,11 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
 
             # update transcribe times (averaged across all runs for current sample audio)
             transcribe_times.append(convertStringToSeconds(test_results[audio_sample]["summary"]["transcribe_time"]))
-            phrase_repeats.append(test_results[audio_sample]["summary"]["phrase_repeats"])
+            phrase_repeat_diffs.append(test_results[audio_sample]["summary"]["phrase_repeat_diff"])
 
         # update transcribe times (averaged across ALL runs)
         transcribe_times.append(convertStringToSeconds(summary_info["transcribe_time"]))
-        phrase_repeats.append(summary_info["phrase_repeats"])
+        phrase_repeat_diffs.append(summary_info["phrase_repeat_diff"])
         add_to_labels = False           # we only need to get the labels from one test result file to know them all, so we stop adding after the first time
         
         # add row template to table data
@@ -93,7 +93,7 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
                                                                  'cer': summary_info["character_error_rate"],
                                                                  'wil': summary_info["word_information_lost"],
                                                                  'wip': summary_info["word_information_preserved"],
-                                                                 'avg_phrase_repeats': summary_info["phrase_repeats"]})
+                                                                 'avg_phrase_repeat_diff': summary_info["phrase_repeat_diff"]})
         
         accuracy_graph_data = accuracy_graph_data + accuracy_graph_template.substitute({'model_title': model_info["class_name"] + " - " + prompt_info["prompt_function_name"] + "()",
                                                                  'wer': summary_info["word_error_rate"],
@@ -106,7 +106,7 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
                                                                  'transcribe_times': transcribe_times})
 
         repeat_graph_data = repeat_graph_data + repeat_graph_template.substitute({'model_title': model_info["class_name"] + " - " + prompt_info["prompt_function_name"] + "()",
-                                                                 'phrase_repeats': phrase_repeats})
+                                                                 'phrase_repeat_diffs': phrase_repeat_diffs})
 
     time_graph_labels.append("Average Transcription Time")
     repeat_graph_labels.append("Average Number of Phrase Repetitions")

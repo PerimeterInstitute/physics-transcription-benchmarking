@@ -29,7 +29,7 @@
                                 <th scope="col" class=" px-6 py-4">Average Character Error Rate</th>
                                 <th scope="col" class=" px-6 py-4">Average Word Information Lost</th>
                                 <th scope="col" class=" px-6 py-4">Average Word Information Preserved</th>
-                                <th scope="col" class=" px-6 py-4">Average Number of Phrase Repetitions</th>
+                                <th scope="col" class=" px-6 py-4">Average Difference in Phrase Repetitions from Reference Transcript</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,7 +52,7 @@ $table_data
                     <!-- Phrase Repetition Graph -->
                     <div class="whitespace-nowrap px-6 py-4"><canvas id="repeat_graph"></canvas></div>
                     <p class="whitespace-nowrap px-6 py-4 font-normal text-center text-sm">
-                        High phrase repetition is indicative of hallucination. 
+                        A considerable increase in phrase repetition is indicative of hallucination. 
                     </p>
 
                     <!-- Transcription Time Graph -->
@@ -90,6 +90,12 @@ $accuracy_graph_data
                 }
             },
             scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: "Accuracy Statistic"
+                    }
+                },
                 y: {
                     beginAtZero: true,
                     title: {
@@ -118,11 +124,16 @@ $repeat_graph_data
                 }
             },
             scales: {
-                y: {
-                    beginAtZero: true,
+                x: {
                     title: {
                         display: true,
-                        text: "Number of Phrase Repetitions"
+                        text: "Name of Audio Sample"
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: "Difference in Phrase Repetitions from Reference Transcript"
                     }
                 }
             }
@@ -146,6 +157,12 @@ $time_graph_data
                 }
             },
             scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: "Name of Audio Sample"
+                    }
+                },
                 y: {
                     beginAtZero: true,
                     title: {

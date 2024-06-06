@@ -48,7 +48,7 @@ def compare(reference, hypothesis):
     # comparing transcriptions
     word_output = jiwer.process_words(reference, hypothesis)
     char_output = jiwer.process_characters(reference, hypothesis)
-    phrase_repeats = countRepeatedPhrases(hypothesis)
+    phrase_repeat_diff = countRepeatedPhrases(hypothesis) - countRepeatedPhrases(reference)
 
     # creating results dictionary
     current_dataset.update({"word_error_rate": word_output.wer})
@@ -56,7 +56,7 @@ def compare(reference, hypothesis):
     current_dataset.update({"character_error_rate": char_output.cer})
     current_dataset.update({"word_information_lost": word_output.wil})
     current_dataset.update({"word_information_preserved": word_output.wip})
-    current_dataset.update({"phrase_repeats": phrase_repeats})
+    current_dataset.update({"phrase_repeat_diff": phrase_repeat_diff})
 
     return current_dataset
 
