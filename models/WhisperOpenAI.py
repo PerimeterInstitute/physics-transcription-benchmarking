@@ -33,8 +33,7 @@ class WhisperOpenAI(ModelWrapper):
     def load(self):
 
         # make output folder
-        if not isdir(self.__outputPath):        
-            mkdir(self.__outputPath)
+        self.__makeOutputDir()
 
         # load model
         load_start = time()
@@ -64,6 +63,14 @@ class WhisperOpenAI(ModelWrapper):
         self.result_object.update({audio_name: result})
         self.transcription.update({audio_name: self.__createTranscription(audio_name)})
         self.vtt.update({audio_name: self.__createVTT(audio_name)})
+
+    def __makeOutputDir(self):
+        if isdir(self.__outputPath):
+            i = 2
+            while isdir(self.__outputPath + "-" + str(i)):
+                i += 1
+            self.__outputPath = self.__outputPath + "-" + str(i)
+        mkdir(self.__outputPath)
 
     def __createTranscription(self, audio_name):
         transcription = ""

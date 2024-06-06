@@ -27,15 +27,14 @@ class WhisperCPPQuantized(ModelWrapper):
         self.options = options
         self.__transcribe_options = self.__getTranscribeOptions()
         self.__path_to_whispercpp = path_to_whispercpp
-        self.__outputPath = join(path_to_whispercpp, OUTPUT_FOLDER)
+        self.__outputPath = join(getcwd(), OUTPUT_FOLDER)
         self.__model_file = "models/ggml-"+self.model_type+".bin"
         self.__q_model_file = "models/ggml-"+self.model_type+"-"+self.quantize_type+".bin"
         
     def load(self):
 
         # make output folder
-        if not isdir(self.__outputPath):
-            mkdir(self.__outputPath)
+        self.__makeOutputDir()
 
         with cd(self.__path_to_whispercpp):
             
@@ -86,6 +85,14 @@ class WhisperCPPQuantized(ModelWrapper):
     def makeClean(self):
         with cd(self.__path_to_whispercpp):
             system("make clean")
+
+    def __makeOutputDir(self):
+        if isdir(self.__outputPath):
+            i = 2
+            while isdir(self.__outputPath + "-" + str(i)):
+                i += 1
+            self.__outputPath = self.__outputPath + "-" + str(i)
+        mkdir(self.__outputPath)
 
     def __createTranscription(self, audio_name):
         transcription = ""
