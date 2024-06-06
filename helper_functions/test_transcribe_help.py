@@ -80,7 +80,7 @@ Output --> 2
 '''
 
 def countRepeatedPhrases(text):
-    regex = re.compile(r'\s(.+)\s+\1', flags=re.I)     # slightly altered from https://stackoverflow.com/questions/64529827/find-repeated-sentences-within-text
+    regex = re.compile(r'\s(.+\s+)\1', flags=re.I)     # slightly altered from https://stackoverflow.com/questions/64529827/find-repeated-sentences-within-text
     return __countRepeatedPhrasesRecursive(regex.split(text), regex.findall(text), regex)
 
 '''
@@ -110,6 +110,7 @@ def __countRepeatedPhrasesRecursive(substrings, repeats, regex):
     # CASE 3: Repeats are present in remaining substrings
     new_list = [x for x in substrings if x not in repeats]            # 'substrings' array without any elements that are in 'repeats' array
     for text in new_list:
+        text = " "+text+" "         # ensures deeper repeats are found by regex
         num = num + __countRepeatedPhrasesRecursive(regex.split(text), regex.findall(text), regex)
 
     return num
