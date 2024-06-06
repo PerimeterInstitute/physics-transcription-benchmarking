@@ -1,4 +1,4 @@
-from os import mkdir
+from os import mkdir, getcwd
 from os.path import join, isdir
 from helper_functions.prompt_functions import no_prompt
 from helper_functions.test_transcribe_help import load_dataset
@@ -15,6 +15,7 @@ class Transcribe():
         self.model_array = model_array
         self.prompt_function_array = prompt_function_array
         self.normalizer = EnglishTextNormalizer()
+        self.transcriptions_folder = join(getcwd(), "transcriptions")
 
     def run(self, run_name, dataset_path, normalize=False):
 
@@ -27,9 +28,11 @@ class Transcribe():
 
         # CREATING OUTPUT FOLDER:
 
-        transcriptions_folder = "./transcriptions-"+run_name+"/"
-        if not isdir(transcriptions_folder):         # make 'transcriptions' folder if it doesn't already exist
-            mkdir(transcriptions_folder)
+        if not isdir(self.transcriptions_folder):         # make 'transcriptions' folder if it doesn't already exist
+            mkdir(self.transcriptions_folder)
+        self.transcriptions_folder = join(self.transcriptions_folder, run_name)     # update to current run's transcription folder
+        if not isdir(self.transcriptions_folder):         # make deeper run folder if it doesn't already exist
+            mkdir(self.transcriptions_folder)
 
         # CREATING TRANSCRIPTIONS:
 
@@ -57,16 +60,16 @@ class Transcribe():
                     if audio_name in model.transcription:   
                         transcription = model.transcription[audio_name]
 
-                        with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".txt"), "w") as f:     
+                        with open(join(self.transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".txt"), "w") as f:     
                             f.write(transcription)
 
                         if normalize:
-                            with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + "-normalized.txt"), "w") as f: 
+                            with open(join(self.transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + "-normalized.txt"), "w") as f: 
                                 f.write(self.normalizer(transcription))
                     
                     # saving transcription as vtt
                     if audio_name in model.vtt:
-                        with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".vtt"), "w") as f:
+                        with open(join(self.transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".vtt"), "w") as f:
                             f.write(model.vtt[audio_name])
 
                     # freeing memory
