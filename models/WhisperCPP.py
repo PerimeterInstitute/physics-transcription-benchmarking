@@ -26,7 +26,7 @@ class WhisperCPP(ModelWrapper):
         self.options = options
         self.__transcribe_options = self.__getTranscribeOptions()
         self.__path_to_whispercpp = path_to_whispercpp
-        self.__outputPath = join(getcwd(), OUTPUT_FOLDER)
+        self.__outputPath = join(getcwd(), "outputs", OUTPUT_FOLDER)
 
     def load(self):
 

@@ -27,7 +27,7 @@ class WhisperCPPQuantized(ModelWrapper):
         self.options = options
         self.__transcribe_options = self.__getTranscribeOptions()
         self.__path_to_whispercpp = path_to_whispercpp
-        self.__outputPath = join(getcwd(), OUTPUT_FOLDER)
+        self.__outputPath = join(getcwd(), "outputs", OUTPUT_FOLDER)
         self.__model_file = "models/ggml-"+self.model_type+".bin"
         self.__q_model_file = "models/ggml-"+self.model_type+"-"+self.quantize_type+".bin"
         

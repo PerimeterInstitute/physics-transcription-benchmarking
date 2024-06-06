@@ -28,13 +28,15 @@ class WhisperPI(ModelWrapper):
         self.name = name
         self.model_type = options.pop("model_type", "large")
         self.options = options
-        self.__outputPath = join(getcwd(), OUTPUT_FOLDER)
-        self.__vtt_writer = get_writer("vtt", self.__outputPath)
-
+        self.__outputPath = join(getcwd(), "outputs", OUTPUT_FOLDER)
+        
     def load(self):
 
         # make output folder
         self.__makeOutputDir()
+
+        # make vtt writer
+        self.__vtt_writer = get_writer("vtt", self.__outputPath)
 
         # load model
         load_start = time()

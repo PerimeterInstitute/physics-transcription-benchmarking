@@ -1,4 +1,4 @@
-from os import mkdir
+from os import mkdir, getcwd
 from os.path import join, isdir
 from inspect import getsource
 from datetime import datetime
@@ -22,11 +22,25 @@ class Test():
         self.prompt_function_array = prompt_function_array
         self.normalizer = EnglishTextNormalizer()
         self.run_name = None
-        self.results_folder = None
+        self.results_folder = join(getcwd(), "results")
+        self.outputs_folder = join(getcwd(), "outputs")
+        self.transcriptions_folder = join(getcwd(), "transcriptions")
 
     def run(self, run_name, dataset_path, run_num=1, save_transcription=False):
+
+        # CREATING NECESSARY FOLDERS:
+
+        if not isdir(self.results_folder):
+            mkdir(self.results_folder)
+        if not isdir(self.outputs_folder):
+            mkdir(self.outputs_folder)
+        if save_transcription and not isdir(self.transcriptions_folder):
+            mkdir(self.transcriptions_folder)
+
+        # UPDATING VARIBLES:
+
         self.run_name = run_name
-        self.results_folder = "./results-"+run_name+"/"
+        self.results_folder = join(self.results_folder, run_name)
 
         # LOADING DATASET:
         
@@ -100,8 +114,8 @@ class Test():
                         model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
 
                         if save_transcription:
-                            transcriptions_folder = "./transcriptions-"+run_name+"/"
-                            if not isdir(transcriptions_folder):         # make 'transcriptions' folder if it doesn't already exist
+                            transcriptions_folder = join(self.transcriptions_folder, run_name)
+                            if not isdir(transcriptions_folder):         # make folder if it doesn't already exist
                                 mkdir(transcriptions_folder)
                             transcription = model.transcription[audio_name]
                             with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".txt"), "w") as f:
