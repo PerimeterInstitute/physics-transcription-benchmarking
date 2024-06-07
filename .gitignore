@@ -8,6 +8,7 @@ past_results/results-*
 datasets/*_TEST
 datasets/2023*
 datasets/*/*/*.wav
+datasets/*/*/*-normalized.txt
 test_transcribe.py
 hpc_scripts/*
 *.html
@@ -24,5 +25,9 @@ create_test_summary_only.py
 
 # No speech testing
 datasets/no_speech_dataset/
-datasets/long_test_dataset/
+datasets/secrets_full_vid_dataset/
+datasets/poor_sound_dataset/
+datasets/poor_sound_full_vid_dataset/
 clear_gpu_mem.py
+repeats.py
+compare.py
