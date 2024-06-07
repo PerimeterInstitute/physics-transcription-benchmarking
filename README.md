@@ -5,8 +5,14 @@ Test suite created for benchmarking transcription models.
 ## How To Run
 See [Test.ipynb](examples/Test.ipynb) for an example of the following steps put together.
 
-### 1. Clone Repo
+### 1. Setup
+
+#### a) Clone Repo
 `$ git clone https://github.com/PerimeterInstitute/physics-transcription-benchmarking`
+
+#### b) Run `setup.sh` File
+`$ cd physics-transcription-benchmarking/`
+`$ bash setup.sh`
 
 ### 2. Use Transcription Model Wrapper
 
@@ -30,9 +36,14 @@ See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper) to cre
 #### Instantiating Test
 See Test class [constructor](#constructor).
 
+#### Executing Benchmarking Test
+See Test method [`run()`](#methods)
+
+During the test runtime, folders titled 'results/', 'transcriptions/', and 'outputs/' will exists in the current working directory. **DO NOT delete or alter these folders in any way until the test run has completed!**
+
 ### 4. View Results
 - Access TXT and VTT transcription(s) through Model Wrapper object.
-- See resulting JSON files (contain load times, transcription times, accuracy data, etc.) in current working directory.
+- See resulting JSON files (contain load times, transcription times, accuracy data, etc.) in 'results/' folder in the current working directory.
 
 
 ## Test.py 
@@ -68,9 +79,9 @@ See [Test.ipynb](examples/Test.ipynb) for an example of how to use this class.
 - `free()` : Removes and frees select attributes from memory
 
 #### Results
-After running, a 'results+RUN_NAME/' folder in the current working directory will be created. This folder will contain various JSON result files that hold transcription data from each unique model/prompt combination.
+After running, a 'results/RUN_NAME/' folder will be created in the current working directory. This folder will contain various JSON result files that hold transcription data from each unique model/prompt combination.
 
-If `save_transcription` is set to `True`, a 'transcriptions+RUN_NAME/' folder in the current working directory will be created. This folder will contain both the original and normalized transcriptions of each unique model/prompt/audio combination.
+If `save_transcription` is set to `True`, a 'transcriptions/RUN_NAME/' folder will be created in the current working directory. This folder will contain both the original and normalized transcriptions of each unique model/prompt/audio combination.
 
 Example JSON result file: 
 ```
@@ -114,7 +125,8 @@ Example JSON result file:
                 "match_error_rate": 0.012048192771084338,
                 "character_error_rate": 0.010548523206751054,
                 "word_information_lost": 0.012048192771084376,
-                "word_information_preserved": 0.9879518072289156
+                "word_information_preserved": 0.9879518072289156,
+                "phrase_repeat_diff": 2
             },
             "run_1": {
                 "start_datetime": "05/30/24, 15:11:02",
@@ -123,7 +135,8 @@ Example JSON result file:
                 "match_error_rate": 0.012048192771084338,
                 "character_error_rate": 0.010548523206751054,
                 "word_information_lost": 0.012048192771084376,
-                "word_information_preserved": 0.9879518072289156
+                "word_information_preserved": 0.9879518072289156,
+                "phrase_repeat_diff": 2
             },
             "summary": {
                 "transcribe_time": "0:00:03.967500",
@@ -131,7 +144,8 @@ Example JSON result file:
                 "match_error_rate": 0.03951752632280421,
                 "character_error_rate": 0.010548523206751054,
                 "word_information_lost": 0.012048192771084376,
-                "word_information_preserved": 0.9879518072289156
+                "word_information_preserved": 0.9879518072289156,
+                "phrase_repeat_diff": 2
             }
         },
         "test_audio_2": {
@@ -142,7 +156,8 @@ Example JSON result file:
                 "match_error_rate": 0.05291005291005291,
                 "character_error_rate": 0.03714859437751004,
                 "word_information_lost": 0.06370357382893543,
-                "word_information_preserved": 0.9362964261710646
+                "word_information_preserved": 0.9362964261710646,
+                "phrase_repeat_diff": 0
             },
             "run_1": {
                 "start_datetime": "05/30/24, 15:11:37",
@@ -151,7 +166,8 @@ Example JSON result file:
                 "match_error_rate": 0.05291005291005291,
                 "character_error_rate": 0.03714859437751004,
                 "word_information_lost": 0.06370357382893543,
-                "word_information_preserved": 0.9362964261710646
+                "word_information_preserved": 0.9362964261710646,
+                "phrase_repeat_diff": 0
             },
             "summary": {
                 "transcribe_time": "0:00:11.952828",
@@ -159,7 +175,8 @@ Example JSON result file:
                 "match_error_rate": 0.05291005291005291,
                 "character_error_rate": 0.03714859437751004,
                 "word_information_lost": 0.06370357382893543,
-                "word_information_preserved": 0.9362964261710646
+                "word_information_preserved": 0.9362964261710646,
+                "phrase_repeat_diff": 0
             }
         }
     },
@@ -170,7 +187,8 @@ Example JSON result file:
         "match_error_rate": 0.04621378961642856,
         "character_error_rate": 0.023848558792130548,
         "word_information_lost": 0.037875883300009905,
-        "word_information_preserved": 0.9621241166999901
+        "word_information_preserved": 0.9621241166999901,
+        "phrase_repeat_diff": 1
     }
 }
 ```
@@ -196,7 +214,7 @@ Example JSON result file:
 - `free()` : Removes and frees select attributes from memory
 
 #### Results
-After running, a 'results+RUN_NAME/' folder in the current working directory will be created. This folder will contain an updated JSON result file with both previous and new test information.
+After running, a 'results/RUN_NAME/' folder in the current working directory will be created. This folder will contain an updated JSON result file with both previous and new test information.
 
 
 
@@ -221,7 +239,7 @@ See [Transcribe.ipynb](examples/Transcribe.ipynb) for an example of how to use t
 - `free()` : Removes and frees select attributes from memory
 
 #### Results
-After running, a 'transcriptions+RUN_NAME/' folder in the current working directory will be created. This folder will contain the transcriptions of each audio sample in the provided dataset. If `normalize` is set to `True`, this folder will also contain the normalized transcriptions of each audio sample in the provided dataset
+After running, a 'transcriptions/RUN_NAME/' folder in the current working directory will be created. This folder will contain the transcriptions of each audio sample in the provided dataset. If `normalize` is set to `True`, this folder will also contain the normalized transcriptions of each audio sample in the provided dataset
 
 
 
