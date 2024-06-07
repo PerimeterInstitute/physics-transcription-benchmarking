@@ -11,8 +11,7 @@ See [Test.ipynb](examples/Test.ipynb) for an example of the following steps put 
 `$ git clone https://github.com/PerimeterInstitute/physics-transcription-benchmarking`
 
 #### b) Run `setup.sh` File
-`$ cd physics-transcription-benchmarking/`
-
+`$ cd physics-transcription-benchmarking/`\
 `$ bash setup.sh`
 
 ### 2. Use Transcription Model Wrapper
@@ -38,18 +37,19 @@ See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper) to cre
 See Test class [constructor](#constructor).
 
 #### c) Executing Benchmarking Test
-See Test method [run()](#methods).
+See [run()](#methods) method from Test class.
 
-During the test runtime, folders titled 'results/', 'transcriptions/', and 'outputs/' will exists in the current working directory.\
-**\*\*DO NOT delete or alter these folders in any way until the benchmarking test has completed!\*\***
+During the test runtime, folders titled 'results/', 'transcriptions/', and 'outputs/' will exist in the current working directory.
+
+<p align=center><b>** DO NOT delete or alter these folders in any way until the benchmarking test has completed! **</b><p>
 
 ### 4. View Results
 - Access TXT and VTT transcription(s) through Model Wrapper object.
 - See resulting JSON files (contain load times, transcription times, accuracy data, etc.) in 'results/' folder in the current working directory.
 
 ### 5. Create Test Summary HTML File
-- Using the [createSummaryHTML()](#methods) method in the Test class
-- Using the repo's [create_test_summary_html()](#creating-a-summary-html-file) method
+- Do this using the [createSummaryHTML()](#methods) method in the Test class
+- Do this using the repo's [create_test_summary_html()](#creating-a-summary-html-file) method
 
 
 ## Test.py 

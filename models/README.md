@@ -4,8 +4,8 @@
 Wrapper for the WhisperPI transcription model. WhisperPI is an altered version of [OpenAI's Whisper](https://github.com/openai/whisper) speech recognition model, used to transcribe videos on the Perimeter Institute Recorded Seminar Archive (PIRSA).
 
 ### Required Packages/Downloads
-- pi-whisper --> `$ pip install git+https://github.com/PerimeterInstitute/whisper.git`
-- FFmpeg --> `$ sudo apt install ffmpeg`
+- pi-whisper &rarr; `$ pip install git+https://github.com/PerimeterInstitute/whisper.git`
+- FFmpeg &rarr; `$ sudo apt install ffmpeg`
 
 ### Constructor
 `WhisperPI(name, options)` : Creates WhisperPI instance
@@ -36,8 +36,8 @@ Wrapper for the WhisperPI transcription model. WhisperPI is an altered version o
 Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recognition model.
 
 ### Required Packages/Downloads
-- openai-whisper --> `$ pip install -U openai-whisper`
-- FFmpeg --> `$ sudo apt install ffmpeg`
+- openai-whisper &rarr; `$ pip install -U openai-whisper`
+- FFmpeg &rarr; `$ sudo apt install ffmpeg`
 
 ### Constructor
 `WhisperOpenAI(name, options)` : Creates WhisperOpenAI instance
@@ -68,7 +68,7 @@ Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recogni
 Wrapper for the [Whisper C++](https://github.com/ggerganov/whisper.cpp) speech recognition model.
 
 ### Required Packages/Downloads
-- whisper.cpp --> `$ git clone https://github.com/ggerganov/whisper.cpp.git`
+- whisper.cpp &rarr; `$ git clone https://github.com/ggerganov/whisper.cpp.git`
 
 ### Constructor
 `WhisperCPP(name, path_to_whispercpp, options)` : Creates WhisperCPP instance
@@ -99,7 +99,7 @@ Wrapper for the [Whisper C++](https://github.com/ggerganov/whisper.cpp) speech r
 Wrapper for the [Whisper C++](https://github.com/ggerganov/whisper.cpp) speech recognition model.
 
 ### Required Packages/Downloads
-- whisper.cpp --> `$ git clone https://github.com/ggerganov/whisper.cpp.git`
+- whisper.cpp &rarr; `$ git clone https://github.com/ggerganov/whisper.cpp.git`
 
 ### Constructor
 `WhisperCPPQuantized(name, path_to_whispercpp, options)` : Creates WhisperCPPQuantized instance
@@ -126,11 +126,11 @@ Wrapper for the [Whisper C++](https://github.com/ggerganov/whisper.cpp) speech r
 - `makeClean()` : Cleans whisper.cpp repository according to makefile instructions
 
 
-## AzureSpeechToText
+## AzureSpeechToText (NOTE: This wrapper is not up to date with the ModelWrapper format and does not work!)
 Wrapper for Azure's speech recognition model.
 
 ### Required Packages/Downloads
-- Azure Cognitive Services Speech SDK --> `$ pip install azure-cognitiveservices-speech`
+- Azure Cognitive Services Speech SDK &rarr; `$ pip install azure-cognitiveservices-speech`
 
 ### Constructor
 `AzureSpeechToText(name, key, region, options)` : Creates AzureSpeechToText instance
