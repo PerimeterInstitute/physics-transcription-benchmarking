@@ -12,15 +12,16 @@ See [Test.ipynb](examples/Test.ipynb) for an example of the following steps put 
 
 #### b) Run `setup.sh` File
 `$ cd physics-transcription-benchmarking/`
+
 `$ bash setup.sh`
 
 ### 2. Use Transcription Model Wrapper
 
 #### Importing Wrapper
-- [WhisperPI](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperpi) --> `from models.WhisperPI import WhisperPI`
-- [WhisperOpenAI](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperopenai) --> `from models.WhisperOpenAI import WhisperOpenAI`
-- [WhisperCPP](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whispercpp) --> `from models.WhisperCPP import WhisperCPP`
-- [AzureSpeechToText](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#azurespeechtotext) --> `from models.AzureSpeechToText import AzureSpeechToText`
+- [WhisperPI](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperpi) &rarr; `from models.WhisperPI import WhisperPI`
+- [WhisperOpenAI](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whisperopenai) &rarr; `from models.WhisperOpenAI import WhisperOpenAI`
+- [WhisperCPP](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#whispercpp) &rarr; `from models.WhisperCPP import WhisperCPP`
+- [AzureSpeechToText](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models?tab=readme-ov-file#azurespeechtotext) &rarr; `from models.AzureSpeechToText import AzureSpeechToText`
 
 #### Instantiating Wrapper
 See the wrapper model's associated constructor (defined in [this README](https://github.com/PerimeterInstitute/physics-transcription-benchmarking/tree/main/models/README.md)) to create an instance of it.
@@ -30,20 +31,25 @@ See [How to Implement a Model Wrapper](#how-to-implement-a-model-wrapper) to cre
 
 ### 3. Use Test Class for Benchmarking
 
-#### Importing Test Class
+#### a) Importing Test Class
 `from Test import Test`
 
-#### Instantiating Test
+#### b) Instantiating Test
 See Test class [constructor](#constructor).
 
-#### Executing Benchmarking Test
-See Test method [`run()`](#methods)
+#### c) Executing Benchmarking Test
+See Test method [run()](#methods).
 
-During the test runtime, folders titled 'results/', 'transcriptions/', and 'outputs/' will exists in the current working directory. **DO NOT delete or alter these folders in any way until the test run has completed!**
+During the test runtime, folders titled 'results/', 'transcriptions/', and 'outputs/' will exists in the current working directory.\
+**\*\*DO NOT delete or alter these folders in any way until the benchmarking test has completed!\*\***
 
 ### 4. View Results
 - Access TXT and VTT transcription(s) through Model Wrapper object.
 - See resulting JSON files (contain load times, transcription times, accuracy data, etc.) in 'results/' folder in the current working directory.
+
+### 5. Create Test Summary HTML File
+- Using the [createSummaryHTML()](#methods) method in the Test class
+- Using the repo's [create_test_summary_html()](#creating-a-summary-html-file) method
 
 
 ## Test.py 
@@ -51,9 +57,9 @@ During the test runtime, folders titled 'results/', 'transcriptions/', and 'outp
 ### Test Class
 See [Test.ipynb](examples/Test.ipynb) for an example of how to use this class.
 
-#### Required Packages/Downloads
-- JiWER --> `$ pip install jiwer`
-- openai-whisper --> `$ pip install -U openai-whisper`
+<!-- #### Required Packages/Downloads
+- JiWER &rarr; `$ pip install jiwer`
+- openai-whisper &rarr; `$ pip install -U openai-whisper` -->
 
 #### Constructor
 `Test(model_array, prompt_function_array=[no_prompt])` : Creates Test instance
@@ -195,9 +201,9 @@ Example JSON result file:
 
 ### AddToExistingTest Class
 
-#### Required Packages/Downloads
-- JiWER --> `$ pip install jiwer`
-- openai-whisper --> `$ pip install -U openai-whisper`
+<!-- #### Required Packages/Downloads
+- JiWER &rarr; `$ pip install jiwer`
+- openai-whisper &rarr; `$ pip install -U openai-whisper` -->
 
 #### Constructor
 `AddToExistingTest(existing_test_json, model, prompt_function=no_prompt, dataset_path)` : Creates AddToExistingTest instance
@@ -223,8 +229,8 @@ After running, a 'results/RUN_NAME/' folder in the current working directory wil
 ### Transcribe Class
 See [Transcribe.ipynb](examples/Transcribe.ipynb) for an example of how to use this class.
 
-#### Required Packages/Downloads
-- openai-whisper --> `$ pip install -U openai-whisper`
+<!-- #### Required Packages/Downloads
+- openai-whisper &rarr; `$ pip install -U openai-whisper` -->
 
 #### Constructor
 `Transcribe(model_array, prompt_function_array=[no_prompt])` : Creates Transcribe instance
