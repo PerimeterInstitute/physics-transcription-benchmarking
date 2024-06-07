@@ -1,4 +1,9 @@
 # Model Wrappers
+- [WhisperPI](#whisperpi)
+- [WhisperOpenAI](#whisperopenai)
+- [WhisperCPP](#whispercpp)
+- [WhisperCPPQuantized](#whispercppquantized)
+- [AzureSpeechToText](#azurespeechtotext-note-this-wrapper-is-not-up-to-date-with-the-modelwrapper-format-and-does-not-work)
 
 ## WhisperPI
 Wrapper for the WhisperPI transcription model. WhisperPI is an altered version of [OpenAI's Whisper](https://github.com/openai/whisper) speech recognition model, used to transcribe videos on the Perimeter Institute Recorded Seminar Archive (PIRSA).
