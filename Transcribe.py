@@ -1,7 +1,7 @@
 from os import mkdir, getcwd
 from os.path import join, isdir
 from helper_functions.prompt_functions import no_prompt
-from helper_functions.test_transcribe_help import load_dataset
+from helper_functions.test_transcribe_help import load_dataset, TRANSCRIPTIONS_FOLDER
 from whisper.normalizers import EnglishTextNormalizer
 import gc
 
@@ -11,13 +11,37 @@ import gc
 
 class Transcribe():
 
-    def __init__(self, model_array, prompt_function_array=[no_prompt]):
+    def __init__(self, model_array, prompt_function_array=[no_prompt], output_dir=getcwd()):
         self.model_array = model_array
         self.prompt_function_array = prompt_function_array
         self.normalizer = EnglishTextNormalizer()
-        self.transcriptions_folder = join(getcwd(), "transcriptions")
+        self.output_dir = output_dir
+        self.transcriptions_folder = None
+        self.__temp_folder = None
 
     def run(self, run_name, dataset_path, normalize=False):
+
+        # CREATING OUTPUT FOLDERS:
+
+        # making output directory names
+        self.transcriptions_folder = join(self.output_dir, TRANSCRIPTIONS_FOLDER)
+        self.__temp_folder = join(self.output_dir, TEMP_DATA_FOLDER)
+        
+        # creating output directories
+        if save_transcription and not isdir(self.transcriptions_folder):
+            mkdir(self.transcriptions_folder)
+        if not isdir(self.__temp_folder):
+            mkdir(self.__temp_folder)
+
+        # creating output subdirectory for transcriptions folder
+        self.transcriptions_folder = join(self.transcriptions_folder, run_name)
+        if not isdir(self.transcriptions_folder):
+            mkdir(self.transcriptions_folder)
+
+        # creating output subdirectory for TEMP folder
+        self.__temp_folder = make_temp_subdir(self.__temp_folder, run_name)
+        if not isdir(self.__temp_folder):
+            mkdir(self.__temp_folder)
 
         # LOADING DATASET:
 
@@ -25,14 +49,6 @@ class Transcribe():
         if dataset == None:
             print("Invalid dataset path provided: '"+dataset_path+"'")
             return
-
-        # CREATING OUTPUT FOLDER:
-
-        if not isdir(self.transcriptions_folder):         # make 'transcriptions' folder if it doesn't already exist
-            mkdir(self.transcriptions_folder)
-        self.transcriptions_folder = join(self.transcriptions_folder, run_name)     # update to current run's transcription folder
-        if not isdir(self.transcriptions_folder):         # make deeper run folder if it doesn't already exist
-            mkdir(self.transcriptions_folder)
 
         # CREATING TRANSCRIPTIONS:
 
@@ -54,7 +70,7 @@ class Transcribe():
                     prompt = prompt_function(audio_info)
 
                     # transcribing model
-                    model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
+                    model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt, self.__temp_folder)
 
                     # saving transcription as txt
                     if audio_name in model.transcription:   
@@ -89,6 +105,8 @@ class Transcribe():
             gc.collect()
 
         # freeing memory
+        rmtree(self.__temp_folder)
+        del self.__temp_folder
         del dataset
         gc.collect()
 

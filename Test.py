@@ -2,8 +2,9 @@ from os import mkdir, getcwd
 from os.path import join, isdir
 from inspect import getsource
 from datetime import datetime
+from shutil import rmtree
 from helper_functions.prompt_functions import no_prompt
-from helper_functions.test_transcribe_help import load_dataset, string_to_timedelta, compare, merge_dicts, summarize
+from helper_functions.test_transcribe_help import load_dataset, string_to_timedelta, compare, merge_dicts, summarize, make_temp_subdir, RESULTS_FOLDER, TRANSCRIPTIONS_FOLDER, TEMP_DATA_FOLDER
 from create_test_summary.TestSummary import create_test_summary_html
 from whisper.normalizers import EnglishTextNormalizer
 import gc, json, platform, psutil, copy
@@ -17,30 +18,49 @@ class Test():
     model_array = []
     prompt_function_array = []
 
-    def __init__(self, model_array, prompt_function_array=[no_prompt]):
+    def __init__(self, model_array, prompt_function_array=[no_prompt], output_dir=getcwd()):
         self.model_array = model_array
         self.prompt_function_array = prompt_function_array
         self.normalizer = EnglishTextNormalizer()
+        self.output_dir = output_dir
         self.run_name = None
-        self.results_folder = join(getcwd(), "results")
-        self.outputs_folder = join(getcwd(), "outputs")
-        self.transcriptions_folder = join(getcwd(), "transcriptions")
+        self.results_folder = None
+        self.__transcriptions_folder = None
+        self.__temp_folder = None
 
     def run(self, run_name, dataset_path, run_num=1, save_transcription=False):
 
-        # CREATING NECESSARY FOLDERS:
+        # CREATING OUTPUT FOLDERS:
 
+        # making output directory names
+        self.results_folder = join(self.output_dir, RESULTS_FOLDER)
+        self.__transcriptions_folder = join(self.output_dir, TRANSCRIPTIONS_FOLDER)
+        self.__temp_folder = join(self.output_dir, TEMP_DATA_FOLDER)
+        
+        # creating output directories
         if not isdir(self.results_folder):
             mkdir(self.results_folder)
-        if not isdir(self.outputs_folder):
-            mkdir(self.outputs_folder)
-        if save_transcription and not isdir(self.transcriptions_folder):
-            mkdir(self.transcriptions_folder)
+        if save_transcription and not isdir(self.__transcriptions_folder):
+            mkdir(self.__transcriptions_folder)
+        if not isdir(self.__temp_folder):
+            mkdir(self.__temp_folder)
 
-        # UPDATING VARIBLES:
-
+        # creating output subdirectory for results folder
         self.run_name = run_name
-        self.results_folder = join(self.results_folder, run_name)
+        self.results_folder = join(self.results_folder, self.run_name)
+        if not isdir(self.results_folder): 
+            mkdir(self.results_folder)
+
+        # creating output subdirectory for transcriptions folder
+        if save_transcription:
+            self.__transcriptions_folder = join(self.__transcriptions_folder, run_name)
+            if not isdir(self.__transcriptions_folder):
+                mkdir(self.__transcriptions_folder)
+
+        # creating output subdirectory for TEMP folder
+        self.__temp_folder = make_temp_subdir(self.__temp_folder, run_name)
+        if not isdir(self.__temp_folder):
+            mkdir(self.__temp_folder)
 
         # LOADING DATASET:
         
@@ -111,16 +131,13 @@ class Test():
                         prompt = prompt_function(test_case["audio_info"])
 
                         # transcribing model
-                        model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt)
+                        model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt, self.__temp_folder)
 
                         if save_transcription:
-                            transcriptions_folder = join(self.transcriptions_folder, run_name)
-                            if not isdir(transcriptions_folder):         # make folder if it doesn't already exist
-                                mkdir(transcriptions_folder)
                             transcription = model.transcription[audio_name]
-                            with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".txt"), "w") as f:
+                            with open(join(self.__transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + ".txt"), "w") as f:
                                 f.write(transcription)
-                            with open(join(transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + "-normalized.txt"), "w") as f:
+                            with open(join(self.__transcriptions_folder, model.name + "_" + prompt_function.__name__ + "_" + audio_name + "-normalized.txt"), "w") as f:
                                 f.write(self.normalizer(transcription))
         
                         # adding current date and transcribe time to result dict
@@ -177,8 +194,6 @@ class Test():
                 json_obj = json.dumps(current_model, indent=4)
 
                 # writing json object to file
-                if not isdir(self.results_folder):         # make results folder if it doesn't already exist
-                    mkdir(self.results_folder)
                 with open(join(self.results_folder, model.name + "_" + prompt_function.__name__ + "_results.json"), "w") as f:
                     f.write(json_obj)
 
@@ -198,6 +213,9 @@ class Test():
             gc.collect()
 
         # freeing memory
+        rmtree(self.__temp_folder)
+        del self.__transcriptions_folder
+        del self.__temp_folder
         del dataset
         del uname
         del mem
@@ -254,11 +272,13 @@ Notes: This class will update the given json test output file.
     
 class AddToExistingTest():
 
-    def __init__(self, existing_test_json, dataset_path, model, prompt_function=no_prompt):
+    def __init__(self, existing_test_json, dataset_path, model, prompt_function=no_prompt, output_dir=getcwd()):
         self.dataset_path = dataset_path
         self.model = model
         self.prompt_function = prompt_function
+        self.output_dir = output_dir
         self.normalizer = EnglishTextNormalizer()
+        self.__temp_folder = None
 
         # LOADING PROVIDED MODEL:
 
@@ -309,6 +329,17 @@ class AddToExistingTest():
         gc.collect()
 
     def run(self, run_name, run_num=1, output_file_name=None):
+
+        #  CREATING TEMP FOLDER:
+
+        self.__temp_folder = join(self.output_dir, TEMP_DATA_FOLDER)
+        
+        if not isdir(self.__temp_folder):
+            mkdir(self.__temp_folder)
+
+        self.__temp_folder = make_temp_subdir(self.__temp_folder, run_name)
+        if not isdir(self.__temp_folder):
+            mkdir(self.__temp_folder)
 
         # LOADING DATASET:
 
@@ -379,7 +410,7 @@ class AddToExistingTest():
                 prompt = self.prompt_function(test_case["audio_info"])
 
                 # transcribing model
-                self.model.transcribe(audio_name, join(self.dataset_path, "test_data", audio_file), prompt)
+                self.model.transcribe(audio_name, join(self.dataset_path, "test_data", audio_file), prompt, self.__temp_folder)
 
                 # adding current date and transcribe time to result dict
                 local_rerun_test_results.update({"start_datetime": datetime.now().strftime("%D, %H:%M:%S")})
@@ -445,6 +476,8 @@ class AddToExistingTest():
                 f.write(json_obj)
 
         # freeing memory
+        rmtree(self.__temp_folder)
+        del self.__temp_folder
         del dataset
         del uname
         del mem

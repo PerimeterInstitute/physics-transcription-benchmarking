@@ -1,7 +1,16 @@
-from os import listdir, system
-from os.path import join, normpath, basename
+from os import listdir, system, mkdir
+from os.path import join, normpath, basename, isdir
 from datetime import datetime, timedelta
 import jiwer, json, re
+
+# ========================================== #
+# ==== Test/Transcribe Output Constants ==== #
+# ========================================== #
+
+RESULTS_FOLDER = "results"
+TRANSCRIPTIONS_FOLDER = "transcriptions"
+TEMP_DATA_FOLDER = "TEMP_DATA"
+TEMP_DATA_SUBFOLDER = "run"
 
 # ========================================== #
 # ==== Test/Transcribe Helper Functions ==== #
@@ -211,3 +220,23 @@ FUNCTION: Convert a string value to a timedelta object.
 def string_to_timedelta(timeStr):
     t = datetime.strptime(timeStr,"%H:%M:%S.%f")
     return timedelta(hours=t.hour, minutes=t.minute, seconds=t.second, microseconds=t.microsecond)
+
+'''
+NAME: make_temp_subdir()
+
+FUNCTION: .
+'''
+
+def make_temp_subdir(temp_dir, run_name):
+
+    temp_subdir = join(temp_dir, run_name)
+
+    # if there already exists a subdir with this name, change the subdir
+    if isdir(temp_subdir):
+        i = 2
+        while isdir(temp_subdir + "-" + str(i)):
+            i += 1
+        temp_subdir = temp_subdir + "-" + str(i)
+    mkdir(temp_subdir)
+    
+    return temp_subdir

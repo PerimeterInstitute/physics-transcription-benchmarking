@@ -1,4 +1,9 @@
 from abc import ABC, abstractmethod
+from os import getcwd
+
+# ================================ #
+# ==== ModelWrapper Interface ==== #
+# ================================ #
 
 class ModelWrapper(ABC):
 
@@ -36,5 +41,5 @@ class ModelWrapper(ABC):
         pass
 
     @abstractmethod
-    def transcribe(self, audio_name, audio_file, prompt=None):
+    def transcribe(self, audio_name, audio_file, prompt=None, output_dir=getcwd()):
         pass

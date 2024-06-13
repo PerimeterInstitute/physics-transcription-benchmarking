@@ -2,12 +2,10 @@ from os import system, getcwd, chdir, mkdir
 from os.path import join, isdir, expanduser
 from subprocess import run
 from time import time
-from shutil import which, rmtree
+from shutil import which
 from datetime import timedelta
 from models.ModelWrapper import ModelWrapper
 import gc
-
-OUTPUT_FOLDER = "output-cpp"
 
 class WhisperCPP(ModelWrapper):
 
@@ -26,12 +24,9 @@ class WhisperCPP(ModelWrapper):
         self.options = options
         self.__transcribe_options = self.__getTranscribeOptions()
         self.__path_to_whispercpp = path_to_whispercpp
-        self.__outputPath = join(getcwd(), "outputs", OUTPUT_FOLDER)
+        self.__temp_output_path = None
 
     def load(self):
-
-        # make output folder
-        self.__makeOutputDir()
 
         with cd(self.__path_to_whispercpp):
             
@@ -50,16 +45,18 @@ class WhisperCPP(ModelWrapper):
         self.load_time = str(timedelta(seconds=load_end - load_start))
 
     def unload(self):
-        rmtree(self.__outputPath)       # delete output folder
         del self.name
         del self.model_type
         del self.options
         del self.__transcribe_options
         del self.__path_to_whispercpp
-        del self.__outputPath
+        del self.__temp_output_path
         gc.collect()
 
-    def transcribe(self, audio_name, audio_file, prompt=None):
+    def transcribe(self, audio_name, audio_file, prompt=None, output_path=getcwd()):
+
+        # set output folder
+        self.__temp_output_path = output_path
 
         with cd(self.__path_to_whispercpp):
 
@@ -68,7 +65,7 @@ class WhisperCPP(ModelWrapper):
 
             # transcribe audio
             transcribe_start = time()
-            system("./main "+self.__transcribe_options+" -m models/ggml-"+self.model_type+".bin -f "+audio_file+" --prompt \""+prompt+"\" --output-file "+join(self.__outputPath, audio_name)+ " --output-txt --output-vtt")
+            system("./main "+self.__transcribe_options+" -m models/ggml-"+self.model_type+".bin -f "+audio_file+" --prompt \""+prompt+"\" --output-file "+join(self.__temp_output_path, audio_name)+ " --output-txt --output-vtt")
             transcribe_end = time()
         
         # save transcribe time, transcription text, and transcription vtt
@@ -79,20 +76,12 @@ class WhisperCPP(ModelWrapper):
     def makeClean(self):
         with cd(self.__path_to_whispercpp):
             system("make clean")
-
-    def __makeOutputDir(self):
-        if isdir(self.__outputPath):
-            i = 2
-            while isdir(self.__outputPath + "-" + str(i)):
-                i += 1
-            self.__outputPath = self.__outputPath + "-" + str(i)
-        mkdir(self.__outputPath)
         
     def __createTranscription(self, audio_name):
         transcription = ""
 
         try:
-            with open(join(self.__outputPath, audio_name+".txt"), "r") as file:
+            with open(join(self.__temp_output_path, audio_name+".txt"), "r") as file:
                 transcription = file.readlines()
         except:
             print("Could not transcribe file!")
@@ -103,7 +92,7 @@ class WhisperCPP(ModelWrapper):
         vtt = ""
 
         try:
-            with open(join(self.__outputPath, audio_name+".vtt"), "r") as file:
+            with open(join(self.__temp_output_path, audio_name+".vtt"), "r") as file:
                 vtt = file.readlines()
         except:
             print("Could not transcribe file!")
