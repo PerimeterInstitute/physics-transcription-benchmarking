@@ -30,10 +30,11 @@ Wrapper for the WhisperPI transcription model. WhisperPI is an altered version o
 ### Methods
 - `load()` : Loads model
 - `unload()` : "Unloads" model (i.e. removes select model attributes from memory)
-- `transcribe(audio_name, audio_file, prompt=None)` : Transcribes given audio file, updates result-related attributes
+- `transcribe(audio_name, audio_file, prompt=None, output_dir=getcwd())` : Transcribes given audio file, updates result-related attributes
     - `String audio_name` : Name associated with audio
     - `String audio_file` : File path to audio file
     - `String prompt` : Transcription prompt, defaults to `None`
+    - `String output_dir` : Directory where temp output will be stored, defaults to current working directory.
 - `get_model()` : Returns Whisper model
 
 
@@ -62,10 +63,11 @@ Wrapper for [OpenAI's Whisper](https://github.com/openai/whisper) speech recogni
 ### Methods
 - `load()` : Loads model
 - `unload()` : "Unloads" model (i.e. removes select model attributes from memory)
-- `transcribe(audio_name, audio_file, prompt=None)` : Transcribes given audio file, updates result-related attributes
+- `transcribe(audio_name, audio_file, prompt=None, output_dir=getcwd())` : Transcribes given audio file, updates result-related attributes
     - `String audio_name` : Name associated with audio
     - `String audio_file` : File path to audio file
     - `String prompt` : Transcription prompt, defaults to `None`
+    - `String output_dir` : Directory where temp output will be stored, defaults to current working directory.
 - `get_model()` : Returns Whisper model
 
 
@@ -93,10 +95,11 @@ Wrapper for the [Whisper C++](https://github.com/ggerganov/whisper.cpp) speech r
 ### Methods
 - `load()` : Loads model.
 - `unload()` : "Unloads" model (i.e. removes select model attributes from memory)
-- `transcribe(audio_name, audio_file, prompt=None)` : Transcribes given audio file, updates result-related attributes
+- `transcribe(audio_name, audio_file, prompt=None, output_dir=getcwd())` : Transcribes given audio file, updates result-related attributes
     - `String audio_name` : Name associated with audio
     - `String audio_file` : File path to audio file
     - `String prompt` : Transcription prompt, defaults to `None`
+    - `String output_dir` : Directory where temp output will be stored, defaults to current working directory.
 - `makeClean()` : Cleans whisper.cpp repository according to makefile instructions
 
 
@@ -124,10 +127,11 @@ Wrapper for the [Whisper C++](https://github.com/ggerganov/whisper.cpp) speech r
 ### Methods
 - `load()` : Loads model.
 - `unload()` : "Unloads" model (i.e. removes select model attributes from memory)
-- `transcribe(audio_name, audio_file, prompt=None)` : Transcribes given audio file, updates result-related attributes
+- `transcribe(audio_name, audio_file, prompt=None, output_dir=getcwd())` : Transcribes given audio file, updates result-related attributes
     - `String audio_name` : Name associated with audio
     - `String audio_file` : File path to audio file
     - `String prompt` : Transcription prompt, defaults to `None`
+    - `String output_dir` : Directory where temp output will be stored, defaults to current working directory.
 - `makeClean()` : Cleans whisper.cpp repository according to makefile instructions
 
 

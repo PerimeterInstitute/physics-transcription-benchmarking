@@ -39,7 +39,7 @@ See Test class [constructor](#constructor).
 #### c) Executing Benchmarking Test
 See [run()](#methods) method from Test class.
 
-During the test runtime, folders titled 'results/', 'transcriptions/', and 'outputs/' will exist in the current working directory.
+During the test runtime, folders titled 'results/', 'transcriptions/', and 'TEMP_DATA/' will exist in the desired output folder.
 
 <p align=center><b>** DO NOT delete or alter these folders in any way until the benchmarking test has completed! **</b><p>
 
@@ -62,9 +62,10 @@ See [Test.ipynb](examples/Test.ipynb) for an example of how to use this class.
 - openai-whisper &rarr; `$ pip install -U openai-whisper` -->
 
 #### Constructor
-`Test(model_array, prompt_function_array=[no_prompt])` : Creates Test instance
+`Test(model_array, prompt_function_array=[no_prompt], output_dir=getcwd())` : Creates Test instance
 - `ModelWrapper[] model_array` : Array of models to be tested
 - `Method[] prompt_function_array` : Array of prompt loading functions to be tested (defaults to contain provided prompt loading function, `no_prompt()`, which returns an empty string)
+- `String output_dir` : Directory where test output will be stored, defaults to current working directory.
 
 #### Methods
 - `run(run_name, dataset_path, run_num=1, save_transcription=False)` : Runs tests comparing the transcriptions of each unique model/prompt/audio combination
@@ -206,11 +207,12 @@ Example JSON result file:
 - openai-whisper &rarr; `$ pip install -U openai-whisper` -->
 
 #### Constructor
-`AddToExistingTest(existing_test_json, model, prompt_function=no_prompt, dataset_path)` : Creates AddToExistingTest instance
+`AddToExistingTest(existing_test_json, dataset_path, model, prompt_function=no_prompt, output_dir=getcwd())` : Creates AddToExistingTest instance
 - `String existing_test_json` : JSON file created from a previous test
+- `String dataset_path` : Dataset to be further tested (should be same as dataset used in provided JSON)
 - `ModelWrapper model` : Model to be further tested (should be same as model used in provided JSON)
 - `Method prompt_function` : Prompt function to be further tested (should be same as prompt function used in provided JSON)
-- `String dataset_path` : Dataset to be further tested (should be same as dataset used in provided JSON)
+- `String output_dir` : Directory where test output will be stored, defaults to current working directory.
 
 #### Methods
 - `run(run_name, run_num=1, output_file_name=None)` : Adds test runs and updates provided test JSON with new run information
@@ -233,9 +235,10 @@ See [Transcribe.ipynb](examples/Transcribe.ipynb) for an example of how to use t
 - openai-whisper &rarr; `$ pip install -U openai-whisper` -->
 
 #### Constructor
-`Transcribe(model_array, prompt_function_array=[no_prompt])` : Creates Transcribe instance
+`Transcribe(model_array, prompt_function_array=[no_prompt], output_dir=getcwd())` : Creates Transcribe instance
 - `ModelWrapper[] model_array` : Array of models to use for transcriptions
 - `Method[] prompt_function_array` : Array of prompt loading functions to to use for transcriptions (defaults to contain provided prompt loading function, `no_prompt()`, which returns an empty string)
+- `String output_dir` : Directory where transcription output will be stored, defaults to current working directory.
 
 #### Methods
 - `run(run_name, dataset_path, normalize=False)` : Creates transcription for each audio sample in provided dataset
@@ -271,7 +274,7 @@ class YOUR_WRAPPER_NAME(ModelWrapper):
     def unload():
         pass
 
-    def transcribe():
+    def transcribe(self, audio_name, audio_file, prompt=None, output_dir=getcwd()):
         pass
 
     ...
