@@ -222,12 +222,76 @@ def string_to_timedelta(timeStr):
     return timedelta(hours=t.hour, minutes=t.minute, seconds=t.second, microseconds=t.microsecond)
 
 '''
-NAME: make_temp_subdir()
+NAME: make_output_folders()
 
-FUNCTION: .
+FUNCTION: Make output folders for Test/Transcribe runs. 
+          'dirs_to_make' should be an array of Booleans representing
+          if the function should make the results, transcriptions, and 
+          temp folders, respectively.
+          Ex: dirs_to_make=[True, True, False] will create a results
+          and transcriptions folder, but not a temp folder.
 '''
 
-def make_temp_subdir(temp_dir, run_name):
+def make_output_folders(output_dir, run_name, dirs_to_make):
+
+    results_folder = None
+    transcriptions_folder = None
+    temp_folder = None
+
+    # RESULTS FOLDER:
+
+    if dirs_to_make[0] == True:
+        results_folder = join(output_dir, RESULTS_FOLDER)
+
+        # make main dir
+        if not isdir(results_folder):
+            mkdir(results_folder)
+
+        # make subdir
+        results_folder = join(results_folder, run_name)
+        if not isdir(results_folder): 
+            mkdir(results_folder)
+
+    # TRANSCRIPTIONS FOLDER:
+
+    if dirs_to_make[1] == True:
+        transcriptions_folder = join(output_dir, TRANSCRIPTIONS_FOLDER)
+
+        # make main dir
+        if not isdir(transcriptions_folder):
+            mkdir(transcriptions_folder)
+
+        # make subdir
+        transcriptions_folder = join(transcriptions_folder, run_name)
+        if not isdir(transcriptions_folder):
+            mkdir(transcriptions_folder)
+
+    # TEMP FOLDER:
+
+    if dirs_to_make[2] == True:
+        temp_folder = join(output_dir, TEMP_DATA_FOLDER)
+
+        # make main dir
+        if not isdir(temp_folder):
+            mkdir(temp_folder)
+
+        # make subdir
+        temp_folder = __make_temp_subdir(temp_folder, run_name)
+        if not isdir(temp_folder):
+            mkdir(temp_folder)
+
+    return results_folder, transcriptions_folder, temp_folder
+
+
+'''
+NAME: __make_temp_subdir()
+
+FUNCTION: Helps make_output_dirs() function with the creation of a 
+          unique temp subdir name (making the name unqiue prevents
+          the overwritting of important data).
+'''
+
+def __make_temp_subdir(temp_dir, run_name):
 
     temp_subdir = join(temp_dir, run_name)
 

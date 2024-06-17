@@ -1,7 +1,8 @@
-from os import mkdir, getcwd
-from os.path import join, isdir
+from os import getcwd
+from os.path import join
+from shutil import rmtree
 from helper_functions.prompt_functions import no_prompt
-from helper_functions.test_transcribe_help import load_dataset, TRANSCRIPTIONS_FOLDER
+from helper_functions.test_transcribe_help import load_dataset, make_output_folders
 from whisper.normalizers import EnglishTextNormalizer
 import gc
 
@@ -16,32 +17,18 @@ class Transcribe():
         self.prompt_function_array = prompt_function_array
         self.normalizer = EnglishTextNormalizer()
         self.output_dir = output_dir
+        self.most_recent_run = None
         self.transcriptions_folder = None
         self.__temp_folder = None
 
     def run(self, run_name, dataset_path, normalize=False):
+        self.most_recent_run = run_name
 
         # CREATING OUTPUT FOLDERS:
 
-        # making output directory names
-        self.transcriptions_folder = join(self.output_dir, TRANSCRIPTIONS_FOLDER)
-        self.__temp_folder = join(self.output_dir, TEMP_DATA_FOLDER)
-        
-        # creating output directories
-        if save_transcription and not isdir(self.transcriptions_folder):
-            mkdir(self.transcriptions_folder)
-        if not isdir(self.__temp_folder):
-            mkdir(self.__temp_folder)
-
-        # creating output subdirectory for transcriptions folder
-        self.transcriptions_folder = join(self.transcriptions_folder, run_name)
-        if not isdir(self.transcriptions_folder):
-            mkdir(self.transcriptions_folder)
-
-        # creating output subdirectory for TEMP folder
-        self.__temp_folder = make_temp_subdir(self.__temp_folder, run_name)
-        if not isdir(self.__temp_folder):
-            mkdir(self.__temp_folder)
+        _, self.transcriptions_folder, self.__temp_folder = make_output_folders(output_dir=self.output_dir, 
+                                                                                run_name=run_name, 
+                                                                                dirs_to_make=[False, True, True])
 
         # LOADING DATASET:
 
@@ -113,5 +100,7 @@ class Transcribe():
     def free(self):
         del self.model_array
         del self.prompt_function_array
+        del self.most_recent_run
         del self.normalizer
+        del self.transcriptions_folder
         gc.collect()

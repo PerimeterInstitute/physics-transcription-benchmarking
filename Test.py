@@ -1,10 +1,10 @@
-from os import mkdir, getcwd
-from os.path import join, isdir
+from os import getcwd
+from os.path import join
 from inspect import getsource
 from datetime import datetime
 from shutil import rmtree
 from helper_functions.prompt_functions import no_prompt
-from helper_functions.test_transcribe_help import load_dataset, string_to_timedelta, compare, merge_dicts, summarize, make_temp_subdir, RESULTS_FOLDER, TRANSCRIPTIONS_FOLDER, TEMP_DATA_FOLDER
+from helper_functions.test_transcribe_help import load_dataset, string_to_timedelta, compare, merge_dicts, summarize, make_output_folders
 from create_test_summary.TestSummary import create_test_summary_html
 from whisper.normalizers import EnglishTextNormalizer
 import gc, json, platform, psutil, copy
@@ -23,44 +23,19 @@ class Test():
         self.prompt_function_array = prompt_function_array
         self.normalizer = EnglishTextNormalizer()
         self.output_dir = output_dir
-        self.run_name = None
+        self.most_recent_run = None
         self.results_folder = None
         self.__transcriptions_folder = None
         self.__temp_folder = None
 
     def run(self, run_name, dataset_path, run_num=1, save_transcription=False):
+        self.most_recent_run = run_name
 
         # CREATING OUTPUT FOLDERS:
-
-        # making output directory names
-        self.results_folder = join(self.output_dir, RESULTS_FOLDER)
-        self.__transcriptions_folder = join(self.output_dir, TRANSCRIPTIONS_FOLDER)
-        self.__temp_folder = join(self.output_dir, TEMP_DATA_FOLDER)
         
-        # creating output directories
-        if not isdir(self.results_folder):
-            mkdir(self.results_folder)
-        if save_transcription and not isdir(self.__transcriptions_folder):
-            mkdir(self.__transcriptions_folder)
-        if not isdir(self.__temp_folder):
-            mkdir(self.__temp_folder)
-
-        # creating output subdirectory for results folder
-        self.run_name = run_name
-        self.results_folder = join(self.results_folder, self.run_name)
-        if not isdir(self.results_folder): 
-            mkdir(self.results_folder)
-
-        # creating output subdirectory for transcriptions folder
-        if save_transcription:
-            self.__transcriptions_folder = join(self.__transcriptions_folder, run_name)
-            if not isdir(self.__transcriptions_folder):
-                mkdir(self.__transcriptions_folder)
-
-        # creating output subdirectory for TEMP folder
-        self.__temp_folder = make_temp_subdir(self.__temp_folder, run_name)
-        if not isdir(self.__temp_folder):
-            mkdir(self.__temp_folder)
+        self.results_folder, self.__transcriptions_folder, self.__temp_folder = make_output_folders(output_dir=self.output_dir, 
+                                                                                                    run_name=run_name, 
+                                                                                                    dirs_to_make=[True, save_transcription, True])
 
         # LOADING DATASET:
         
@@ -243,7 +218,7 @@ class Test():
             return
 
         if html_filename == None:
-            html_filename = self.run_name
+            html_filename = self.most_recent_run
         create_test_summary_html(results_folder=self.results_folder,
                                 filename=html_filename)
 
@@ -251,7 +226,7 @@ class Test():
         del self.model_array
         del self.prompt_function_array
         del self.normalizer
-        del self.run_name
+        del self.most_recent_run
         del self.results_folder
         gc.collect()
 
@@ -276,8 +251,10 @@ class AddToExistingTest():
         self.dataset_path = dataset_path
         self.model = model
         self.prompt_function = prompt_function
-        self.output_dir = output_dir
         self.normalizer = EnglishTextNormalizer()
+        self.output_dir = output_dir
+        self.most_recent_run = None
+        self.results_folder = None
         self.__temp_folder = None
 
         # LOADING PROVIDED MODEL:
@@ -329,17 +306,13 @@ class AddToExistingTest():
         gc.collect()
 
     def run(self, run_name, run_num=1, output_file_name=None):
+        self.most_recent_run = run_name
 
-        #  CREATING TEMP FOLDER:
+        #  CREATING OUTPUT FOLDERS:
 
-        self.__temp_folder = join(self.output_dir, TEMP_DATA_FOLDER)
-        
-        if not isdir(self.__temp_folder):
-            mkdir(self.__temp_folder)
-
-        self.__temp_folder = make_temp_subdir(self.__temp_folder, run_name)
-        if not isdir(self.__temp_folder):
-            mkdir(self.__temp_folder)
+        self.results_folder, _, self.__temp_folder = make_output_folders(output_dir=self.output_dir, 
+                                                                        run_name=run_name, 
+                                                                        dirs_to_make=[True, False, True])
 
         # LOADING DATASET:
 
@@ -462,17 +435,14 @@ class AddToExistingTest():
 
         # updating json
         current_model.update({"test_results": test_results, "test_summary": test_summary})
-        json_obj = json.dumps(current_model, indent=4)
 
         # writing json object to file
-        results_folder = "./results-"+run_name+"/"
-        if not isdir(results_folder):         # make 'results' folder if it doesn't already exist
-            mkdir(results_folder)
+        json_obj = json.dumps(current_model, indent=4)
         if output_file_name != None:
-            with open(join(results_folder, output_file_name), "w") as f:
+            with open(join(self.results_folder, output_file_name), "w") as f:
                 f.write(json_obj)
         else:
-            with open(join(results_folder, self.existing_model_info["model_name"] + "_" + self.prompt_function.__name__ + "_results.json"), "w") as f:
+            with open(join(self.results_folder, self.existing_model_info["model_name"] + "_" + self.prompt_function.__name__ + "_results.json"), "w") as f:
                 f.write(json_obj)
 
         # freeing memory
@@ -490,6 +460,7 @@ class AddToExistingTest():
         del self.model
         del self.prompt_function
         del self.normalizer
+        del self.results_folder
         gc.collect()
 
     def __discrepency_error(self, parameter, existing_model_info, provided_model_info, isModel):
