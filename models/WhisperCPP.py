@@ -22,13 +22,13 @@ class WhisperCPP(ModelWrapper):
         self.name = name
         self.model_type = options.pop("model_type", "large-v2")       # other model options listed here: https://github.com/ggerganov/whisper.cpp?tab=readme-ov-file#more-audio-samples
         self.options = options
+        self.path_to_whispercpp = path_to_whispercpp
         self.__transcribe_options = self.__getTranscribeOptions()
-        self.__path_to_whispercpp = path_to_whispercpp
         self.__temp_output_path = None
 
     def load(self):
 
-        with cd(self.__path_to_whispercpp):
+        with cd(self.path_to_whispercpp):
             
             # load model
             load_start = time()
@@ -48,8 +48,8 @@ class WhisperCPP(ModelWrapper):
         del self.name
         del self.model_type
         del self.options
+        del self.path_to_whispercpp
         del self.__transcribe_options
-        del self.__path_to_whispercpp
         del self.__temp_output_path
         gc.collect()
 
@@ -58,7 +58,7 @@ class WhisperCPP(ModelWrapper):
         # set output folder
         self.__temp_output_path = output_path
 
-        with cd(self.__path_to_whispercpp):
+        with cd(self.path_to_whispercpp):
 
             # remove quotes from prompt
             prompt = prompt.replace('"', '')
@@ -74,7 +74,7 @@ class WhisperCPP(ModelWrapper):
         self.vtt.update({audio_name: self.__createVTT(audio_name)})
 
     def makeClean(self):
-        with cd(self.__path_to_whispercpp):
+        with cd(self.path_to_whispercpp):
             system("make clean")
         
     def __createTranscription(self, audio_name):

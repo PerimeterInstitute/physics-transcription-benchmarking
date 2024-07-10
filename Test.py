@@ -23,13 +23,14 @@ class Test():
         self.prompt_function_array = prompt_function_array
         self.normalizer = EnglishTextNormalizer()
         self.output_dir = output_dir
-        self.most_recent_run = None
+        self.most_recent_run_name = None
+        self.most_recent_run_results = None
         self.results_folder = None
         self.__transcriptions_folder = None
         self.__temp_folder = None
 
     def run(self, run_name, dataset_path, run_num=1, save_transcription=False):
-        self.most_recent_run = run_name
+        self.most_recent_run_name = run_name
 
         # CREATING OUTPUT FOLDERS:
         
@@ -165,6 +166,9 @@ class Test():
                 # adding test_results and test_summary to model dictionary 
                 current_model.update({"test_results": test_results, "test_summary": test_summary})
 
+                # adding model dict to run results array:
+                self.most_recent_run_results = current_model
+
                 # creating json object for model
                 json_obj = json.dumps(current_model, indent=4)
 
@@ -218,7 +222,7 @@ class Test():
             return
 
         if html_filename == None:
-            html_filename = self.most_recent_run
+            html_filename = self.most_recent_run_name
         create_test_summary_html(results_folder=self.results_folder,
                                 filename=html_filename)
 
@@ -226,7 +230,8 @@ class Test():
         del self.model_array
         del self.prompt_function_array
         del self.normalizer
-        del self.most_recent_run
+        del self.most_recent_run_name
+        del self.most_recent_run_results
         del self.results_folder
         gc.collect()
 
