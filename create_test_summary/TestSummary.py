@@ -95,17 +95,17 @@ def create_test_summary_html(results_folder, filename="test_summary.html"):
                                                                  'wip': summary_info["word_information_preserved"],
                                                                  'avg_phrase_repeat_diff': summary_info["phrase_repeat_diff"]})
         
-        accuracy_graph_data = accuracy_graph_data + accuracy_graph_template.substitute({'model_title': model_info["class_name"] + " - " + prompt_info["prompt_function_name"] + "()",
+        accuracy_graph_data = accuracy_graph_data + accuracy_graph_template.substitute({'model_title': model_info["model_name"] + " - " + prompt_info["prompt_function_name"] + "()",
                                                                  'wer': summary_info["word_error_rate"],
                                                                  'mer': summary_info["match_error_rate"],
                                                                  'cer': summary_info["character_error_rate"],
                                                                  'wil': summary_info["word_information_lost"],
                                                                  'wip': summary_info["word_information_preserved"]})
 
-        time_graph_data = time_graph_data + time_graph_template.substitute({'model_title': model_info["class_name"] + " - " + prompt_info["prompt_function_name"] + "()",
+        time_graph_data = time_graph_data + time_graph_template.substitute({'model_title': model_info["model_name"] + " - " + prompt_info["prompt_function_name"] + "()",
                                                                  'transcribe_times': transcribe_times})
 
-        repeat_graph_data = repeat_graph_data + repeat_graph_template.substitute({'model_title': model_info["class_name"] + " - " + prompt_info["prompt_function_name"] + "()",
+        repeat_graph_data = repeat_graph_data + repeat_graph_template.substitute({'model_title': model_info["model_name"] + " - " + prompt_info["prompt_function_name"] + "()",
                                                                  'phrase_repeat_diffs': phrase_repeat_diffs})
 
     time_graph_labels.append("Average Transcription Time")
