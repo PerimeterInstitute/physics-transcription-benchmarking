@@ -31,3 +31,4 @@ datasets/poor_sound_full_vid_dataset/
 clear_gpu_mem.py
 repeats.py
 compare.py
+update_file.py
