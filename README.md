@@ -323,3 +323,13 @@ See [create_test_summary.ipynb](examples/create_test_summary.ipynb) for an examp
 `create_test_summary_html(results_folder, filename="test_summary.html")` : Creates HTML file that displays test summary information with a table and bar chart.
 - `String results_folder` : File path to results folder containing result test model JSON files
 - `String filename` : Output name for HTML file, defaults to `test_summary.html`
+
+## Using 'test-hyperparams.py'
+
+### Login To Weights and Biases Via Command Line
+
+`$ wandb login [ACCOUNT_KEY]`
+
+### Run 'test_hyperparams.py'
+
+`python3 test_hyperparams.py`

@@ -21,29 +21,11 @@ sweep_configuration = {
 
         # threshold params:
         "logprob_threshold": {"values": [-0.1, -0.3, -0.5, -1]},
-        "no_speech_threshold": {"values": [0.2, 0.4]},
+        "no_speech_threshold": {"values": [0.2, 0.4, 0.6]},
         "entropy_threshold": {"values": [1.5, 2.0, 2.4]},                         # idk how this works lol. called 'compression threshold' in og whisper --> if "gzip compression ratio" is higher, decoding has failed. Lower values are more strict
         # "word_threshold": {"values": [0.01]},                                     # also dk how this works. no idea what this variable is called in og whisper
     },
 
-    # "parameters": {
-    #     # beam search params:
-    #     "beam_size": {"values": [5]},
-    #     # "patience": {"values": [-1]},                                           # idk how this affects the beam search.
-
-    #     # best of search params:
-    #     "best_of": {"values": [5]},
-
-    #     # temperature params:
-    #     "temperature": {"values": [0]},                                           # {"values": [0, 0.2, 0.4, 0.6]},
-    #     "temperature_inc": {"values": [0.2]},
-
-    #     # threshold params:
-    #     "logprob_threshold": {"values": [-0.1, -0.3, -0.5, -1]},
-    #     "no_speech_threshold": {"values": [0.2, 0.4, 0.6]},
-    #     "entropy_threshold": {"values": [2.4]},                                   # idk how this works lol. called 'compression threshold' in og whisper
-    #     "word_threshold": {"values": [0.01]},                                     # also dk how this works. no idea what this variable is called in og whisper
-    # },
 }
 sweep_id = wandb.sweep(sweep=sweep_configuration, project="test-whisper")
 
@@ -69,11 +51,12 @@ def main():
     # CHECK IF WE NEED TO MAKE CLEAN MODEL:
 
     filename = "./hyperparams.json"
-    remake_model = False
+    remake_whispercpp = False
     hyperparams = {}
-    prev_temperature = None
-    prev_temperature_inc = None
+    # prev_temperature = None
+    # prev_temperature_inc = None
     prev_no_speech_threshold = None
+    # prev_patience = None
 
     # get prev hyperparams
     if isfile(filename):
@@ -82,17 +65,19 @@ def main():
             # prev_temperature = hyperparams["prev_temperature"]
             # prev_temperature_inc = hyperparams["prev_temperature_inc"]
             prev_no_speech_threshold = hyperparams["prev_no_speech_threshold"]
+            # prev_patience = hyperparams["prev_patience"]
 
     # check for changes
-    # if temperature != prev_temperature or temperature_inc != prev_temperature_inc or no_speech_threshold != prev_no_speech_threshold:
-    #     remake_model = True
+    # if temperature != prev_temperature or temperature_inc != prev_temperature_inc or no_speech_threshold != prev_no_speech_threshold or patience != prev_patience:
+    #     remake_whispercpp = True
     if no_speech_threshold != prev_no_speech_threshold:
-        remake_model = True
+        remake_whispercpp = True
 
     # set prev hyperparam values
     # hyperparams.update({"prev_temperature": temperature})
     # hyperparams.update({"prev_temperature_inc": temperature_inc})
     hyperparams.update({"prev_no_speech_threshold": no_speech_threshold})
+    # hyperparams.update({"prev_patience": patience})
     with open(filename, "w") as new_file:
         json.dump(hyperparams, new_file)
 
@@ -107,6 +92,7 @@ def main():
                            "_nst" + str(no_speech_threshold) + \
                            "_et" + str(entropy_threshold),
                         #    "_wt" + str(word_threshold),
+                        #    "_p" + str(patience),
 
                             "/gpfs/rmohl/whisper.cpp/",
                             {
@@ -119,7 +105,7 @@ def main():
                             }
     )
 
-    if remake_model:
+    if remake_whispercpp:
 
         # update whisper.cpp file!
         with open(join(new_model.path_to_whispercpp + "whisper.cpp"), "r") as file:
@@ -135,7 +121,7 @@ def main():
                 if "no_speech_thold   =" in line:
                     line = "\t\t/*.no_speech_thold   =*/  " + str(no_speech_threshold) + "f,\n"
                 # if "patience  =" in line:
-                #     line = "\t\t\t/*.patience  =*/ " + str(no_speech_threshold) + "f,\n"
+                #     line = "\t\t\t/*.patience  =*/ " + str(patience) + "f,\n"
 
                 new_file.write(line)
 
@@ -146,17 +132,8 @@ def main():
                 prompt_function_array=[get_formatted_description],
                 output_dir="/gpfs/rmohl/")
     
-
-    # test.run(run_name="wandb_test",
-    #         dataset_path="/gpfs/rmohl/datasets/secrets_full_vid_dataset/", 
-    #         run_num=10,
-    #         save_transcription=True)
-    # test.run(run_name="wandb_test",
-    #         dataset_path="/gpfs/rmohl/datasets/poor_audio_full_vid_dataset/", 
-    #         run_num=10,
-    #         save_transcription=True)
-    test.run(run_name="wandb_secrets_full_vid",
-            dataset_path="/gpfs/rmohl/datasets/secrets_full_vid_dataset/", 
+    test.run(run_name="wandb_full_dataset_test",
+            dataset_path="/gpfs/rmohl/datasets/full_dataset/", 
             run_num=3,
             save_transcription=True)
     
