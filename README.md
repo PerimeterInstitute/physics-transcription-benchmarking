@@ -241,14 +241,14 @@ See [Transcribe.ipynb](examples/Transcribe.ipynb) for an example of how to use t
 - `String output_dir` : Directory where transcription output will be stored, defaults to current working directory.
 
 #### Methods
-- `run(run_name, dataset_path, normalize=False)` : Creates transcription for each audio sample in provided dataset
+- `run(run_name, input_path, normalize=False)` : Creates transcription for audio in provided dataset or folder
     - `String run_name` : Name of run
-    - `String dataset_path` : Path to dataset to use for transcriptions
+    - `String input_path` : Path to dataset or folder full of mp4 files to transcribe
     - `Boolean normalize` : Boolean indicating whether or not to include normalized transcriptions alongside untouched transcriptions
 - `free()` : Removes and frees select attributes from memory
 
 #### Results
-After running, a 'transcriptions/RUN_NAME/' folder in the current working directory will be created. This folder will contain the transcriptions of each audio sample in the provided dataset. If `normalize` is set to `True`, this folder will also contain the normalized transcriptions of each audio sample in the provided dataset
+After running, a 'transcriptions/RUN_NAME/' folder in the current working directory (or whichever output_dir is provided) will be created. This folder will contain the transcriptions of each audio sample in the provided dataset. If `normalize` is set to `True`, this folder will also contain the normalized transcriptions of each audio sample in the provided dataset
 
 
 
