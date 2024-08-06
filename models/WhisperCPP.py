@@ -65,7 +65,7 @@ class WhisperCPP(ModelWrapper):
 
             # transcribe audio
             transcribe_start = time()
-            system("./main "+self.__transcribe_options+" -m models/ggml-"+self.model_type+".bin -f "+audio_file+" --prompt \""+prompt+"\" --output-file "+join(self.__temp_output_path, audio_name)+ " --output-txt --output-vtt")
+            system("./main "+self.__transcribe_options+" -m models/ggml-"+self.model_type+".bin -f \""+audio_file+"\" --prompt \""+prompt+"\" --output-file \""+join(self.__temp_output_path, audio_name)+ "\" --output-txt --output-vtt")
             transcribe_end = time()
         
         # save transcribe time, transcription text, and transcription vtt
