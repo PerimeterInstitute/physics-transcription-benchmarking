@@ -1,5 +1,5 @@
-from os import getcwd
-from os.path import join
+from os import getcwd, listdir, system
+from os.path import join, splitext, isfile
 from shutil import rmtree
 from helper_functions.prompt_functions import no_prompt
 from helper_functions.test_transcribe_help import load_dataset, make_output_folders
@@ -21,7 +21,7 @@ class Transcribe():
         self.transcriptions_folder = None
         self.__temp_folder = None
 
-    def run(self, run_name, dataset_path, normalize=False):
+    def run(self, run_name, input_path, normalize=False):
         self.most_recent_run = run_name
 
         # CREATING OUTPUT FOLDERS:
@@ -29,13 +29,20 @@ class Transcribe():
         _, self.transcriptions_folder, self.__temp_folder = make_output_folders(output_dir=self.output_dir, 
                                                                                 run_name=run_name, 
                                                                                 dirs_to_make=[False, True, True])
+        
+        # CREATING TRANSCRIPTIONS:
 
-        # LOADING DATASET:
+        dataset = load_dataset(input_path)
 
-        dataset = load_dataset(dataset_path)
+        # transcribing folder of mp4s
         if dataset == None:
-            print("Invalid dataset path provided: '"+dataset_path+"'")
-            return
+            self.__transcribe_folder(input_path, normalize)
+
+        # transcribing dataset
+        else: 
+            self.__transcribe_dataset(input_path, dataset, normalize)
+            
+    def __transcribe_dataset(self, dataset_path, dataset, normalize):
 
         # CREATING TRANSCRIPTIONS:
 
@@ -76,9 +83,6 @@ class Transcribe():
                             f.write(model.vtt[audio_name])
 
                     # freeing memory
-                    del audio_name
-                    del audio_file
-                    del audio_info
                     del prompt
                     gc.collect()
 
@@ -95,6 +99,63 @@ class Transcribe():
         rmtree(self.__temp_folder)
         del self.__temp_folder
         del dataset
+        gc.collect()
+
+    def __transcribe_folder(self, folder_name, normalize):
+
+        # CREATING TRANSCRIPTIONS:
+
+        for model in self.model_array:
+
+            # load model
+            model.load()
+
+            # convert all mp4s to wavs (if the wav doesn't already exist!)
+            for filename in listdir(folder_name):
+                if filename.endswith(".mp4"):
+
+                    audio_name = splitext(filename)[0]
+                    mp4_file = join(folder_name, filename)
+                    wav_file = join(folder_name, audio_name + ".wav")
+
+                    if not isfile(wav_file):
+                        system("ffmpeg -i '" + mp4_file + "' -ar 16000 -ac 1 -c:a pcm_s16le '" + wav_file + "'")
+
+            # transcribe all wavs:
+            for filename in listdir(folder_name):
+                if filename.endswith(".wav"):
+
+                    # getting audio variables
+                    audio_name = splitext(filename)[0]
+                    prompt=""
+
+                    # transcribing model
+                    model.transcribe(audio_name, join(folder_name, filename), prompt, self.__temp_folder)
+
+                    # saving transcription as txt
+                    if audio_name in model.transcription:   
+                        transcription = model.transcription[audio_name]
+
+                        with open(join(self.transcriptions_folder, audio_name + ".txt"), "w") as f:     
+                            f.write(transcription)
+
+                        if normalize:
+                            with open(join(self.transcriptions_folder, audio_name + "-normalized.txt"), "w") as f: 
+                                f.write(self.normalizer(transcription))
+                    
+                    # saving transcription as vtt
+                    if audio_name in model.vtt:
+                        with open(join(self.transcriptions_folder, audio_name + ".vtt"), "w") as f:
+                            f.write(model.vtt[audio_name])
+
+            # freeing memory
+            model.unload()
+            del model
+            gc.collect()
+
+        # freeing memory
+        rmtree(self.__temp_folder)
+        del self.__temp_folder
         gc.collect()
 
     def free(self):
