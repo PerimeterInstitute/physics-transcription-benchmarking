@@ -32,3 +32,7 @@ clear_gpu_mem.py
 repeats.py
 compare.py
 update_file.py
+test_hyperparams-editied.py
+
+# transcribing PIRSA lectures
+transcribe_lectures.py
