@@ -22,7 +22,7 @@ class Parakeet(ModelWrapper):
 
     def load(self):
         start = time()
-        self.asr_model = nemo_asr.models.ASRModel.from_pretrained(model_name="nvidia/parakeet-tdt-0.6b-v2")
+        self.asr_model = nemo_asr.models.ASRModel.from_pretrained(model_name=self.name)
         end = time()
         self.load_time = str(timedelta(seconds=end - start))
 
