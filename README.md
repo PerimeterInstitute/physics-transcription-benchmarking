@@ -333,3 +333,13 @@ See [create_test_summary.ipynb](examples/create_test_summary.ipynb) for an examp
 ### Run 'test_hyperparams.py'
 
 `python3 test_hyperparams.py`
+
+## SYMMETRY PIP INSTALL
+To use pip locally on symmetry, use this command
+`wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py --user`
+
+after, use this command to use pip install:
+`python -m pip install <PACKAGE_NAME>`
+  
+
+There are two parts of setting up user auth: **In Node Red** and **On Okta**
