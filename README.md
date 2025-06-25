@@ -340,6 +340,3 @@ To use pip locally on symmetry, use this command
 
 after, use this command to use pip install:
 `python -m pip install <PACKAGE_NAME>`
-  
-
-There are two parts of setting up user auth: **In Node Red** and **On Okta**
