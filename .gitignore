@@ -36,3 +36,10 @@ test_hyperparams-editied.py
 
 # transcribing PIRSA lectures
 transcribe_lectures.py
+
+# venv
+.venv
+.venv/*
+
+# local pip installation
+get-pip.py
