@@ -63,9 +63,10 @@ class WhisperCPP(ModelWrapper):
             # remove quotes from prompt
             prompt = prompt.replace('"', '')
 
+            print("this is the current audio file path: " + audio_file)
             # transcribe audio
             transcribe_start = time()
-            system("./main "+self.__transcribe_options+" -m models/ggml-"+self.model_type+".bin -f \""+audio_file+"\" --prompt \""+prompt+"\" --output-file \""+join(self.__temp_output_path, audio_name)+ "\" --output-txt --output-vtt")
+            system("./build/bin/whisper-cli "+self.__transcribe_options+" -m models/ggml-"+self.model_type+".bin -f \""+audio_file+"\" --prompt \""+prompt+"\" --output-file \""+join(self.__temp_output_path, audio_name)+ "\" --output-txt --output-vtt")
             transcribe_end = time()
         
         # save transcribe time, transcription text, and transcription vtt

@@ -10,7 +10,7 @@ from models.ModelWrapper import ModelWrapper
 
 class Parakeet(ModelWrapper):
 
-    name = "nvidia/parakeet-tdt-0.6b-v2"
+    name = "parakeet-tdt-0.6b-v2"
     transcription = {}
     vtt = {}
     load_time = {}
@@ -22,7 +22,7 @@ class Parakeet(ModelWrapper):
 
     def load(self):
         start = time()
-        self.asr_model = nemo_asr.models.ASRModel.from_pretrained(model_name=self.name)
+        self.asr_model = nemo_asr.models.ASRModel.from_pretrained(model_name= "nvidia/" + self.name)
         end = time()
         self.load_time = str(timedelta(seconds=end - start))
 

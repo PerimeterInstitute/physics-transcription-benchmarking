@@ -1,4 +1,4 @@
-from Test import Test
+from test_classes.Test import Test
 from os.path import join, isfile
 from models.WhisperCPP import WhisperCPP
 from helper_functions.prompt_functions import get_formatted_description

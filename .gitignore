@@ -43,3 +43,8 @@ transcribe_lectures.py
 
 # local pip installation
 get-pip.py
+error.txt
+output.txt
+
+TEMP_DATA/*
+TEMP_DATA

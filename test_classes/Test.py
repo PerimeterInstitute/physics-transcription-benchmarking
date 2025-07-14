@@ -42,6 +42,7 @@ class Test():
         
         dataset = load_dataset(dataset_path)
         if dataset == None:
+            print(getcwd())
             print("Invalid dataset path provided: '"+dataset_path+"'")
             return
 
@@ -68,6 +69,19 @@ class Test():
                 current_model = {}
                 test_results = {}
                 test_summary = {}
+
+                # get only json serializable fields
+                def is_json_serializable(value):
+                    try:
+                        json.dumps(value)
+                        return True
+                    except TypeError:
+                        return False
+
+                model_attributes = {
+                    k: v for k, v in model.__dict__.items()
+                    if is_json_serializable(v)
+                }
 
                 # create test_details dictionary
                 test_details = {"model_info": {"class_name": model.__class__.__name__,
@@ -107,7 +121,7 @@ class Test():
                         prompt = prompt_function(test_case["audio_info"])
 
                         # transcribing model
-                        model.transcribe(audio_name, join(dataset_path, "test_data", audio_file), prompt, self.__temp_folder)
+                        model.transcribe(audio_name, join(getcwd(), dataset_path, "test_data", audio_file), prompt, self.__temp_folder)
 
                         if save_transcription:
                             transcription = model.transcription[audio_name]
@@ -168,7 +182,6 @@ class Test():
 
                 # adding model dict to run results array:
                 self.most_recent_run_results = current_model
-
                 # creating json object for model
                 json_obj = json.dumps(current_model, indent=4)
 
