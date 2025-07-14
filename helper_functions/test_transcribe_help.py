@@ -27,7 +27,7 @@ def load_dataset(dataset_path):
 
     try:
         # copy dataset to /local --> for when running on hpc
-        system("cp -r " + dataset_path + " /local/")
+        system("cp -r " + dataset_path + " ./local/")
         dataset_path = join("/local", basename(normpath(dataset_path)))
 
         # loading dataset json file
